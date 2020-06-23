@@ -1,0 +1,92 @@
+package site.leos.setter
+
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Point
+import android.net.Uri
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Gravity
+import androidx.annotation.RequiresApi
+import androidx.preference.PreferenceManager
+import java.util.*
+
+class DictActivity : AppCompatActivity() {
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val query = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: ""
+
+        if (query.isEmpty()) finish()
+
+        if (isColorDictAvailable()) {
+            // We can do dictionary lookup only if ColorDict is installed
+            run cjk@{
+                if (!query.contains(' ')) {
+                    // If no space detected in query string, that must be a word or in some language with no delimiter for words, like CJK language
+
+                    // If CJK character detected, that could well means it's in CJK language, go to translation instead of word look up
+                    val qLength = query.length
+                    var detectedCJKChar = false
+                    var i = 0
+                    var cp: Int
+                    while (i < qLength) {
+                        cp = query.codePointAt(i)
+                        i += Character.charCount(cp)
+                        if (Character.UnicodeScript.of(cp) == Character.UnicodeScript.HAN) {
+                            detectedCJKChar = true
+                            break
+                        }
+                    }
+                    if (detectedCJKChar && qLength > 4) return@cjk
+
+                    // Not CJK, no space, that must be a word
+                    val colorDictIntent = Intent("colordict.intent.action.SEARCH")
+
+                    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.colordict_fullscreen_key), false)) {
+                        colorDictIntent.putExtra("EXTRA_FULLSCREEN", true)
+                    } else {
+                        val size = Point()
+                        windowManager.defaultDisplay.getSize(size)
+                        colorDictIntent.putExtra("EXTRA_FULLSCREEN", false)
+                                        .putExtra("EXTRA_HEIGHT", size.y / 2)
+                                        .putExtra("EXTRA_MARGIN_LEFT", size.x / 20)
+                                        .putExtra("EXTRA_MARGIN_RIGHT", size.x / 20)
+                                        .putExtra("EXTRA_GRAVITY", Gravity.BOTTOM)
+                    }
+
+                    colorDictIntent.putExtra("EXTRA_QUERY", query)
+                    startActivity(colorDictIntent)
+
+                    finish()
+                    return
+                }
+            }
+        }
+
+
+        // Anything else funnel down to here
+        var translatorURL = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.online_translator_key),getString(R.string.url_deepl))
+        val defaultLocale = Locale.getDefault()
+
+        if (translatorURL.equals(getString(R.string.url_deepl))) {
+            // We are using DeepL
+            translatorURL = translatorURL + defaultLocale.language +'/'
+        }
+        else {
+            // We are using Google Translation
+            if (defaultLocale.language.equals("zh")) translatorURL = translatorURL + defaultLocale.language + "-" + defaultLocale.country + "&text="
+            else translatorURL = translatorURL + defaultLocale.language + "&text="
+        }
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(translatorURL + query)))
+
+        finish()
+    }
+
+    private fun isColorDictAvailable() : Boolean {
+        return baseContext.packageManager.queryIntentActivities(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY).size > 0
+    }
+}
