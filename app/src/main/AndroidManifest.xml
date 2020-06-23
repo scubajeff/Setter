@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ReverseImageSearchActivity"
+        <activity android:name=".GoogleReverseImageSearchFragment"
             android:theme="@style/AppTheme.NoDisplay"
             android:label="@string/reverseimagesearch_name">
             <intent-filter>

@@ -19,7 +19,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class ReverseImageSearchActivity : AppCompatActivity() {
+class GoogleReverseImageSearchFragment : AppCompatActivity() {
     @SuppressLint("LongLogTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
