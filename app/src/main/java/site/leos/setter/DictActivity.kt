@@ -8,13 +8,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
-import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import java.util.*
 
 class DictActivity : AppCompatActivity() {
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

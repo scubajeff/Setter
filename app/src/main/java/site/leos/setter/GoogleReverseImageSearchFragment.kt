@@ -1,70 +1,110 @@
 package site.leos.setter
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.ConnectivityManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.os.SystemClock.sleep
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
-import java.io.InputStream
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
+import com.google.android.material.progressindicator.ProgressIndicator
+import kotlinx.android.synthetic.main.fragment_webview.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Integer.max
 import java.net.HttpURLConnection
 import java.net.URL
 
-class GoogleReverseImageSearchFragment : AppCompatActivity() {
-    @SuppressLint("LongLogTag")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        var wait = 1
-        while (wait < 5) {
-            if (isNetworkActive()) {
-                if ((intent?.action == Intent.ACTION_SEND) && (intent.type?.startsWith("image/") == true)) {
-                    // Is a single image share intent
-                    (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
-                        //lifecycleScope.launch {
-                        //GlobalScope.launch(Dispatchers.Main) {
-                        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+class GoogleReverseImageSearchFragment : Fragment() {
+    var fingerprint:String? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_webview, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState != null) fingerprint = savedInstanceState.getString(RESULT)
+
+        activity?.intent.let {
+            if ((it?.action == Intent.ACTION_SEND) && (it.type?.startsWith("image/") == true)) {
+                (it.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
+                    // Prepare views
+                    progressIndicator.apply {
+                        isIndeterminate = true
+                        visibility = ProgressIndicator.VISIBLE
+                    }
+                    webView.settings.apply {
+                        userAgentString = USER_AGENT_CHROME
+                        //cacheMode = WebSettings.LOAD_NO_CACHE
+                        javaScriptEnabled = true
+                        javaScriptCanOpenWindowsAutomatically = false
+                        loadsImagesAutomatically = true
+                        loadWithOverviewMode = true
+                        useWideViewPort = true
+                        setSupportZoom(true)
+                        setGeolocationEnabled(false)
+                    }
+
+                    // Launch coroutine to upload image
+                    //lifecycleScope.launch {
+                    CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+                        if (fingerprint == null) {
+                            // Get image dimension
                             val option = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-                            BitmapFactory.decodeStream(contentResolver.openInputStream(it),null,option)
-                            val iis = contentResolver.openInputStream(it)
-                            if (iis != null) {
-                                val fingerprint = uploadImage(iis,getSampleSize(option.outWidth, MAX_IMAGE_WIDTH))
-                                iis.close()
-                                if (fingerprint != "") startActivity(Intent(Intent.ACTION_VIEW,Uri.parse(fingerprint)))
+                            BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(it), null, option)
+
+                            // Upload the image
+                            fingerprint = uploadImage(it, getSampleSize(max(option.outWidth, option.outHeight), MAX_SIDE_LENGTH))
+                        }
+
+                        // Load result page in webView
+                        withContext(Dispatchers.Main) {
+                            // Make progress indicator determinated by page loading progress
+                            progressIndicator.apply {
+                                isIndeterminate = false
+                                max = 100
                             }
+                            webView.webChromeClient = object : WebChromeClient() {
+                                override fun onProgressChanged(view: WebView, progress: Int) {
+                                    if (progress < 100 && progressIndicator.visibility == ProgressIndicator.GONE) {
+                                        progressIndicator.visibility = ProgressIndicator.VISIBLE
+                                    }
+                                    progressIndicator.progress = progress
+                                    if (progress == 100) progressIndicator.visibility = ProgressBar.GONE
+                                }
+                            }
+
+                            webView.loadUrl(fingerprint)
                         }
                     }
                 }
-                break
-            } else {
-                sleep((wait * 100).toLong())
-                wait *= 2
-                if (wait > 4) Log.w(TAG,"No active Network")
             }
         }
 
-        finish()
-        return
     }
 
-    private fun isNetworkActive(): Boolean {
-        return (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isDefaultNetworkActive
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(RESULT, fingerprint)
+        webView.saveState(outState)
+        super.onSaveInstanceState(outState)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    private suspend fun uploadImage(imageStream: InputStream, sampleSize: Int): String {
+    private suspend fun uploadImage(imageUri: Uri, sampleSize: Int): String {
 
         return withContext(Dispatchers.IO) {
             var line: String? = null
+
             try {
                 val crlf = "\r\n"
                 val boundary = "====" + System.currentTimeMillis()
@@ -73,19 +113,21 @@ class GoogleReverseImageSearchFragment : AppCompatActivity() {
                 //val conn = URL("https://httpbin.org/post").openConnection() as HttpURLConnection
                 //val conn = URL("https://tineye.com/search").openConnection() as HttpURLConnection
 
+                // Http POST header
                 conn.useCaches = false
                 conn.doOutput = true
                 conn.requestMethod = "POST"
                 conn.instanceFollowRedirects = false
-                conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7")
+                conn.setRequestProperty("User-Agent", USER_AGENT_GOOGLE_NEXUS)
                 conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=$boundary")
 
+                // Http request body
                 val outputStream = conn.outputStream
                 val writer = outputStream.writer()
                 writer.append("--$boundary$crlf")
-                        .append("Content-Disposition: form-data; name=\"encoded_image\"$crlf")
-//                        .append("Content-Disposition: form-data; name=\"image\"$crlf")
-                        .append(crlf).flush()
+                    .append("Content-Disposition: form-data; name=\"encoded_image\"$crlf")
+                    //.append("Content-Disposition: form-data; name=\"image\"$crlf")
+                    .append(crlf).flush()
 
                 //imageInputStream.copyTo(outputStream, 4096)
                 //val inputStream = contentResolver.openInputStream(imageUri)!!
@@ -101,15 +143,18 @@ class GoogleReverseImageSearchFragment : AppCompatActivity() {
                     inJustDecodeBounds = false
                     inSampleSize = sampleSize
                 }
+                val imageStream = activity?.contentResolver?.openInputStream(imageUri)
                 BitmapFactory.decodeStream(imageStream, null, newOption)?.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
-                //inputStream.close()
+                imageStream?.close()
                 writer.append("$crlf--$boundary--$crlf").flush()
                 writer.close()
                 outputStream.close()
 
+                // Google response with 302 redirect
                 if (conn.responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
-                    val reader = conn.inputStream.bufferedReader()!!
+                    val reader = conn.inputStream.bufferedReader()
 
+                    // Get redirect link
                     while (true){
                         line = reader.readLine()
                         if (line == null) break
@@ -122,10 +167,13 @@ class GoogleReverseImageSearchFragment : AppCompatActivity() {
                 e.printStackTrace()
             }
 
+            // Return actual link address in between quotation mark
             line?.substringAfter('"')?.substringBefore('"') ?: ""
         }
     }
 
+    // Calculate inSampleSize for image decoding, the longest side length is around MAX_SIDE_LENGTH, so that the decoded size is relative small, but
+    // enough for image recognition
     private fun getSampleSize(currentWidth: Int, requiredWidth: Int): Int {
         var inSampleSize = 1
 
@@ -133,12 +181,13 @@ class GoogleReverseImageSearchFragment : AppCompatActivity() {
             val halfWidth = currentWidth / 2
             while (halfWidth / inSampleSize >= requiredWidth) inSampleSize *= 2
         }
-
         return inSampleSize
     }
 
     companion object {
-        const val TAG = "ReverseImageSearchActivity"
-        const val MAX_IMAGE_WIDTH:Int = 256
+        const val RESULT = "RESULT_LOADED"
+        const val MAX_SIDE_LENGTH:Int = 256
+        const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+        const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
     }
 }
