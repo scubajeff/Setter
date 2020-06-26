@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <com.google.android.material.progressindicator.ProgressIndicator
-        android:id="@+id/progressIndicator"
+        android:id="@+id/progress_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
@@ -14,7 +14,7 @@
         app:indicatorColor="#198964"/>
 
     <WebView
-        android:id="@+id/webView"
+        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

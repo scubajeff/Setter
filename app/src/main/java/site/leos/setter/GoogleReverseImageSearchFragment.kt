@@ -6,15 +6,17 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.progressindicator.ProgressIndicator
-import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,79 +27,129 @@ import java.net.URL
 
 
 class GoogleReverseImageSearchFragment : Fragment() {
-    var fingerprint:String? = null
+    lateinit var webView:WebView
+    var resultLoaded:Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_webview, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var fingerprint:String? = null
 
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState != null) fingerprint = savedInstanceState.getString(RESULT)
+        webView = view.findViewById(R.id.webview)
+        val progressIndicator : ProgressIndicator = view.findViewById(R.id.progress_indicator)
 
-        activity?.intent.let {
-            if ((it?.action == Intent.ACTION_SEND) && (it.type?.startsWith("image/") == true)) {
-                (it.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
-                    // Prepare views
-                    progressIndicator.apply {
-                        isIndeterminate = true
-                        visibility = ProgressIndicator.VISIBLE
-                    }
-                    webView.settings.apply {
-                        userAgentString = USER_AGENT_CHROME
-                        //cacheMode = WebSettings.LOAD_NO_CACHE
-                        javaScriptEnabled = true
-                        javaScriptCanOpenWindowsAutomatically = false
-                        loadsImagesAutomatically = true
-                        loadWithOverviewMode = true
-                        useWideViewPort = true
-                        setSupportZoom(true)
-                        setGeolocationEnabled(false)
-                    }
+        // Prepare webView
+        webView.settings.apply {
+            userAgentString = USER_AGENT_CHROME
+            //cacheMode = WebSettings.LOAD_NO_CACHE
+            javaScriptEnabled = true
+            javaScriptCanOpenWindowsAutomatically = false
+            loadsImagesAutomatically = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            setSupportZoom(true)
+            setGeolocationEnabled(false)
+        }
 
-                    // Launch coroutine to upload image
-                    //lifecycleScope.launch {
-                    CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
-                        if (fingerprint == null) {
-                            // Get image dimension
-                            val option = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-                            BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(it), null, option)
+        // Load links in webview
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean = false
+        }
 
-                            // Upload the image
-                            fingerprint = uploadImage(it, getSampleSize(max(option.outWidth, option.outHeight), MAX_SIDE_LENGTH))
+        // Display loading progress
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView, progress: Int) {
+                if (progress < 100 && progressIndicator.visibility == ProgressIndicator.GONE) {
+                    progressIndicator.visibility = ProgressIndicator.VISIBLE
+                }
+                progressIndicator.progress = progress
+                if (progress == 100) {
+                    progressIndicator.visibility = ProgressBar.GONE
+                    resultLoaded = true
+                }
+            }
+        }
+
+        if (savedInstanceState != null) {
+            resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
+            webView.restoreState(savedInstanceState)
+            progressIndicator.visibility = ProgressIndicator.GONE
+        }
+
+        if (!resultLoaded) {
+            activity?.intent.let {
+                if ((it?.action == Intent.ACTION_SEND) && (it.type?.startsWith("image/") == true)) {
+                    (it.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
+                        // Prepare progressIndicator
+                        progressIndicator.apply {
+                            isIndeterminate = true
+                            visibility = ProgressIndicator.VISIBLE
                         }
 
-                        // Load result page in webView
-                        withContext(Dispatchers.Main) {
-                            // Make progress indicator determinated by page loading progress
-                            progressIndicator.apply {
-                                isIndeterminate = false
-                                max = 100
-                            }
-                            webView.webChromeClient = object : WebChromeClient() {
-                                override fun onProgressChanged(view: WebView, progress: Int) {
-                                    if (progress < 100 && progressIndicator.visibility == ProgressIndicator.GONE) {
-                                        progressIndicator.visibility = ProgressIndicator.VISIBLE
-                                    }
-                                    progressIndicator.progress = progress
-                                    if (progress == 100) progressIndicator.visibility = ProgressBar.GONE
-                                }
+                        // Launch coroutine to upload image
+                        //lifecycleScope.launch {
+                        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+                            if (fingerprint == null) {
+                                // Get image dimension
+                                val option =
+                                    BitmapFactory.Options().apply { inJustDecodeBounds = true }
+                                BitmapFactory.decodeStream(
+                                    activity?.contentResolver?.openInputStream(
+                                        it
+                                    ), null, option
+                                )
+
+                                // Upload the image
+                                fingerprint = uploadImage(
+                                    it,
+                                    getSampleSize(
+                                        max(option.outWidth, option.outHeight),
+                                        MAX_SIDE_LENGTH
+                                    )
+                                )
                             }
 
-                            webView.loadUrl(fingerprint)
+                            // Load result page in webView
+                            withContext(Dispatchers.Main) {
+                                // Make progress indicator determinated by page loading progress
+                                progressIndicator.apply {
+                                    isIndeterminate = false
+                                    max = 100
+                                }
+
+                                webView.loadUrl(fingerprint)
+                            }
                         }
                     }
                 }
             }
         }
 
+        webView.isFocusableInTouchMode = true
+        webView.requestFocus()
+        webView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (event.action != KeyEvent.ACTION_UP) return@OnKeyListener true
+                if (webView.canGoBack()) {
+                    webView.goBack()
+                    return@OnKeyListener true
+                }
+                else activity?.onBackPressed()
+            }
+            false
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(RESULT, fingerprint)
-        webView.saveState(outState)
         super.onSaveInstanceState(outState)
+        outState.putBoolean(RESULT_LOADED, resultLoaded)
+        webView.saveState(outState)
     }
 
     private suspend fun uploadImage(imageUri: Uri, sampleSize: Int): String {
@@ -185,7 +237,7 @@ class GoogleReverseImageSearchFragment : Fragment() {
     }
 
     companion object {
-        const val RESULT = "RESULT_LOADED"
+        const val RESULT_LOADED = "RESULT_LOADED"
         const val MAX_SIDE_LENGTH:Int = 256
         const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
