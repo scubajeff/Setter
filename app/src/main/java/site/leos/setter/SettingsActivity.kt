@@ -1,13 +1,14 @@
 package site.leos.setter
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceGroup
-import android.content.ComponentName
 import androidx.preference.SwitchPreferenceCompat
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -22,6 +23,10 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        }
+
+        override fun onResume() {
+            super.onResume()
             if (isColorDictAvailable()) {
                 // Enable ColorDict setter activity
                 //context!!.packageManager.setComponentEnabledSetting(
@@ -32,12 +37,25 @@ class SettingsActivity : AppCompatActivity() {
                     summary = ""
                 }
             } else {
-                findPreference<SwitchPreferenceCompat>(getString(R.string.colordict_fullscreen_key))?.summary =getString(R.string.colordict_not_installed)
+                findPreference<SwitchPreferenceCompat>(getString(R.string.colordict_fullscreen_key))?.let {
+                    it.summary = getString(R.string.colordict_not_installed)
+                    it.setOnPreferenceClickListener {
+                        try {startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://$COLORDICT_PACKAGE_NAME")))
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/$COLORDICT_PACKAGE_NAME")))
+                        }
+                        true
+                    }
+                }
             }
         }
 
         private fun isColorDictAvailable(): Boolean {
             return requireActivity().packageManager?.queryIntentActivities(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY)?.size!! > 0
+        }
+
+        companion object {
+            const val COLORDICT_PACKAGE_NAME = "details?id=com.socialnmobile.colordict"
         }
     }
 }
