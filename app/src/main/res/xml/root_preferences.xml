@@ -23,14 +23,6 @@
             app:key="@string/colordict_fullscreen_key"
             app:title="@string/colordict_fullscreen_title"
             app:enabled="false"/>
-        <ListPreference
-            app:title="@string/online_translator_header"
-            app:summary="@string/online_translator_summary"
-            app:key="@string/online_translator_key"
-            app:defaultValue="@string/url_deepl"
-            app:entries="@array/translator_entries"
-            app:entryValues="@array/translator_values">
-        </ListPreference>
 
     </PreferenceCategory>
 

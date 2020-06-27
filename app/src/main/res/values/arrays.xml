@@ -1,14 +1,4 @@
 <resources>
-    <string-array name="translator_entries">
-        <item>DeepL</item>
-        <item>Google Translation</item>
-    </string-array>
-
-    <string-array name="translator_values">
-        <item>@string/url_deepl</item>
-        <item>@string/url_google_tranlation</item>
-    </string-array>
-
     <string-array name="search_engine_entries">
         <item>StartPage</item>
         <item>DuckDuckGo</item>

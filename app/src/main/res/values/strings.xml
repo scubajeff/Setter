@@ -9,9 +9,6 @@
     <string name="colordict_not_installed">Install ColorDict app to activate this setting</string>
     <string name="colordict_fullscreen_key" translatable="false">fullscreen</string>
     <string name="colordict_fullscreen_title">ColorDict run in full screen</string>
-    <string name="online_translator_key" translatable="false">onlinetranslator</string>
-    <string name="online_translator_header">Online Translator</string>
-    <string name="online_translator_summary">Translate using %1$s</string>
     <string name="url_deepl" translatable="false">https://www.deepl.com/translator#en/</string>
     <string name="url_google_tranlation" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
 

@@ -3,13 +3,10 @@ package site.leos.setter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import androidx.preference.PreferenceManager
-import java.util.*
 
 class DictActivity : AppCompatActivity() {
 
@@ -65,21 +62,7 @@ class DictActivity : AppCompatActivity() {
             }
         }
 
-
-        // Anything else funnel down to here
-        var translatorURL = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.online_translator_key),getString(R.string.url_deepl))
-        val defaultLocale = Locale.getDefault()
-
-        if (translatorURL.equals(getString(R.string.url_deepl))) {
-            // We are using DeepL
-            translatorURL = translatorURL + defaultLocale.language +'/'
-        }
-        else {
-            // We are using Google Translation
-            if (defaultLocale.language.equals("zh")) translatorURL = translatorURL + defaultLocale.language + "-" + defaultLocale.country + "&text="
-            else translatorURL = translatorURL + defaultLocale.language + "&text="
-        }
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(translatorURL + query)))
+        startActivity(Intent(this, TranslationActivity::class.java).apply { putExtra("QUERY", query) })
 
         finish()
     }
