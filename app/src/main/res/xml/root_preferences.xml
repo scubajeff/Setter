@@ -14,7 +14,8 @@
   ~ limitations under the License.
   -->
 
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         app:title="@string/translator_header">
@@ -22,7 +23,18 @@
         <SwitchPreferenceCompat
             app:key="@string/colordict_fullscreen_key"
             app:title="@string/colordict_fullscreen_title"
-            app:enabled="false"/>
+            app:isPreferenceVisible="false" />
+
+        <Preference
+            app:key="@string/install_colordict_key"
+            app:title="@string/colordict_not_installed"
+            app:summary="@string/colordict_intro"
+            app:isPreferenceVisible="true" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/details?id=com.socialnmobile.colordict" >
+            </intent>
+        </Preference>
 
     </PreferenceCategory>
 

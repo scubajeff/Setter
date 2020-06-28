@@ -8,7 +8,8 @@
     <!-- Screen Preferences -->
     <string name="translator_header">翻译</string>
     <string name="colordict_fullscreen_title">ColorDict字典使用全屏显示</string>
-    <string name="colordict_not_installed">请安装应用ColorDict</string>
+    <string name="colordict_not_installed">安装字典应用ColorDict</string>
+    <string name="colordict_intro">离线字典应用，保护隐私，支持stardict格式字典文件。</string>
 
     <string name="search_engine_header">搜索引擎</string>
     <string name="search_engine_summary">当前选择：%1$s</string>
