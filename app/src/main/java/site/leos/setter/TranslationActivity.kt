@@ -40,6 +40,7 @@ class TranslationActivity : AppCompatActivity() {
                 1 -> {tab.text = "Google"}
             }
         }.attach()
+        viewPager.recyclerView.enforceSingleScrollDirection()
     }
 
     private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val url0:String, val url1:String)
