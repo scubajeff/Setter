@@ -1,10 +1,11 @@
 <resources>
+    <!-- General -->
     <string name="app_name">Setter</string>
     <string name="dict_name">Look up</string>
     <string name="websearch_name">Search</string>
     <string name="reverseimagesearch_name">Image Search</string>
 
-    <!-- Preference Group -->
+    <!-- Translator -->
     <string name="translator_header">Translator</string>
     <string name="colordict_fullscreen_key" translatable="false">fullscreen</string>
     <string name="colordict_fullscreen_title">ColorDict run in full screen</string>
@@ -14,6 +15,7 @@
     <string name="url_deepl" translatable="false">https://www.deepl.com/translator#en/</string>
     <string name="url_google_tranlation" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
 
+    <!-- Search Engine -->
     <string name="search_engine_key" translatable="false">searchengine</string>
     <string name="search_engine_header">Search Engine</string>
     <string name="search_engine_summary">Search on %1$s</string>
@@ -22,4 +24,7 @@
     <string name="url_sp" translatable="false">https://www.startpage.com/do/dsearch?query=</string>
     <string name="url_duck" translatable="false">https://duckduckgo.com/?q=</string>
     <string name="url_miji" translatable="false">https://mijisou.com/?q=</string>
+
+    <!-- Reverse Image Search -->
+    <string name="sogou">Sogou</string>
 </resources>

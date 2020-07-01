@@ -17,18 +17,18 @@ class ReverseImageSearchActivity : AppCompatActivity() {
         viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle)
         TabLayoutMediator(tabs, viewPager) {tab, position ->
             when (position) {
-                0 -> {tab.text = "Google"}
+                ReverseImageSearchFragment.SERVICE_GOOGLE -> {tab.text = "Google"}
+                ReverseImageSearchFragment.SERVICE_SOGOU -> {tab.text = getString(R.string.sogou)}
+                ReverseImageSearchFragment.SERVICE_TINEYE -> {tab.text = "TinEye"}
             }
         }.attach()
     }
 
     private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
-        lateinit var currentFragment : Fragment
-
-        override fun getItemCount(): Int = 1
+        override fun getItemCount(): Int = 2
 
         override fun createFragment(position: Int): Fragment {
-            return GoogleReverseImageSearchFragment()
+            return ReverseImageSearchFragment.newInstance(position)
         }
     }
 }

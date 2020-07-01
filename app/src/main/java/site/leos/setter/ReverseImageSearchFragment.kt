@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class GoogleReverseImageSearchFragment : Fragment() {
+class ReverseImageSearchFragment : Fragment() {
     lateinit var webView:WebView
     var resultLoaded:Boolean = false
 
@@ -35,7 +36,8 @@ class GoogleReverseImageSearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var fingerprint:String? = null
+        var result:String? = null
+        val type = arguments?.getInt("SERVICE")
 
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
@@ -56,10 +58,7 @@ class GoogleReverseImageSearchFragment : Fragment() {
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView?,
-                request: WebResourceRequest?
-            ): Boolean = false
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
         }
 
         // Display loading progress
@@ -95,24 +94,13 @@ class GoogleReverseImageSearchFragment : Fragment() {
                         // Launch coroutine to upload image
                         //lifecycleScope.launch {
                         CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
-                            if (fingerprint == null) {
+                            if (result == null) {
                                 // Get image dimension
-                                val option =
-                                    BitmapFactory.Options().apply { inJustDecodeBounds = true }
-                                BitmapFactory.decodeStream(
-                                    activity?.contentResolver?.openInputStream(
-                                        it
-                                    ), null, option
-                                )
+                                val option = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+                                BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(it), null, option)
 
                                 // Upload the image
-                                fingerprint = uploadImage(
-                                    it,
-                                    getSampleSize(
-                                        max(option.outWidth, option.outHeight),
-                                        MAX_SIDE_LENGTH
-                                    )
-                                )
+                                result = uploadImage(it, getSampleSize(max(option.outWidth, option.outHeight), MAX_SIDE_LENGTH), type)
                             }
 
                             // Load result page in webView
@@ -123,7 +111,16 @@ class GoogleReverseImageSearchFragment : Fragment() {
                                     max = 100
                                 }
 
-                                webView.loadUrl(fingerprint)
+                                when (type) {
+                                    SERVICE_GOOGLE -> webView.loadUrl(result)
+                                    SERVICE_SOGOU -> {
+                                        if (result!![4] != 's') {
+                                            result = "https" + result!!.substring(4)
+                                        }
+                                        webView.loadUrl(result)
+                                    }
+                                    SERVICE_SOGOU -> webView.loadDataWithBaseURL(null, result, "text/html", "utf-8", null)
+                                }
                             }
                         }
                     }
@@ -152,7 +149,7 @@ class GoogleReverseImageSearchFragment : Fragment() {
         webView.saveState(outState)
     }
 
-    private suspend fun uploadImage(imageUri: Uri, sampleSize: Int): String {
+    private suspend fun uploadImage(imageUri: Uri, sampleSize: Int, serviceType: Int?): String {
 
         return withContext(Dispatchers.IO) {
             var line: String? = null
@@ -161,9 +158,26 @@ class GoogleReverseImageSearchFragment : Fragment() {
                 val crlf = "\r\n"
                 val boundary = "====" + System.currentTimeMillis()
 
-                val conn = URL("https://www.google.com/searchbyimage/upload").openConnection() as HttpURLConnection
-                //val conn = URL("https://httpbin.org/post").openConnection() as HttpURLConnection
-                //val conn = URL("https://tineye.com/search").openConnection() as HttpURLConnection
+                val conn:HttpURLConnection;
+                val formDataName:String
+                when (serviceType) {
+                    SERVICE_GOOGLE -> {
+                        conn = URL("https://www.google.com/searchbyimage/upload").openConnection() as HttpURLConnection
+                        formDataName = "encoded_image"
+                    }
+                    SERVICE_SOGOU -> {
+                        conn = URL("https://pic.sogou.com/ris_upload").openConnection() as HttpURLConnection
+                        formDataName = "pic_path"
+                    }
+                    SERVICE_TINEYE -> {
+                        conn = URL("https://tineye.com/search").openConnection() as HttpURLConnection
+                        formDataName = "image"
+                    }
+                    else -> {
+                        conn = URL("https://httpbin.org/post").openConnection() as HttpURLConnection
+                        formDataName = "image"
+                    }
+                }
 
                 // Http POST header
                 conn.useCaches = false
@@ -176,9 +190,18 @@ class GoogleReverseImageSearchFragment : Fragment() {
                 // Http request body
                 val outputStream = conn.outputStream
                 val writer = outputStream.writer()
+
+                // Sogou needs another parameter
+                if (serviceType == SERVICE_SOGOU) {
+                    writer.append("--$boundary$crlf")
+                        .append("Content-Disposition: form-data; name=\"flag\"$crlf$crlf")
+                        .append("1$crlf")
+                }
+
+                // The actual image file
                 writer.append("--$boundary$crlf")
-                    .append("Content-Disposition: form-data; name=\"encoded_image\"$crlf")
-                    //.append("Content-Disposition: form-data; name=\"image\"$crlf")
+                    .append("Content-Disposition: form-data; name=\"$formDataName\"; filename=\"r.jpg\"$crlf")
+                    .append("Content-Type: image/jpeg$crlf")
                     .append(crlf).flush()
 
                 //imageInputStream.copyTo(outputStream, 4096)
@@ -202,25 +225,42 @@ class GoogleReverseImageSearchFragment : Fragment() {
                 writer.close()
                 outputStream.close()
 
-                // Google response with 302 redirect
-                if (conn.responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
-                    val reader = conn.inputStream.bufferedReader()
-
-                    // Get redirect link
-                    while (true){
-                        line = reader.readLine()
-                        if (line == null) break
-                        if (line.indexOf("HREF=") > 0) break
+                val reader = conn.inputStream.bufferedReader()
+                when(serviceType) {
+                    SERVICE_GOOGLE, SERVICE_SOGOU -> {
+                        // Google, Sogou response with 302 redirect
+                        if (conn.responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+                            // Get redirect link
+                            while(true) {
+                                line = reader.readLine()
+                                if (line == null) break
+                                if (line.indexOf("HREF=", 0, true) > 0) break
+                            }
+                        }
                     }
-                    reader.close()
+                    SERVICE_TINEYE -> {
+                        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
+                            while(true) {
+                                line = reader.readLine()
+                                Log.w("TAG", line)
+                                if (line == null) break
+                            }
+                        }
+                    }
                 }
+                reader.close()
                 conn.disconnect()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
-            // Return actual link address in between quotation mark
-            line?.substringAfter('"')?.substringBefore('"') ?: ""
+            when(serviceType) {
+                SERVICE_GOOGLE, SERVICE_SOGOU -> {
+                    // Return actual link address in between quotation mark
+                    line?.substringAfter('"')?.substringBefore('"') ?: ""
+                }
+                else -> {line!!}
+            }
         }
     }
 
@@ -241,5 +281,10 @@ class GoogleReverseImageSearchFragment : Fragment() {
         const val MAX_SIDE_LENGTH:Int = 256
         const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
+        const val SERVICE_GOOGLE = 0
+        const val SERVICE_SOGOU = 1
+        const val SERVICE_TINEYE = 2
+
+        fun newInstance(arg: Int) = ReverseImageSearchFragment().apply {arguments = Bundle().apply {putInt("SERVICE", arg)}}
     }
 }
