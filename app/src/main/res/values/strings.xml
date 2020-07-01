@@ -21,7 +21,7 @@
     <string name="search_engine_summary">Search on %1$s</string>
     <string name="duck" translatable="false">DuckDuckGo</string>
     <string name="sp" translatable="false">StartPage</string>
-    <string name="url_sp" translatable="false">https://www.startpage.com/do/dsearch?query=</string>
+    <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
     <string name="url_duck" translatable="false">https://duckduckgo.com/?q=</string>
     <string name="url_miji" translatable="false">https://mijisou.com/?q=</string>
 
