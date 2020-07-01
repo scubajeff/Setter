@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +24,7 @@ import kotlinx.coroutines.withContext
 import java.lang.Integer.max
 import java.net.HttpURLConnection
 import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 
 class ReverseImageSearchFragment : Fragment() {
@@ -37,7 +37,7 @@ class ReverseImageSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var result:String? = null
-        val type = arguments?.getInt("SERVICE")
+        val type = arguments?.getInt("SERVICE")!!
 
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
@@ -111,16 +111,7 @@ class ReverseImageSearchFragment : Fragment() {
                                     max = 100
                                 }
 
-                                when (type) {
-                                    SERVICE_GOOGLE -> webView.loadUrl(result)
-                                    SERVICE_SOGOU -> {
-                                        if (result!![4] != 's') {
-                                            result = "https" + result!!.substring(4)
-                                        }
-                                        webView.loadUrl(result)
-                                    }
-                                    SERVICE_SOGOU -> webView.loadDataWithBaseURL(null, result, "text/html", "utf-8", null)
-                                }
+                                webView.loadUrl(result)
                             }
                         }
                     }
@@ -149,7 +140,7 @@ class ReverseImageSearchFragment : Fragment() {
         webView.saveState(outState)
     }
 
-    private suspend fun uploadImage(imageUri: Uri, sampleSize: Int, serviceType: Int?): String {
+    private suspend fun uploadImage(imageUri: Uri, sampleSize: Int, serviceType: Int): String {
 
         return withContext(Dispatchers.IO) {
             var line: String? = null
@@ -158,26 +149,10 @@ class ReverseImageSearchFragment : Fragment() {
                 val crlf = "\r\n"
                 val boundary = "====" + System.currentTimeMillis()
 
-                val conn:HttpURLConnection;
-                val formDataName:String
-                when (serviceType) {
-                    SERVICE_GOOGLE -> {
-                        conn = URL("https://www.google.com/searchbyimage/upload").openConnection() as HttpURLConnection
-                        formDataName = "encoded_image"
-                    }
-                    SERVICE_SOGOU -> {
-                        conn = URL("https://pic.sogou.com/ris_upload").openConnection() as HttpURLConnection
-                        formDataName = "pic_path"
-                    }
-                    SERVICE_TINEYE -> {
-                        conn = URL("https://tineye.com/search").openConnection() as HttpURLConnection
-                        formDataName = "image"
-                    }
-                    else -> {
-                        conn = URL("https://httpbin.org/post").openConnection() as HttpURLConnection
-                        formDataName = "image"
-                    }
-                }
+                val conn = URL(BASE_URL[serviceType]).openConnection() as HttpsURLConnection
+                val formDataName = FORM_DATA_NAME[serviceType]
+                //conn = URL("https://httpbin.org/post").openConnection() as HttpURLConnection
+                //formDataName = "image"
 
                 // Http POST header
                 conn.useCaches = false
@@ -242,8 +217,8 @@ class ReverseImageSearchFragment : Fragment() {
                         if (conn.responseCode == HttpURLConnection.HTTP_OK) {
                             while(true) {
                                 line = reader.readLine()
-                                Log.w("TAG", line)
                                 if (line == null) break
+                                if (line.indexOf("base_url", 0, true) > 0) break
                             }
                         }
                     }
@@ -254,13 +229,19 @@ class ReverseImageSearchFragment : Fragment() {
                 e.printStackTrace()
             }
 
-            when(serviceType) {
-                SERVICE_GOOGLE, SERVICE_SOGOU -> {
-                    // Return actual link address in between quotation mark
-                    line?.substringAfter('"')?.substringBefore('"') ?: ""
+            if (line != null) {
+                // Return address is within quote
+                line = line.substringAfter('"').substringBefore('"')
+                when (serviceType) {
+                    SERVICE_GOOGLE -> line
+                    // Sogou redirect to http rather than https
+                    SERVICE_SOGOU -> line.replace("http://", "https://")
+                    // TinEye return a url like "/result/xxxxxxxxxxxxxxxxxxxxxx"
+                    SERVICE_TINEYE -> BASE_URL[SERVICE_TINEYE] + line.substringAfterLast('/')
+                    else -> ""
                 }
-                else -> {line!!}
             }
+            else ""
         }
     }
 
@@ -284,6 +265,8 @@ class ReverseImageSearchFragment : Fragment() {
         const val SERVICE_GOOGLE = 0
         const val SERVICE_SOGOU = 1
         const val SERVICE_TINEYE = 2
+        val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload", "https://pic.sogou.com/ris_upload", "https://tineye.com/search/")
+        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "image")
 
         fun newInstance(arg: Int) = ReverseImageSearchFragment().apply {arguments = Bundle().apply {putInt("SERVICE", arg)}}
     }

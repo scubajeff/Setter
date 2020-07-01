@@ -25,7 +25,7 @@ class ReverseImageSearchActivity : AppCompatActivity() {
     }
 
     private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount(): Int = 2
+        override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
             return ReverseImageSearchFragment.newInstance(position)
