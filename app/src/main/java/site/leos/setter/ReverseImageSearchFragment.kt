@@ -58,7 +58,14 @@ class ReverseImageSearchFragment : Fragment() {
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
+            // Load pages in this webview
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
+
+            // Force https to http
+            override fun onLoadResource(view: WebView?, url: String?) {
+                url?.replace("http://", "https://")
+                super.onLoadResource(view, url)
+            }
         }
 
         // Display loading progress
