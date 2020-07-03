@@ -22,13 +22,14 @@ class ReverseImageSearchActivity : AppCompatActivity() {
                 ReverseImageSearchFragment.SERVICE_GOOGLE -> {tab.text = "Google"}
                 ReverseImageSearchFragment.SERVICE_SOGOU -> {tab.text = getString(R.string.sogou)}
                 ReverseImageSearchFragment.SERVICE_TINEYE -> {tab.text = "TinEye"}
+                //ReverseImageSearchFragment.SERVICE_PAILITAO -> {tab.text = getString(R.string.pailitao)}
             }
         }.attach()
         viewPager.recyclerView.enforceSingleScrollDirection()
     }
 
     private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount(): Int = 3
+        override fun getItemCount(): Int = ReverseImageSearchFragment.SERVICES_TOTAL
 
         override fun createFragment(position: Int): Fragment {
             return ReverseImageSearchFragment.newInstance(position)

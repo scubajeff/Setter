@@ -37,7 +37,7 @@ class ReverseImageSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var result:String? = null
-        val type = arguments?.getInt("SERVICE")!!
+        val type = arguments?.getInt(SERVICE_KEY)!!
 
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
@@ -229,12 +229,36 @@ class ReverseImageSearchFragment : Fragment() {
                             }
                         }
                     }
+                    /*
+                    SERVICE_PAILITAO -> {
+                        Log.w("************************", conn.responseCode.toString())
+                        // Pailitao response with a JSON object, like this
+                        // {"status":1,"name":"O1CN01qm2A9q1Hyo9hvTIYB_!!0-imgsearch.jpg","url":"//g-search3.alicdn.com/img/bao/uploaded/i4/O1CN01qm2A9q1Hyo9hvTIYB_!!0-imgsearch.jpg","error":false}
+                        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
+                            while(true) {
+                                line = reader.readLine()
+                                Log.w("******************************", line)
+                                if (line == null) break
+                                if (line.length > 1) {
+                                    val json = JSONObject(line)
+                                    line = json.getString("name")
+                                    break
+                                }
+                            }
+                        }
+                        else {
+                            while(true) {
+                                val l = reader.readLine()
+                                if (l == null) break
+                                else Log.w("********************************", l)
+                            }
+                        }
+                    }
+                     */
                 }
                 reader.close()
                 conn.disconnect()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            } catch (e: Exception) { e.printStackTrace() }
 
             if (line != null) {
                 // Return address is within quote
@@ -245,6 +269,7 @@ class ReverseImageSearchFragment : Fragment() {
                     SERVICE_SOGOU -> line.replace("http://", "https://")
                     // TinEye return a url like "/result/xxxxxxxxxxxxxxxxxxxxxx"
                     SERVICE_TINEYE -> BASE_URL[SERVICE_TINEYE] + line.substringAfterLast('/')
+                    //SERVICE_PAILITAO -> "https://www.pailitao.com/search?q=+&imgfile=&tfsid=" + Uri.parse(line) + "&app=imgsearch"
                     else -> ""
                 }
             }
@@ -265,16 +290,20 @@ class ReverseImageSearchFragment : Fragment() {
     }
 
     companion object {
+        const val SERVICE_KEY = "SERVICE_KEY"
         const val RESULT_LOADED = "RESULT_LOADED"
         const val MAX_SIDE_LENGTH:Int = 256
         const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
+
+        const val SERVICES_TOTAL = 3
         const val SERVICE_GOOGLE = 0
         const val SERVICE_SOGOU = 1
         const val SERVICE_TINEYE = 2
-        val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload", "https://pic.sogou.com/ris_upload", "https://tineye.com/search/")
-        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "image")
+        const val SERVICE_PAILITAO = 3
+        val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload", "https://pic.sogou.com/ris_upload", "https://tineye.com/search/", "https://www.pailitao.com/image")
+        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "image", "imgfile")
 
-        fun newInstance(arg: Int) = ReverseImageSearchFragment().apply {arguments = Bundle().apply {putInt("SERVICE", arg)}}
+        fun newInstance(arg: Int) = ReverseImageSearchFragment().apply {arguments = Bundle().apply {putInt(SERVICE_KEY, arg)}}
     }
 }
