@@ -39,7 +39,7 @@ android {
             minSdkVersion 26
             targetSdkVersion 29
             versionCode versionNumber
-            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
+            versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
             archivesBaseName = "Setter-v$versionName"
         }
