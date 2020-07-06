@@ -13,9 +13,25 @@
         android:indeterminate="true"
         app:indicatorColor="#198964"/>
 
-    <WebView
-        android:id="@+id/webview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:textColor="@android:color/darker_gray"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </LinearLayout>

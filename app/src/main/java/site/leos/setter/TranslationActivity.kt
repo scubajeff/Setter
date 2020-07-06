@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -15,6 +16,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.progressindicator.ProgressIndicator
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_tabs.*
+import kotlinx.android.synthetic.main.fragment_webview.*
 import java.util.*
 
 
@@ -85,6 +87,14 @@ class TranslationActivity : AppCompatActivity() {
             // Load links in webview
             webView.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
+
+                override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
+                    super.onReceivedHttpError(view, request, errorResponse)
+                    status.text = errorResponse?.reasonPhrase
+                    progressIndicator.visibility = ProgressIndicator.GONE
+                    webView.visibility = WebView.GONE
+                    status.visibility = TextView.VISIBLE
+                }
             }
 
             // Display loading progress
@@ -123,6 +133,8 @@ class TranslationActivity : AppCompatActivity() {
             }
 
             if (!resultLoaded) {
+                status.visibility = TextView.GONE
+                webView.visibility = WebView.VISIBLE
                 webView.loadUrl(arguments?.getString("URL"))
             }
 
@@ -149,6 +161,7 @@ class TranslationActivity : AppCompatActivity() {
 
         companion object {
             const val RESULT_LOADED = "RESULT_LOADED"
+
             fun newInstance(arg: String) = TranslatorFragment().apply {arguments = Bundle().apply {putString("URL", arg)}}
         }
     }
