@@ -18,9 +18,12 @@
     <!-- Search Engine -->
     <string name="search_engine_key" translatable="false">searchengine</string>
     <string name="search_engine_header">Search Engine</string>
-    <string name="search_engine_summary">Search on %1$s</string>
-    <string name="duck" translatable="false">DuckDuckGo</string>
-    <string name="sp" translatable="false">StartPage</string>
+    <string name="search_engine_summary">%1$s</string>
+    <string name="default_search">Default browser search setting</string>
+    <string name="sp_search" translatable="false">StartPage</string>
+    <string name="duck_search" translatable="false">DuckDuckGo</string>
+    <string name="miji_search">miji</string>
+    <string name="url_default_search" translatable="false">DEFAULT</string>
     <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
     <string name="url_duck" translatable="false">https://duckduckgo.com/?q=</string>
     <string name="url_miji" translatable="false">https://mijisou.com/?q=</string>

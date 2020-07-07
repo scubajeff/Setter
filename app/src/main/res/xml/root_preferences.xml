@@ -45,7 +45,7 @@
             app:title="@string/search_engine_header"
             app:summary="@string/search_engine_summary"
             app:key="@string/search_engine_key"
-            app:defaultValue="@string/url_sp"
+            app:defaultValue="@string/url_default_search"
             app:entries="@array/search_engine_entries"
             app:entryValues="@array/search_engine_values">
         </ListPreference>
