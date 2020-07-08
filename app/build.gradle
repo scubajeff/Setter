@@ -48,16 +48,6 @@ android {
         throw new GradleException("Could not read version.properties!")
     }
 
-//    defaultConfig {
-//        applicationId "site.leos.setter"
-//        minSdkVersion 26
-//        targetSdkVersion 29
-//        versionCode 1
-//        versionName "0.1"
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        archivesBaseName = "$applicationId-v$versionName"
-//    }
-
     buildTypes {
         release {
             minifyEnabled false

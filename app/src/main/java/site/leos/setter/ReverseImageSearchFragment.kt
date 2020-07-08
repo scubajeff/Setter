@@ -3,7 +3,6 @@ package site.leos.setter
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
@@ -14,7 +13,6 @@ import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import com.google.android.material.progressindicator.ProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
@@ -22,10 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
 import java.io.InputStream
-import java.io.OutputStream
-import java.io.OutputStreamWriter
 import java.lang.Integer.max
 import java.net.HttpURLConnection
 import java.net.URL
@@ -270,6 +265,15 @@ class ReverseImageSearchFragment : Fragment() {
                             }
                         }
                     }
+                    SERVICE_YANDEX -> {
+                        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
+                            while(true) {
+                                line = reader.readLine()
+                                if (line == null) break
+                                if (line.indexOf("cbir_id", 0, true) > 0) break
+                            }
+                        }
+                    }
                     SERVICE_TINEYE -> {
                         if (conn.responseCode == HttpURLConnection.HTTP_OK) {
                             while(true) {
@@ -318,12 +322,15 @@ class ReverseImageSearchFragment : Fragment() {
             if (line != null) {
                 if (line.startsWith("Error")) line
                 else {
-                    // Return address is within quote
-                    line = line.substringAfter('"').substringBefore('"')
+                    // Besides Yandex, all other services return quoted address
+                    if (serviceType != SERVICE_YANDEX) line = line.substringAfter('"').substringBefore('"')
+
                     when (serviceType) {
                         SERVICE_GOOGLE -> line
                         // Sogou redirect to http rather than https
                         SERVICE_SOGOU -> line.replace("http://", "https://")
+                        // Yandex return a JSON object, the following is a dirty hack to strip out what we need: cbir_id
+                        SERVICE_YANDEX -> "https://yandex.com/images/search?family=yes&rpt=imageview&" + line.subSequence(line.indexOf("cbir_id", 0, true), line.indexOf('&'))
                         // TinEye return a url like "/result/xxxxxxxxxxxxxxxxxxxxxx"
                         SERVICE_TINEYE -> BASE_URL[SERVICE_TINEYE] + line.substringAfterLast('/')
                         //SERVICE_PAILITAO -> "https://www.pailitao.com/search?q=+&imgfile=&tfsid=" + Uri.parse(line) + "&app=imgsearch"
@@ -354,13 +361,18 @@ class ReverseImageSearchFragment : Fragment() {
         const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
 
-        const val SERVICES_TOTAL = 3
+        const val SERVICES_TOTAL = 4
         const val SERVICE_GOOGLE = 0
         const val SERVICE_SOGOU = 1
-        const val SERVICE_TINEYE = 2
-        const val SERVICE_PAILITAO = 3
-        val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload", "https://pic.sogou.com/ris_upload", "https://tineye.com/search/", "https://www.pailitao.com/image")
-        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "image", "imgfile")
+        const val SERVICE_YANDEX = 2
+        const val SERVICE_TINEYE = 3
+        const val SERVICE_PAILITAO = 4
+        val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload",
+                                "https://pic.sogou.com/ris_upload",
+                                "https://yandex.com/images/search?family=yes&rpt=imageview&format=json&request=%7B%22blocks%22%3A%5B%7B%22block%22%3A%22b-page_type_search-by-image__link%22%7D%5D%7D",
+                                "https://tineye.com/search/",
+                                "https://www.pailitao.com/image")
+        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "upfile", "image", "imgfile")
 
         fun newInstance(arg: Int) = ReverseImageSearchFragment().apply {arguments = Bundle().apply {putInt(SERVICE_KEY, arg)}}
     }
