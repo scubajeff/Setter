@@ -30,6 +30,7 @@ import javax.net.ssl.HttpsURLConnection
 
 class ReverseImageSearchFragment : Fragment() {
     lateinit var webView:WebView
+    lateinit var status:TextView
     var resultLoaded:Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,6 +43,7 @@ class ReverseImageSearchFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
+        status = view.findViewById(R.id.status)
         val progressIndicator : ProgressIndicator = view.findViewById(R.id.progress_indicator)
 
         // Prepare webView
