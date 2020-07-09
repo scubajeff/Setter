@@ -295,6 +295,7 @@ class ReverseImageSearchFragment : Fragment() {
                             }
                         }
                     }
+                    /*
                     SERVICE_TINEYE -> {
                         if (conn.responseCode == HttpURLConnection.HTTP_OK) {
                             while(true) {
@@ -304,7 +305,6 @@ class ReverseImageSearchFragment : Fragment() {
                             }
                         }
                     }
-                    /*
                     SERVICE_PAILITAO -> {
                         Log.w("************************", conn.responseCode.toString())
                         // Pailitao response with a JSON object, like this
@@ -360,7 +360,7 @@ class ReverseImageSearchFragment : Fragment() {
                         SERVICE_YANDEX -> "https://yandex.com/images/search?family=yes&rpt=imageview&" + line.subSequence(line.indexOf("cbir_id", 0, true), line.indexOf('&'))
 
                         // TinEye return a url like "/result/xxxxxxxxxxxxxxxxxxxxxx"
-                        SERVICE_TINEYE -> BASE_URL[SERVICE_TINEYE] + line.substringAfterLast('/')
+                        //SERVICE_TINEYE -> BASE_URL[SERVICE_TINEYE] + line.substringAfterLast('/')
 
                         //SERVICE_PAILITAO -> "https://www.pailitao.com/search?q=+&imgfile=&tfsid=" + Uri.parse(line) + "&app=imgsearch"
                         else -> line
@@ -395,8 +395,8 @@ class ReverseImageSearchFragment : Fragment() {
         const val SERVICE_SOGOU = 1
         const val SERVICE_BING = 2
         const val SERVICE_YANDEX = 3
-        const val SERVICE_TINEYE = 4
-        const val SERVICE_PAILITAO = 5
+        //const val SERVICE_TINEYE = 4
+        //const val SERVICE_PAILITAO = 5
         val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload",
                                 "https://pic.sogou.com/ris_upload",
                                 "https://cn.bing.com/images/search?view=detailv2&iss=sbiupload&FORM=SBIVSP",
