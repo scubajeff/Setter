@@ -249,8 +249,8 @@ class ReverseImageSearchFragment : Fragment() {
                 BitmapFactory.decodeStream(imageStream, null, newOption)?.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
                 imageStream?.close()
                 writer.append("$crlf--$boundary--$crlf").flush()
-                //writer.close()
-                //outputStream.close()
+                writer.close()
+                outputStream.close()
 
                 val reader = conn.inputStream.bufferedReader()
                 when(serviceType) {
@@ -310,6 +310,7 @@ class ReverseImageSearchFragment : Fragment() {
                     }
                      */
                 }
+                reader.close()
             } catch (e: Exception) {
                 e.printStackTrace()
                 line = "Error: $e"
