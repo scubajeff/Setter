@@ -24,6 +24,7 @@ import java.io.InputStream
 import java.lang.Integer.max
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -218,44 +219,67 @@ class ReverseImageSearchFragment : Fragment() {
                 val outputStream = conn.outputStream
                 val writer = outputStream.writer()
 
-                // Sogou needs another parameter
+                // Sogou needs another parameter: flag=1
                 if (serviceType == SERVICE_SOGOU) {
                     writer.append("--$boundary$crlf")
                         .append("Content-Disposition: form-data; name=\"flag\"$crlf$crlf")
                         .append("1$crlf")
                 }
 
-                // The actual image file
-                writer.append("--$boundary$crlf")
-                    .append("Content-Disposition: form-data; name=\"$formDataName\"; filename=\"r.jpg\"$crlf")
-                    .append("Content-Type: image/jpeg$crlf")
-                    .append(crlf).flush()
-
-                //imageInputStream.copyTo(outputStream, 4096)
-                //val inputStream = contentResolver.openInputStream(imageUri)!!
-                /*
-                val buffer = ByteArray(4096)
-                var byteRead = imageStream.read(buffer)
-                while (byteRead != -1) {
-                    outputStream.write(buffer, 0, byteRead)
-                    byteRead = imageStream.read(buffer)
+                // Bing needs these two extra parameters: imgurl=, cbir=sbi
+                if (serviceType == SERVICE_BING) {
+                    writer.append("--$boundary$crlf")
+                        .append("Content-Disposition: form-data; name=\"imgurl\"$crlf$crlf")
+                        .append("$crlf")
+                    writer.append("--$boundary$crlf")
+                        .append("Content-Disposition: form-data; name=\"cbir\"$crlf$crlf")
+                        .append("sbi$crlf")
                 }
-                */
+
+                // The actual image file
                 val newOption = BitmapFactory.Options().apply {
                     inJustDecodeBounds = false
                     inSampleSize = sampleSize
                 }
                 imageStream = activity?.contentResolver?.openInputStream(imageUri)
-                BitmapFactory.decodeStream(imageStream, null, newOption)?.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+
+                if (serviceType == SERVICE_BING) {
+                    // Bing use BASE64 encoding
+                    writer.append("--$boundary$crlf")
+                        .append("Content-Disposition: form-data; name=\"$formDataName\"$crlf")
+                        .append(crlf).flush()
+
+                    BitmapFactory.decodeStream(imageStream, null, newOption)
+                        ?.compress(Bitmap.CompressFormat.JPEG, 70, Base64.getEncoder().wrap(conn.outputStream))
+                }
+                else {
+                    writer.append("--$boundary$crlf")
+                        .append("Content-Disposition: form-data; name=\"$formDataName\"; filename=\"r.jpg\"$crlf")
+                        .append("Content-Type: image/jpeg$crlf")
+                        .append(crlf).flush()
+
+                    //imageInputStream.copyTo(outputStream, 4096)
+                    //val inputStream = contentResolver.openInputStream(imageUri)!!
+                    /*
+                    val buffer = ByteArray(4096)
+                    var byteRead = imageStream.read(buffer)
+                    while (byteRead != -1) {
+                        outputStream.write(buffer, 0, byteRead)
+                        byteRead = imageStream.read(buffer)
+                    }
+                    */
+                    BitmapFactory.decodeStream(imageStream, null, newOption)?.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+                }
                 imageStream?.close()
                 writer.append("$crlf--$boundary--$crlf").flush()
                 writer.close()
                 outputStream.close()
 
+                // Processing response
                 val reader = conn.inputStream.bufferedReader()
                 when(serviceType) {
-                    SERVICE_GOOGLE, SERVICE_SOGOU -> {
-                        // Google, Sogou response with 302 redirect
+                    SERVICE_GOOGLE, SERVICE_SOGOU, SERVICE_BING -> {
+                        // Google, Sogou, Bing all response with 302 redirect
                         if (conn.responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
                             // Get redirect link
                             while(true) {
@@ -323,17 +347,24 @@ class ReverseImageSearchFragment : Fragment() {
             if (line != null) {
                 if (line.startsWith("Error")) line
                 else {
-                    // Besides Yandex, all other services return quoted address
+                    // Besides Yandex, all other services return quoted URL
                     if (serviceType != SERVICE_YANDEX) line = line.substringAfter('"').substringBefore('"')
 
                     when (serviceType) {
                         SERVICE_GOOGLE -> line
+
                         // Sogou redirect to http rather than https
                         SERVICE_SOGOU -> line.replace("http://", "https://")
+
+                        // Bing returned URL doesn't have base, and HTML escape the '&'
+                        SERVICE_BING -> "https://cn.bing.com" + line.replace("&amp;", "&")
+
                         // Yandex return a JSON object, the following is a dirty hack to strip out what we need: cbir_id
                         SERVICE_YANDEX -> "https://yandex.com/images/search?family=yes&rpt=imageview&" + line.subSequence(line.indexOf("cbir_id", 0, true), line.indexOf('&'))
+
                         // TinEye return a url like "/result/xxxxxxxxxxxxxxxxxxxxxx"
                         SERVICE_TINEYE -> BASE_URL[SERVICE_TINEYE] + line.substringAfterLast('/')
+
                         //SERVICE_PAILITAO -> "https://www.pailitao.com/search?q=+&imgfile=&tfsid=" + Uri.parse(line) + "&app=imgsearch"
                         else -> line
                     }
@@ -362,18 +393,20 @@ class ReverseImageSearchFragment : Fragment() {
         const val USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         const val USER_AGENT_GOOGLE_NEXUS = "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7"
 
-        const val SERVICES_TOTAL = 4
+        const val SERVICES_TOTAL = 5
         const val SERVICE_GOOGLE = 0
         const val SERVICE_SOGOU = 1
-        const val SERVICE_YANDEX = 2
-        const val SERVICE_TINEYE = 3
-        const val SERVICE_PAILITAO = 4
+        const val SERVICE_BING = 2
+        const val SERVICE_YANDEX = 3
+        const val SERVICE_TINEYE = 4
+        const val SERVICE_PAILITAO = 5
         val BASE_URL = arrayOf("https://www.google.com/searchbyimage/upload",
                                 "https://pic.sogou.com/ris_upload",
+                                "https://cn.bing.com/images/search?view=detailv2&iss=sbiupload&FORM=SBIVSP",
                                 "https://yandex.com/images/search?family=yes&rpt=imageview&format=json&request=%7B%22blocks%22%3A%5B%7B%22block%22%3A%22b-page_type_search-by-image__link%22%7D%5D%7D",
                                 "https://tineye.com/search/",
                                 "https://www.pailitao.com/image")
-        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "upfile", "image", "imgfile")
+        val FORM_DATA_NAME = arrayOf("encoded_image", "pic_path", "imageBin", "upfile", "image", "imgfile")
 
         fun newInstance(arg: Int) = ReverseImageSearchFragment().apply {arguments = Bundle().apply {putInt(SERVICE_KEY, arg)}}
     }

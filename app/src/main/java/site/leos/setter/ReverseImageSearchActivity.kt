@@ -19,6 +19,7 @@ class ReverseImageSearchActivity : AppCompatActivity() {
             when (position) {
                 ReverseImageSearchFragment.SERVICE_GOOGLE -> {tab.text = "Google"}
                 ReverseImageSearchFragment.SERVICE_SOGOU -> {tab.text = getString(R.string.sogou)}
+                ReverseImageSearchFragment.SERVICE_BING -> {tab.text = "Bing"}
                 ReverseImageSearchFragment.SERVICE_YANDEX -> {tab.text = "Yandex"}
                 ReverseImageSearchFragment.SERVICE_TINEYE -> {tab.text = "TinEye"}
                 //ReverseImageSearchFragment.SERVICE_PAILITAO -> {tab.text = getString(R.string.pailitao)}
