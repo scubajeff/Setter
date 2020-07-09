@@ -281,12 +281,7 @@ class ReverseImageSearchFragment : Fragment() {
                     SERVICE_GOOGLE, SERVICE_SOGOU, SERVICE_BING -> {
                         // Google, Sogou, Bing all response with 302 redirect
                         if (conn.responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
-                            // Get redirect link
-                            while(true) {
-                                line = reader.readLine()
-                                if (line == null) break
-                                if (line.indexOf("HREF=", 0, true) > 0) break
-                            }
+                            line = conn.headerFields["Location"]?.get(0)
                         }
                     }
                     SERVICE_YANDEX -> {
@@ -356,8 +351,8 @@ class ReverseImageSearchFragment : Fragment() {
                         // Sogou redirect to http rather than https
                         SERVICE_SOGOU -> line.replace("http://", "https://")
 
-                        // Bing returned URL doesn't have base, and HTML escape the '&'
-                        SERVICE_BING -> "https://cn.bing.com" + line.replace("&amp;", "&")
+                        // Bing returned URL doesn't have base
+                        SERVICE_BING -> "https://cn.bing.com" + line
 
                         // Yandex return a JSON object, the following is a dirty hack to strip out what we need: cbir_id
                         SERVICE_YANDEX -> "https://yandex.com/images/search?family=yes&rpt=imageview&" + line.subSequence(line.indexOf("cbir_id", 0, true), line.indexOf('&'))
