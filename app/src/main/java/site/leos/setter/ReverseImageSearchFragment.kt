@@ -1,5 +1,6 @@
 package site.leos.setter
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -37,6 +38,7 @@ class ReverseImageSearchFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_webview, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var result:String? = null
         val type = arguments?.getInt(SERVICE_KEY)!!
@@ -127,6 +129,7 @@ class ReverseImageSearchFragment : Fragment() {
         if (!resultLoaded) {
             activity?.intent.let {
                 if ((it?.action == Intent.ACTION_SEND) && (it.type?.startsWith("image/") == true)) {
+                    // It's image file share
                     (it.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
                         // Prepare progressIndicator
                         progressIndicator.apply {
@@ -168,6 +171,21 @@ class ReverseImageSearchFragment : Fragment() {
                             }
                         }
                     }
+                }
+                else {
+                    // It's a image link share, link already validate in ReverseImageSearchActivity
+                    val imageURL = it?.getStringExtra(Intent.EXTRA_TEXT)
+                    result = when(type) {
+                        SERVICE_GOOGLE -> "https://images.google.com/searchbyimage?image_url=" + imageURL + "&encoded_image=&image_content=&filename=&hl=en"
+                        SERVICE_SOGOU -> "https://pic.sogou.com/ris?flag=1&drag=0&query=" + imageURL
+                        SERVICE_BING -> "https://cn.bing.com/images/search?view=detailv2&iss=sbi&FORM=SBIVSP&sbisrc=UrlPaste&q=imgurl:" + imageURL + "&idpbck=1"
+                        // Yandex format parameter in JSON
+                        SERVICE_YANDEX -> ""
+                        else -> ""
+                    }
+                    status.visibility = TextView.GONE
+                    webView.visibility = WebView.VISIBLE
+                    webView.loadUrl(result)
                 }
             }
         }
