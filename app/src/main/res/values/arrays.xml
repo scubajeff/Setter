@@ -13,13 +13,11 @@
         <item>StartPage</item>
         <item>DuckDuckGo</item>
         <item>@string/miji_search</item>
-        <item>Urban Dictionary</item>
     </string-array>
 
     <string-array name="search_engine_url">
         <item>https://www.startpage.com./do/dsearch?query=</item>
         <item>https://duckduckgo.com./?q=</item>
         <item>https://mijisou.com/?q=</item>
-        <item>https://www.urbandictionary.com./define.php?term=</item>
     </string-array>
 </resources>
