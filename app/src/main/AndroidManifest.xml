@@ -43,7 +43,7 @@
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/websearch_name"
-            android:theme="@style/AppTheme.NoDisplay">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
                 <category android:name="android.intent.category.DEFAULT" />

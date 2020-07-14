@@ -6,7 +6,7 @@
     <string name="reverseimagesearch_name">Image Search</string>
 
     <!-- Translator -->
-    <string name="translator_header">Translator</string>
+    <string name="translator_header">Translator Setting</string>
     <string name="colordict_fullscreen_key" translatable="false">fullscreen</string>
     <string name="colordict_fullscreen_title">ColorDict run in full screen</string>
     <string name="install_colordict_key" translatable="false">install_colordict</string>
@@ -16,17 +16,16 @@
     <string name="url_google_tranlation" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
 
     <!-- Search Engine -->
+    <string name="search_engine_header">Web Search Setting</string>
     <string name="search_engine_key" translatable="false">searchengine</string>
-    <string name="search_engine_header">Search Engine</string>
-    <string name="search_engine_summary">%1$s</string>
-    <string name="default_search">Default browser search setting</string>
+    <string name="default_search">Search by default browser</string>
+    <string name="meta_search">Meta search</string>
     <string name="sp_search" translatable="false">StartPage</string>
     <string name="duck_search" translatable="false">DuckDuckGo</string>
     <string name="miji_search">miji</string>
-    <string name="url_default_search" translatable="false">DEFAULT</string>
-    <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
-    <string name="url_duck" translatable="false">https://duckduckgo.com/?q=</string>
-    <string name="url_miji" translatable="false">https://mijisou.com/?q=</string>
+    <string name="ud_search" translatable="false">Urban Dictionary</string>
+    <string name="default_search_value" translatable="false">DEFAULT</string>
+    <string name="meta_search_value" translatable="false">META</string>
 
     <!-- Reverse Image Search -->
     <string name="sogou">Sogou</string>

@@ -7,15 +7,15 @@
     <string name="reverseimagesearch_name">以图搜图</string>
 
     <!-- 字典 -->
-    <string name="translator_header">翻译</string>
+    <string name="translator_header">翻译设置</string>
     <string name="colordict_fullscreen_title">ColorDict字典使用全屏显示</string>
     <string name="colordict_not_installed">安装字典应用ColorDict</string>
     <string name="colordict_intro">离线字典应用，保护隐私，支持stardict格式字典文件。</string>
 
     <!-- 搜索引擎 -->
-    <string name="search_engine_header">搜索引擎</string>
-    <string name="search_engine_summary">%1$s</string>
-    <string name="default_search">缺省浏览器中设置的缺省搜索引擎</string>
+    <string name="search_engine_header">网络搜索设置</string>
+    <string name="default_search">使用缺省浏览器进行搜索</string>
+    <string name="meta_search">同时使用多个搜索引擎</string>
     <string name="miji_search">密迹搜索</string>
 
     <!-- 以图搜图 -->

@@ -1,15 +1,25 @@
 <resources>
     <string-array name="search_engine_entries">
         <item>@string/default_search</item>
-        <item>@string/sp_search</item>
-        <item>@string/duck_search</item>
-        <item>@string/miji_search</item>
+        <item>@string/meta_search</item>
     </string-array>
 
     <string-array name="search_engine_values">
-        <item>@string/url_default_search</item>
-        <item>@string/url_sp</item>
-        <item>@string/url_duck</item>
-        <item>@string/url_miji</item>
+        <item>@string/default_search_value</item>
+        <item>@string/meta_search_value</item>
+    </string-array>
+
+    <string-array name="search_engine_tab_title">
+        <item>StartPage</item>
+        <item>DuckDuckGo</item>
+        <item>@string/miji_search</item>
+        <item>Urban Dictionary</item>
+    </string-array>
+
+    <string-array name="search_engine_url">
+        <item>https://www.startpage.com./do/dsearch?query=</item>
+        <item>https://duckduckgo.com/?q=</item>
+        <item>https://mijisou.com/?q=</item>
+        <item>https://www.urbandictionary.com/define.php?term=</item>
     </string-array>
 </resources>
