@@ -1,11 +1,10 @@
 <resources>
-    <string name="miji_search">miji</string>
     <string name="weibo_search">Weibo</string>
     <string-array name="web_search_tab_title">
         <item>Web</item>
         <item>Twitter</item>
         <item>Reddit</item>
-        <item>@string/miji_search</item>
+        <item>Mag[i]</item>
         <item>@string/weibo_search</item>
     </string-array>
 
@@ -13,7 +12,7 @@
         <item>https://www.startpage.com./do/dsearch?query=</item>
         <item>https://twitter.com/search?q=</item>
         <item>https://www.reddit.com/search/?q=</item>
-        <item>https://mijisou.com/?q=</item>
+        <item>https://magi.com/search?q=</item>
         <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
     </string-array>
     
