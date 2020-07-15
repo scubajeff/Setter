@@ -24,6 +24,7 @@
     <string name="sp_search" translatable="false">StartPage</string>
     <string name="duck_search" translatable="false">DuckDuckGo</string>
     <string name="miji_search">miji</string>
+    <string name="weibo_search">Weibo</string>
     <string name="ud_search" translatable="false">Urban Dictionary</string>
     <string name="default_search_value" translatable="false">DEFAULT</string>
     <string name="meta_search_value" translatable="false">META</string>

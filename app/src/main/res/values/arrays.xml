@@ -12,12 +12,18 @@
     <string-array name="search_engine_tab_title">
         <item>StartPage</item>
         <item>DuckDuckGo</item>
+        <item>Twitter</item>
+        <item>Reddit</item>
         <item>@string/miji_search</item>
+        <item>@string/weibo_search</item>
     </string-array>
 
     <string-array name="search_engine_url">
         <item>https://www.startpage.com./do/dsearch?query=</item>
         <item>https://duckduckgo.com./?q=</item>
+        <item>https://twitter.com/search?q=</item>
+        <item>https://www.reddit.com/search/?q=</item>
         <item>https://mijisou.com/?q=</item>
+        <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
     </string-array>
 </resources>

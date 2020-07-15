@@ -17,6 +17,7 @@
     <string name="default_search">使用缺省浏览器进行搜索</string>
     <string name="meta_search">同时使用多个搜索引擎</string>
     <string name="miji_search">密迹搜索</string>
+    <string name="weibo_search">微博</string>
 
     <!-- 以图搜图 -->
     <string name="sogou">搜狗</string>
