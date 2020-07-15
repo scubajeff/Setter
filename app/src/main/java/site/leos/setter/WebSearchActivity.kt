@@ -20,9 +20,23 @@ class WebSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val query = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: ""
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
         if (query.isNotBlank()) {
-            val searchURL = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.search_engine_key),getString(R.string.default_search_value))
-            if (searchURL.equals(getString(R.string.default_search_value))) {
+            if (sp.getBoolean(getString(R.string.meta_search_key), true)) {
+                // Meta search enabled
+                setContentView(R.layout.activity_tabs)
+
+                val tabTitle = resources.getStringArray(R.array.web_search_tab_title)
+                val urls = resources.getStringArray(R.array.web_search_url)
+                urls[0] = sp.getString(getString(R.string.search_engine_key), getString(R.string.url_sp))
+
+                viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, query, urls)
+                TabLayoutMediator(tabs, viewPager) {tab, position -> tab.text = tabTitle[position] }.attach()
+
+                viewPager.recyclerView.enforceSingleScrollDirection()
+            }
+            else {
+                // Default search enabled
                 val searchIntent = Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setAction(Intent.ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, query)
 
                 // Firefox does NOT support SearchManager.QUERY extra!!!
@@ -33,14 +47,6 @@ class WebSearchActivity : AppCompatActivity() {
                 startActivity(searchIntent)
                 finish()
                 return
-            }
-            else {
-                setContentView(R.layout.activity_tabs)
-
-                val tabTitle = resources.getStringArray(R.array.search_engine_tab_title)
-                viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, query, resources.getStringArray(R.array.search_engine_url))
-                TabLayoutMediator(tabs, viewPager) {tab, position -> tab.text = tabTitle[position] }.attach()
-                viewPager.recyclerView.enforceSingleScrollDirection()
             }
         }
         else {

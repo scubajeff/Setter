@@ -1,29 +1,31 @@
 <resources>
-    <string-array name="search_engine_entries">
-        <item>@string/default_search</item>
-        <item>@string/meta_search</item>
-    </string-array>
-
-    <string-array name="search_engine_values">
-        <item>@string/default_search_value</item>
-        <item>@string/meta_search_value</item>
-    </string-array>
-
-    <string-array name="search_engine_tab_title">
-        <item>StartPage</item>
-        <item>DuckDuckGo</item>
+    <string name="miji_search">miji</string>
+    <string name="weibo_search">Weibo</string>
+    <string-array name="web_search_tab_title">
+        <item>Web</item>
         <item>Twitter</item>
         <item>Reddit</item>
         <item>@string/miji_search</item>
         <item>@string/weibo_search</item>
     </string-array>
 
-    <string-array name="search_engine_url">
+    <string-array name="web_search_url">
         <item>https://www.startpage.com./do/dsearch?query=</item>
-        <item>https://duckduckgo.com./?q=</item>
         <item>https://twitter.com/search?q=</item>
         <item>https://www.reddit.com/search/?q=</item>
         <item>https://mijisou.com/?q=</item>
         <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
+    </string-array>
+    
+    <string-array name="web_search_engine_entries">
+        <item>StartPage</item>
+        <item>DuckDuckGo</item>
+    </string-array>
+
+    <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
+    <string name="url_duck" translatable="false">https://duckduckgo.com./?q=</string>
+    <string-array name="web_search_engine_values">
+        <item>@string/url_sp</item>
+        <item>@string/url_duck</item>
     </string-array>
 </resources>

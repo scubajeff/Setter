@@ -41,14 +41,19 @@
     <PreferenceCategory
         app:title="@string/search_engine_header">
 
-        <ListPreference
-            app:title="@string/websearch_name"
-            app:summary="%s"
-            app:key="@string/search_engine_key"
-            app:defaultValue="@string/default_search_value"
-            app:entries="@array/search_engine_entries"
-            app:entryValues="@array/search_engine_values">
-        </ListPreference>
+        <SwitchPreferenceCompat
+            app:key="@string/meta_search_key"
+            app:title="@string/meta_search_title"
+            app:defaultValue="true" />
+
+        <DropDownPreference
+            android:key="@string/search_engine_key"
+            android:title="@string/meta_search_web_engine_title"
+            android:entries="@array/web_search_engine_entries"
+            android:entryValues="@array/web_search_engine_values"
+            android:defaultValue="@string/url_sp"
+            android:dependency="@string/meta_search_key"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
