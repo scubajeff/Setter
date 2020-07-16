@@ -13,11 +13,12 @@ class SearchForActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.searchfor_activity)
 
-        edit_query.setOnEditorActionListener { _, id, _ ->
-            if (id == EditorInfo.IME_ACTION_SEARCH) {
-                searchIt(edit_query.text.toString())
+        edit_query.run {
+            requestFocus()
+            setOnEditorActionListener { _, id, _ ->
+                if (id == EditorInfo.IME_ACTION_SEARCH || id == EditorInfo.IME_NULL) searchIt(edit_query.text.toString())
+                else false
             }
-            false
         }
     }
 
@@ -26,7 +27,7 @@ class SearchForActivity : AppCompatActivity() {
             // Hide soft keyboard
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(edit_query.windowToken, 0)
 
-            startActivity(Intent(this, WebSearchActivity::class.java).putExtra(Intent.EXTRA_PROCESS_TEXT, query))
+            startActivity(Intent(this, WebSearchActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).putExtra(Intent.EXTRA_PROCESS_TEXT, query))
             finish()
             return true
         }
