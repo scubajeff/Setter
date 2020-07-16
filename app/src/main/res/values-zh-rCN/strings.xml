@@ -21,4 +21,7 @@
     <!-- 以图搜图 -->
     <string name="sogou">搜狗</string>
     <string name="pailitao">拍立淘</string>
+
+    <!-- Search For -->
+    <string name="edit_query_hint">在网络上搜索</string>
 </resources>
