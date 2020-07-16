@@ -1,19 +1,22 @@
 <resources>
-    <string name="weibo_search">Weibo</string>
+    <string name="weibo">Weibo</string>
+    <string name="weixin">Wechat</string>
     <string-array name="web_search_tab_title">
         <item>Web</item>
         <item>Twitter</item>
         <item>Reddit</item>
+        <item>@string/weixin</item>
+        <item>@string/weibo</item>
         <item>Mag[i]</item>
-        <item>@string/weibo_search</item>
     </string-array>
 
     <string-array name="web_search_url">
         <item>https://www.startpage.com./do/dsearch?query=</item>
         <item>https://twitter.com/search?q=</item>
         <item>https://www.reddit.com/search/?q=</item>
-        <item>https://magi.com/search?q=</item>
+        <item>https://weixin.sogou.com/weixin?type=2&amp;query=</item>
         <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
+        <item>https://magi.com/search?q=</item>
     </string-array>
     
     <string-array name="web_search_engine_entries">
