@@ -28,5 +28,5 @@
     <string name="pailitao">Pailitao</string>
 
     <!-- Search For -->
-    <string name="edit_query_hint">Search for…</string>
+    <string name="edit_query_hint">Search phrase or URL</string>
 </resources>
