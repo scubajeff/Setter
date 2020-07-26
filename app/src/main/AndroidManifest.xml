@@ -76,6 +76,7 @@
         <activity
             android:name=".SearchForActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:finishOnTaskLaunch="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />
