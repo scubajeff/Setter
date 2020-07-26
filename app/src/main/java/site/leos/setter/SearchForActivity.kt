@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.searchfor_activity.*
-import java.util.regex.Pattern
 
 class SearchForActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +28,7 @@ class SearchForActivity : AppCompatActivity() {
             // Hide soft keyboard
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(edit_query.windowToken, 0)
 
-            val mPattern = Pattern.compile("^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.][a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$")
-            if (mPattern.matcher(query).matches()) {
+            if (android.util.Patterns.WEB_URL.matcher(query).matches()) {
                 val url = if (query.startsWith("http")) query else "https://$query"
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             }
