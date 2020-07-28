@@ -90,10 +90,14 @@ class TextSearchFragment : Fragment(){
             webView.visibility = WebView.VISIBLE
             webView.loadUrl(arguments?.getString(PARAM_KEY))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
-        webView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        webView.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (event.action != KeyEvent.ACTION_UP) return@OnKeyListener true
                 if (webView.canGoBack()) {

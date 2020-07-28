@@ -16,7 +16,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.progressindicator.ProgressIndicator
-import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -189,6 +188,10 @@ class ReverseImageSearchFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
