@@ -88,7 +88,7 @@ class TextSearchFragment : Fragment(){
         if (!resultLoaded) {
             status.visibility = TextView.GONE
             webView.visibility = WebView.VISIBLE
-            webView.loadUrl(arguments?.getString("URL"))
+            webView.loadUrl(arguments?.getString(PARAM_KEY))
         }
 
         webView.isFocusableInTouchMode = true
@@ -114,7 +114,8 @@ class TextSearchFragment : Fragment(){
 
     companion object {
         const val RESULT_LOADED = "RESULT_LOADED"
+        const val PARAM_KEY = "URL"
 
-        fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString("URL", arg)}}
+        fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(PARAM_KEY, arg)}}
     }
 }
