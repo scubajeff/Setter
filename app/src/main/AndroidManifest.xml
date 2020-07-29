@@ -15,6 +15,8 @@
         android:theme="@style/Theme.AppCompat.Light"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+        <meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
+
         <activity
             android:name=".ReverseImageSearchActivity"
             android:label="@string/reverseimagesearch_name"
