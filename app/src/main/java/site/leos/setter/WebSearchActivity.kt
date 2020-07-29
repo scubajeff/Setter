@@ -28,9 +28,13 @@ class WebSearchActivity : AppCompatActivity() {
 
                 val tabTitle = resources.getStringArray(R.array.web_search_tab_title)
                 val urls = resources.getStringArray(R.array.web_search_url)
-                urls[0] = sp.getString(getString(R.string.search_engine_key), getString(R.string.url_sp))
 
-                viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, query, urls)
+                // Get user choice of web search engine
+                urls[0] = sp.getString(getString(R.string.search_engine_key), getString(R.string.url_sp))
+                // If user choose Mag[i] as web search engine, then remove the redundant Mag[i] tab, which is the last tab
+                val count = if (urls[0] == getString(R.string.url_magi)) 1 else 0
+
+                viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, query, urls.dropLast(count).toTypedArray())
                 TabLayoutMediator(tabs, viewPager) {tab, position -> tab.text = tabTitle[position] }.attach()
 
                 viewPager.recyclerView.enforceSingleScrollDirection()
