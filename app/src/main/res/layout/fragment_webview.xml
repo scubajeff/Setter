@@ -13,7 +13,7 @@
         android:indeterminate="true"
         app:indicatorColor="#198964"/>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -27,11 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="32dp"
             android:clickable="false"
             android:textColor="@android:color/darker_gray"
             android:visibility="gone" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>
