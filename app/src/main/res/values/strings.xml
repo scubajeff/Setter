@@ -19,9 +19,11 @@
     <!-- Search Engine -->
     <string name="meta_search_key" translatable="false">META_SEARCH</string>
     <string name="search_engine_key" translatable="false">WEB_SEARCH_ENGINE</string>
+    <string name="second_search_engine_key" translatable="false">SECOND_WEB_SEARCH_ENGINE</string>
     <string name="search_engine_header">Web Search Setting</string>
     <string name="meta_search_title">Meta search</string>
-    <string name="meta_search_web_engine_title">Web page search engine choice</string>
+    <string name="meta_search_web_engine_title">Web search engine choice</string>
+    <string name="second_meta_search_web_engine_title">Second search engine choice</string>
 
     <!-- Reverse Image Search -->
     <string name="sogou">Sogou</string>

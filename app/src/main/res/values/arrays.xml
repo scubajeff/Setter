@@ -1,40 +1,77 @@
 <resources>
     <string name="weibo">Weibo</string>
     <string name="weixin">Wechat</string>
-    <string name="magi" translatable="false">Mag[i]</string>
 
-    <string name="url_default" translatable="false">@string/url_duck</string>
     <string name="url_duck" translatable="false">https://duckduckgo.com./?q=</string>
     <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
-    <string name="url_magi" translatable="false">https://magi.com./search?q=</string>
+    <string name="url_magi" translatable="false">https://magi.com/search?q=</string>
+    <string name="url_qwant" translatable="false">https://www.qwant.com/?q=</string>
+    <string name="url_google" translatable="false">https://google.com/search?q=</string>
+    <string name="url_bing" translatable="false">https://bing.com/search?q=</string>
+    <string name="url_yandex" translatable="false">https://yandex.com/search/?text=</string>
+    <string name="url_yahoo_jp" translatable="false">https://search.yahoo.co.jp/search?p=</string>
+    <string name="url_yahoo_tw" translatable="false">https://tw.search.yahoo.com/search?p=</string>
+    <string name="url_mojeek" translatable="false">https://mojeek.com/search?q=</string>
+    <string name="url_swisscows" translatable="false">https://swisscows.com/web?query=</string>
+    <string name="url_ecosia" translatable="false">https://ecosia.org/search?q=</string>
+    <string name="url_naver" translatable="false">https://search.naver.com/search.naver?query=</string>
+    <string name="url_discusshk" translatable="false">https://www.discuss.com.hk/search.php?searchsubmit=yes&amp;orderby=newest&amp;srchtxt=</string>
 
     <string-array name="web_search_tab_title">
         <item>Web</item>
+        <item>Local</item>
         <item>Twitter</item>
         <item>Reddit</item>
         <item>@string/weixin</item>
         <item>@string/weibo</item>
-        <item>@string/magi</item>
     </string-array>
 
     <string-array name="web_search_url">
-        <item>@string/url_default</item>
+        <item>@string/url_duck</item>
+        <item>@string/url_magi</item>
         <item>https://twitter.com/search?q=</item>
         <item>https://www.reddit.com/search/?q=</item>
         <item>https://weixin.sogou.com/weixin?type=2&amp;query=</item>
         <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
-        <item>@string/url_magi</item>
     </string-array>
     
     <string-array name="web_search_engine_entries">
         <item>DuckDuckGo</item>
         <item>StartPage</item>
-        <item>@string/magi</item>
+        <item>Qwant</item>
+        <item>Google</item>
+        <item>Bing</item>
     </string-array>
 
     <string-array name="web_search_engine_values">
         <item>@string/url_duck</item>
         <item>@string/url_sp</item>
+        <item>@string/url_qwant</item>
+        <item>@string/url_google</item>
+        <item>@string/url_bing</item>
+    </string-array>
+
+    <string-array name="second_search_engine_entries">
+        <item>Mag[i] China</item>
+        <item>Yahoo奇摩</item>
+        <item>香港討論區</item>
+        <item>Yahoo!検索</item>
+        <item>Naver</item>
+        <item>Yandex</item>
+        <item>Escosia</item>
+        <item>Mojeek</item>
+        <item>Swisscows</item>
+    </string-array>
+
+    <string-array name="second_search_engine_values">
         <item>@string/url_magi</item>
+        <item>@string/url_yahoo_tw</item>
+        <item>@string/url_discusshk</item>
+        <item>@string/url_yahoo_jp</item>
+        <item>@string/url_naver</item>
+        <item>@string/url_yandex</item>
+        <item>@string/url_ecosia</item>
+        <item>@string/url_mojeek</item>
+        <item>@string/url_swisscows</item>
     </string-array>
 </resources>

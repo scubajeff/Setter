@@ -51,7 +51,16 @@
             android:title="@string/meta_search_web_engine_title"
             android:entries="@array/web_search_engine_entries"
             android:entryValues="@array/web_search_engine_values"
-            android:defaultValue="@string/url_sp"
+            android:defaultValue="@string/url_duck"
+            android:dependency="@string/meta_search_key"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:key="@string/second_search_engine_key"
+            android:title="@string/second_meta_search_web_engine_title"
+            android:entries="@array/second_search_engine_entries"
+            android:entryValues="@array/second_search_engine_values"
+            android:defaultValue="@string/url_magi"
             android:dependency="@string/meta_search_key"
             app:useSimpleSummaryProvider="true" />
 
