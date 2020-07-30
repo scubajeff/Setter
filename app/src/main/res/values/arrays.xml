@@ -3,9 +3,10 @@
     <string name="weixin">Wechat</string>
     <string name="magi" translatable="false">Mag[i]</string>
 
-    <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
+    <string name="url_default" translatable="false">@string/url_duck</string>
     <string name="url_duck" translatable="false">https://duckduckgo.com./?q=</string>
-    <string name="url_magi" translatable="false">https://magi.com/search?q=</string>
+    <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
+    <string name="url_magi" translatable="false">https://magi.com./search?q=</string>
 
     <string-array name="web_search_tab_title">
         <item>Web</item>
@@ -17,7 +18,7 @@
     </string-array>
 
     <string-array name="web_search_url">
-        <item>@string/url_sp</item>
+        <item>@string/url_default</item>
         <item>https://twitter.com/search?q=</item>
         <item>https://www.reddit.com/search/?q=</item>
         <item>https://weixin.sogou.com/weixin?type=2&amp;query=</item>
@@ -26,14 +27,14 @@
     </string-array>
     
     <string-array name="web_search_engine_entries">
-        <item>StartPage</item>
         <item>DuckDuckGo</item>
+        <item>StartPage</item>
         <item>@string/magi</item>
     </string-array>
 
     <string-array name="web_search_engine_values">
-        <item>@string/url_sp</item>
         <item>@string/url_duck</item>
+        <item>@string/url_sp</item>
         <item>@string/url_magi</item>
     </string-array>
 </resources>

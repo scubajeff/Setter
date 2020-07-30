@@ -30,7 +30,7 @@ class WebSearchActivity : AppCompatActivity() {
                 val urls = resources.getStringArray(R.array.web_search_url)
 
                 // Get user choice of web search engine
-                urls[0] = sp.getString(getString(R.string.search_engine_key), getString(R.string.url_sp))
+                urls[0] = sp.getString(getString(R.string.search_engine_key), getString(R.string.url_default))
                 // If user choose Mag[i] as web search engine, then remove the redundant Mag[i] tab, which is the last tab
                 val count = if (urls[0] == getString(R.string.url_magi)) 1 else 0
 
