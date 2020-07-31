@@ -1,6 +1,7 @@
 <resources>
     <string name="weibo">Weibo</string>
     <string name="weixin">Wechat</string>
+    <string name="local">Local</string>
 
     <string name="url_duck" translatable="false">https://duckduckgo.com./?q=</string>
     <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
@@ -19,7 +20,7 @@
 
     <string-array name="web_search_tab_title">
         <item>Web</item>
-        <item>Local</item>
+        <item>@string/local</item>
         <item>Twitter</item>
         <item>Reddit</item>
         <item>@string/weixin</item>

@@ -19,6 +19,7 @@
     <string name="second_meta_search_web_engine_title">辅助网页搜索引擎选择</string>
     <string name="weibo">微博</string>
     <string name="weixin">微信</string>
+    <string name="local">本地</string>
 
     <!-- 以图搜图 -->
     <string name="sogou">搜狗</string>
