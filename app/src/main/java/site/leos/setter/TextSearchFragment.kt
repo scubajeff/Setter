@@ -13,8 +13,15 @@ import com.google.android.material.progressindicator.ProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 class TextSearchFragment : Fragment(){
-    lateinit var webView: WebView
-    var resultLoaded:Boolean = false
+    lateinit var webView :WebView
+    var resultLoaded :Boolean = false
+    lateinit var url :String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        url = arguments?.getString(PARAM_KEY)!!
+
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_webview, container, false)
@@ -88,7 +95,7 @@ class TextSearchFragment : Fragment(){
         if (!resultLoaded) {
             status.visibility = TextView.GONE
             webView.visibility = WebView.VISIBLE
-            webView.loadUrl(arguments?.getString(PARAM_KEY))
+            webView.loadUrl(url)
         }
     }
 
@@ -114,6 +121,11 @@ class TextSearchFragment : Fragment(){
         super.onSaveInstanceState(outState)
         outState.putBoolean(RESULT_LOADED, resultLoaded)
         webView.saveState(outState)
+    }
+
+    fun reload(newUrl: String) {
+        url = newUrl
+        webView.loadUrl(url)
     }
 
     companion object {
