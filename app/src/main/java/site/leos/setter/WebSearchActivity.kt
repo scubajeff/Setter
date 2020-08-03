@@ -51,12 +51,12 @@ class WebSearchActivity : AppCompatActivity() {
                     else {
                         val menuEntries = resources.getStringArray(R.array.web_search_engine_entries)
                         val menuValues = resources.getStringArray(R.array.web_search_engine_values)
-                        val f = (viewPager.adapter as ViewStateAdapter).getFragmentAt(0)
-                        val popupMenu = PopupMenu(baseContext, it).run {
+                        //val f = (viewPager.adapter as ViewStateAdapter).getFragmentAt(0)
+                        PopupMenu(baseContext, it).run {
                             for (i in menuEntries.indices) menu.add(Menu.NONE, i, i, menuEntries[i])
                             show()
                             setOnMenuItemClickListener {
-                                (f as TextSearchFragment).reload(menuValues[it.itemId] + query)
+                                (supportFragmentManager.findFragmentByTag("f0") as TextSearchFragment).reload(menuValues[it.itemId] + query)
                                 true
                             }
                         }
@@ -70,12 +70,11 @@ class WebSearchActivity : AppCompatActivity() {
                     else {
                         val menuEntries = resources.getStringArray(R.array.second_search_engine_entries)
                         val menuValues = resources.getStringArray(R.array.second_search_engine_values)
-                        val f = (viewPager.adapter as ViewStateAdapter).getFragmentAt(1)
-                        val popupMenu = PopupMenu(baseContext, it).run {
+                        PopupMenu(baseContext, it).run {
                             for (i in menuEntries.indices) menu.add(Menu.NONE, i, i, menuEntries[i])
                             show()
                             setOnMenuItemClickListener {
-                                (f as TextSearchFragment).reload(menuValues[it.itemId] + query)
+                                (supportFragmentManager.findFragmentByTag("f1") as TextSearchFragment).reload(menuValues[it.itemId] + query)
                                 true
                             }
                         }
@@ -104,9 +103,9 @@ class WebSearchActivity : AppCompatActivity() {
         }
     }
 
-    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val query: String, val url: Array<String>)
+    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val query: String, val url: Array<String>,
+                                   val registeredFragments: SparseArray<Fragment> = SparseArray())
         : FragmentStateAdapter(fragmentManager, lifecycle) {
-        val registeredFragments: SparseArray<Fragment> = SparseArray()
 
         override fun getItemCount(): Int = url.size
 
