@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.SparseArray
 import android.view.Menu
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -103,20 +102,14 @@ class WebSearchActivity : AppCompatActivity() {
         }
     }
 
-    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val query: String, val url: Array<String>,
-                                   val registeredFragments: SparseArray<Fragment> = SparseArray())
+    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val query: String, val url: Array<String>)
         : FragmentStateAdapter(fragmentManager, lifecycle) {
 
         override fun getItemCount(): Int = url.size
 
         override fun createFragment(position: Int): Fragment {
-            val f :Fragment = TextSearchFragment.newInstance(url[position] + query)
-            registeredFragments.put(position, f)
-
-            return f
+            return TextSearchFragment.newInstance(url[position] + query)
         }
-
-        fun getFragmentAt(position: Int) :Fragment { return registeredFragments.get(position) }
     }
 
     companion object {
