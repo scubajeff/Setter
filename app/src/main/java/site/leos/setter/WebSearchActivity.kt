@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -15,6 +16,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.shape.CutCornerTreatment
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_tabs.*
 
@@ -81,6 +86,29 @@ class WebSearchActivity : AppCompatActivity() {
                         true
                     }
                 }
+                tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+                        // Restore default background
+                        tab?.view?.background = tabs.background
+                    }
+
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        // Draw a popup menu indicator for tab 0 and 1
+                        if (tab?.position == 0 || tab?.position == 1) {
+                            tab.view.apply {
+                                background = MaterialShapeDrawable(
+                                    ShapeAppearanceModel.builder()
+                                        .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
+                                        .setTopLeftCorner(CutCornerTreatment())
+                                        .build()
+                                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.ic_launcher_background)) }
+                            }
+                        }
+                    }
+                })
             }
             else {
                 // Default search enabled
@@ -99,6 +127,23 @@ class WebSearchActivity : AppCompatActivity() {
         else {
             finish()
             return
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+
+        // The first time the tab layout is shown, the tab selected event is not sent to OnTabSelectedListener, so we need to set the popup menu indicator here.
+        // This is a really annoying behavior
+        if (tabs.selectedTabPosition == 0 || tabs.selectedTabPosition == 1) {
+            tabs.getTabAt(tabs.selectedTabPosition)?.view?.apply {
+                background = MaterialShapeDrawable(
+                    ShapeAppearanceModel.builder()
+                        .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
+                        .setTopLeftCorner(CutCornerTreatment())
+                        .build()
+                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.ic_launcher_background)) }
+            }
         }
     }
 
