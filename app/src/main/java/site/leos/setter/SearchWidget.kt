@@ -11,7 +11,7 @@ class SearchWidget : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         // There may be multiple widgets active, so update all of them
         appWidgetIds.forEach {
-            val intent: PendingIntent = Intent(context, SearchForActivity::class.java).let {i ->
+            val intent: PendingIntent = Intent(context, DirectSearchActivity::class.java).let { i ->
                 PendingIntent.getActivity(context, 0, i, 0)
             }
             val views = RemoteViews(context.packageName, R.layout.search_widget).apply {

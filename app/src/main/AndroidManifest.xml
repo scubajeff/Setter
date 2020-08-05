@@ -15,6 +15,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+
         <meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
 
         <activity
@@ -54,6 +55,7 @@
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/websearch_name"
+            android:clearTaskOnLaunch="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
@@ -76,7 +78,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchForActivity"
+            android:name=".DirectSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:finishOnTaskLaunch="true"
             android:windowSoftInputMode="adjustResize">

@@ -31,7 +31,8 @@ class WebSearchActivity : AppCompatActivity() {
         val query = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: ""
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         if (query.isNotBlank()) {
-            if (sp.getBoolean(getString(R.string.meta_search_key), true)) {
+            //if (sp.getBoolean(getString(R.string.meta_search_key), true)) {
+            if (intent.getBooleanExtra(META, true)) {
                 // Meta search enabled
                 setContentView(R.layout.activity_tabs)
 
@@ -159,5 +160,6 @@ class WebSearchActivity : AppCompatActivity() {
 
     companion object {
         const val FIREFOX = "org.mozilla.firefox"
+        const val META = "META"
     }
 }
