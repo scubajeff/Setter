@@ -29,6 +29,8 @@
     <string name="sogou">Sogou</string>
     <string name="pailitao">Pailitao</string>
 
-    <!-- Search For -->
+    <!-- Direct Search -->
     <string name="edit_query_hint">Search phrase or URL</string>
+    <string name="meta_search_choice">Meta Search</string>
+    <string name="browser_search_choice">Default Browser</string>
 </resources>

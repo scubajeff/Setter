@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_tabs.*
@@ -22,7 +23,9 @@ class ReverseImageSearchActivity : AppCompatActivity() {
                     val imgPattern = Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$")
                     if (!imgPattern.matcher(it).matches()) {
                         // If text sent is not a image link, then call WebSearchActivity
-                        startActivity(Intent(this, WebSearchActivity::class.java).putExtra(Intent.EXTRA_PROCESS_TEXT, it))
+                        startActivity(Intent(this, WebSearchActivity::class.java)
+                            .putExtra(WebSearchActivity.QUERY, it)
+                            .putExtra(WebSearchActivity.META, PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.meta_search_key), true)))
                         finish()
                         return
                     }

@@ -25,6 +25,8 @@
     <string name="sogou">搜狗</string>
     <string name="pailitao">拍立淘</string>
 
-    <!-- Search For -->
+    <!-- Direct Search -->
     <string name="edit_query_hint">网址或搜索词条</string>
+    <string name="meta_search_choice">二传搜多引擎搜索</string>
+    <string name="browser_search_choice">缺省浏览器搜索</string>
 </resources>
