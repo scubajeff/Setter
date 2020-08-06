@@ -18,8 +18,11 @@ android {
         def value = 0
 
         def runTasks = gradle.startParameter.taskNames
-        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks) {
-            value = 1;
+        runTasks.each {
+            runTask -> println("runTask=") + runTask
+                if (runTask.contains("assembleRelease")) {
+                    value = 1
+                }
         }
 
         def versionMajor = 0
