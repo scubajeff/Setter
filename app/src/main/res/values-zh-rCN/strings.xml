@@ -2,7 +2,7 @@
 <resources>
     <!-- 一般　-->
     <string name="app_name">二传搜</string>
-    <string name="dict_name">翻译</string>
+    <string name="dict_name">查字典</string>
     <string name="websearch_name">搜索</string>
     <string name="reverseimagesearch_name">以图搜图</string>
 
