@@ -47,6 +47,7 @@
 
         <activity
             android:name=".TranslationActivity"
+            android:clearTaskOnLaunch="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
@@ -76,6 +77,7 @@
         <activity
             android:name=".DirectSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:clearTaskOnLaunch="true"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
