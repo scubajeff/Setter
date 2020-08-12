@@ -56,6 +56,7 @@ class ReverseImageSearchFragment : Fragment() {
             loadsImagesAutomatically = true
             loadWithOverviewMode = true
             useWideViewPort = true
+            builtInZoomControls = true
             setSupportZoom(true)
             setGeolocationEnabled(false)
         }
@@ -175,9 +176,9 @@ class ReverseImageSearchFragment : Fragment() {
                     // It's a image link share, link already validate in ReverseImageSearchActivity
                     val imageURL = it?.getStringExtra(Intent.EXTRA_TEXT)
                     result = when(type) {
-                        SERVICE_GOOGLE -> "https://images.google.com/searchbyimage?image_url=" + imageURL + "&encoded_image=&image_content=&filename=&hl=en"
-                        SERVICE_SOGOU -> "https://pic.sogou.com/ris?flag=1&drag=0&query=" + imageURL
-                        SERVICE_BING -> "https://cn.bing.com/images/search?view=detailv2&iss=sbi&FORM=SBIVSP&sbisrc=UrlPaste&q=imgurl:" + imageURL + "&idpbck=1"
+                        SERVICE_GOOGLE -> "https://images.google.com/searchbyimage?image_url=$imageURL&encoded_image=&image_content=&filename=&hl=en"
+                        SERVICE_SOGOU -> "https://pic.sogou.com/ris?flag=1&drag=0&query=$imageURL"
+                        SERVICE_BING -> "https://cn.bing.com/images/search?view=detailv2&iss=sbi&FORM=SBIVSP&sbisrc=UrlPaste&q=imgurl:$imageURL&idpbck=1"
                         // Yandex format parameter in JSON
                         SERVICE_YANDEX -> ""
                         else -> ""

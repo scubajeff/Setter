@@ -41,6 +41,8 @@ class TextSearchFragment : Fragment(){
             loadsImagesAutomatically = true
             loadWithOverviewMode = true
             useWideViewPort = true
+            builtInZoomControls = true
+            setSupportZoom(true)
             setGeolocationEnabled(false)
         }
 
