@@ -71,19 +71,18 @@ class ReverseImageSearchFragment : Fragment() {
 
             // Force https to http
             override fun onLoadResource(view: WebView?, url: String?) {
-                url?.replace("http://", "https://")
-                super.onLoadResource(view, url)
+                val mUrl = url?.replace("http://", "https://")
+                super.onLoadResource(view, mUrl)
             }
 
-            /*
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
-                status.text = error?.description
-                progressIndicator.visibility = ProgressIndicator.GONE
-                webView.visibility = WebView.GONE
-                status.visibility = TextView.VISIBLE
+                // Reload the page when ERROR_TIMEOUT or ERROR_HOST_LOOKUP happens on result's base url
+                if (error?.errorCode == WebViewClient.ERROR_TIMEOUT || error?.errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
+                    if (result!!.contains(request?.url?.host.toString())) view?.reload()
+                }
+                //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
-            */
 
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
                 super.onReceivedHttpError(view, request, errorResponse)
@@ -108,6 +107,11 @@ class ReverseImageSearchFragment : Fragment() {
             }
 
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
+                result.cancel()
+                return true
+            }
+
+            override fun onJsBeforeUnload(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
                 result.cancel()
                 return true
             }

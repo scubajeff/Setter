@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.fragment_webview.*
 class TextSearchFragment : Fragment(){
     lateinit var webView :WebView
     var resultLoaded :Boolean = false
-    lateinit var url :String
+    lateinit var urlString :String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        url = arguments?.getString(PARAM_KEY)!!
+        urlString = arguments?.getString(PARAM_KEY)!!
 
         super.onCreate(savedInstanceState)
     }
@@ -60,6 +60,15 @@ class TextSearchFragment : Fragment(){
                 webView.visibility = WebView.GONE
                 status.visibility = TextView.VISIBLE
             }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                // Reload the page when ERROR_TIMEOUT or ERROR_HOST_LOOKUP happens on base url
+                if (error?.errorCode == WebViewClient.ERROR_TIMEOUT || error?.errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
+                    if (urlString.contains(request?.url?.host.toString())) view?.reload()
+                }
+                //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
+            }
         }
 
         // Display loading progress
@@ -76,6 +85,11 @@ class TextSearchFragment : Fragment(){
             }
 
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
+                result.cancel()
+                return true
+            }
+
+            override fun onJsBeforeUnload(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
                 result.cancel()
                 return true
             }
@@ -100,7 +114,7 @@ class TextSearchFragment : Fragment(){
         if (!resultLoaded) {
             status.visibility = TextView.GONE
             webView.visibility = WebView.VISIBLE
-            webView.loadUrl(url)
+            webView.loadUrl(urlString)
         }
     }
 
@@ -129,8 +143,8 @@ class TextSearchFragment : Fragment(){
     }
 
     fun reload(newUrl: String) {
-        url = newUrl
-        webView.loadUrl(url)
+        urlString = newUrl
+        webView.loadUrl(urlString)
     }
 
     companion object {
