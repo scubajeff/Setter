@@ -27,7 +27,6 @@ import java.net.URL
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-
 class ReverseImageSearchFragment : Fragment() {
     lateinit var webView:WebView
     lateinit var status:TextView
@@ -54,12 +53,16 @@ class ReverseImageSearchFragment : Fragment() {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = false
             loadsImagesAutomatically = true
+            layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
             loadWithOverviewMode = true
             useWideViewPort = true
             builtInZoomControls = true
+            displayZoomControls = false
             setSupportZoom(true)
             setGeolocationEnabled(false)
         }
+        webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
+        webView.isScrollbarFadingEnabled = true
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {

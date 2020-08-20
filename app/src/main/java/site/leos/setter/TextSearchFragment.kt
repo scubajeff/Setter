@@ -42,9 +42,12 @@ class TextSearchFragment : Fragment(){
             loadWithOverviewMode = true
             useWideViewPort = true
             builtInZoomControls = true
+            displayZoomControls = false
             setSupportZoom(true)
             setGeolocationEnabled(false)
         }
+        webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
+        webView.isScrollbarFadingEnabled = true
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
