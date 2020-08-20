@@ -19,4 +19,4 @@ When doing reverse image search, Setter will resize the image to a low resolutio
 
 Setter support and promot search engines which respect user's privacy, like DuckDuckGo, StartPage and Swisscows. Setter also support and recommend using a local dictionary app to guard your reading habit from leaking.
 
-<a href='https://play.google.com/store/apps/details?id=site.leos.setter'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' heigh='48'/></a>
+<a href='https://play.google.com/store/apps/details?id=site.leos.setter'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height='48'/></a>
