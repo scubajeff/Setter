@@ -1,0 +1,2 @@
+ * optimized zoom control, especially for reverse image search result page
+ * bugs fixed
