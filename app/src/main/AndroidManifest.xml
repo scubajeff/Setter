@@ -21,6 +21,7 @@
         <activity
             android:name=".ReverseImageSearchActivity"
             android:label="@string/reverseimagesearch_name"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter android:label="@string/reverseimagesearch_name">
                 <action android:name="android.intent.action.SEND" />
@@ -48,12 +49,14 @@
         <activity
             android:name=".TranslationActivity"
             android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/websearch_name"
             android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
@@ -78,7 +81,7 @@
             android:name=".DirectSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />

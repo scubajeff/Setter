@@ -43,7 +43,9 @@ class DirectSearchActivity : AppCompatActivity() {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 }
                 else startActivity(Intent(this, WebSearchActivity::class.java)
-                        .putExtra(Intent.EXTRA_PROCESS_TEXT, query).putExtra(WebSearchActivity.META, true))
+                        .putExtra(Intent.EXTRA_PROCESS_TEXT, query).putExtra(WebSearchActivity.META, true)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
             } else {
                 // Default search enabled
                 val searchIntent = Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setAction(Intent.ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, query)
