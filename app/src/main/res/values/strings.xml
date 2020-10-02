@@ -15,6 +15,8 @@
     <string name="url_deepl" translatable="false">https://www.deepl.com/translator#en/</string>
     <string name="url_google_tranlation" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
     <string name="url_urban_dictionary" translatable="false">https://www.urbandictionary.com./define.php?term=</string>
+    <string name="url_jikipedia" translatable="false">https://jikipedia.com/search?phrase=</string>
+    <string name="jikiName">jikipedia</string>
 
     <!-- Search Engine -->
     <string name="meta_search_key" translatable="false">META_SEARCH</string>

@@ -22,32 +22,35 @@ class TranslationActivity : AppCompatActivity() {
         var deepLURL = getString(R.string.url_deepl)
         var googleURL = getString(R.string.url_google_tranlation)
         val udURL = getString(R.string.url_urban_dictionary) + query
+        val jikiURL = getString(R.string.url_jikipedia) + query
 
         deepLURL = "$deepLURL${defaultLocale.language}/$query"
         if (defaultLocale.language.equals("zh")) googleURL = googleURL + defaultLocale.language + "-" + defaultLocale.country + "&text="
         else googleURL = googleURL + defaultLocale.language + "&text="
         googleURL += query
 
-        viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, deepLURL, googleURL, udURL)
+        viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, deepLURL, googleURL, udURL, jikiURL)
         TabLayoutMediator(tabs, viewPager) {tab, position ->
             when (position) {
                 0 -> {tab.text = "DeepL"}
                 1 -> {tab.text = "Google"}
                 2 -> {tab.text = "Urban Dictionary"}
+                3 -> {tab.text = getString(R.string.jikiName)}
             }
         }.attach()
         viewPager.recyclerView.enforceSingleScrollDirection()
     }
 
-    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val url0:String, val url1:String, val url2:String)
+    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val url0:String, val url1:String, val url2:String, val url3:String)
         : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount(): Int = 3
+        override fun getItemCount(): Int = 4
 
         override fun createFragment(position: Int): Fragment {
             when (position) {
                 0 -> return TextSearchFragment.newInstance(url0)
                 1 -> return TextSearchFragment.newInstance(url1)
-                else -> return TextSearchFragment.newInstance(url2)
+                2 -> return TextSearchFragment.newInstance(url2)
+                else -> return TextSearchFragment.newInstance(url3)
             }
         }
     }
