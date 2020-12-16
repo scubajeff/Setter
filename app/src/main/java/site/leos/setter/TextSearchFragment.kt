@@ -37,7 +37,7 @@ class TextSearchFragment : Fragment(){
             //userAgentString = GoogleReverseImageSearchFragment.USER_AGENT_CHROME
             //cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
-            javaScriptCanOpenWindowsAutomatically = false
+            javaScriptCanOpenWindowsAutomatically = true
             loadsImagesAutomatically = true
             loadWithOverviewMode = true
             useWideViewPort = true
@@ -53,6 +53,7 @@ class TextSearchFragment : Fragment(){
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
 
+            /*
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
                 super.onReceivedHttpError(view, request, errorResponse)
                 status.text = errorResponse?.reasonPhrase
@@ -60,6 +61,7 @@ class TextSearchFragment : Fragment(){
                 webView.visibility = WebView.GONE
                 status.visibility = TextView.VISIBLE
             }
+             */
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
@@ -83,7 +85,6 @@ class TextSearchFragment : Fragment(){
                     resultLoaded = true
                 }
             }
-
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
                 result.cancel()
                 return true
