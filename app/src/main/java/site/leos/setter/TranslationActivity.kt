@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_tabs.*
 import java.util.*
@@ -39,6 +41,13 @@ class TranslationActivity : AppCompatActivity() {
             }
         }.attach()
         viewPager.recyclerView.enforceSingleScrollDirection()
+
+        // Use reflection to reduce Viewpager2 slide sensitivity, so that PhotoView inside can zoom presently
+        val recyclerView = (ViewPager2::class.java.getDeclaredField("mRecyclerView").apply{ isAccessible = true }).get(viewPager) as RecyclerView
+        (RecyclerView::class.java.getDeclaredField("mTouchSlop")).apply {
+            isAccessible = true
+            set(recyclerView, (get(recyclerView) as Int) * 7)
+        }
     }
 
     private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val url0:String, val url1:String, val url2:String, val url3:String)
