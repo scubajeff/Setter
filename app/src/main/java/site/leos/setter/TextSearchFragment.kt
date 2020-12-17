@@ -9,7 +9,7 @@ import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.google.android.material.progressindicator.ProgressIndicator
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 class TextSearchFragment : Fragment(){
@@ -30,7 +30,7 @@ class TextSearchFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
-        val progressIndicator : ProgressIndicator = view.findViewById(R.id.progress_indicator)
+        val progressIndicator : LinearProgressIndicator = view.findViewById(R.id.progress_indicator)
 
         // Prepare webView
         webView.settings.apply {
@@ -76,8 +76,8 @@ class TextSearchFragment : Fragment(){
         // Display loading progress
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
-                if (progress < 100 && progressIndicator.visibility == ProgressIndicator.GONE) {
-                    progressIndicator.visibility = ProgressIndicator.VISIBLE
+                if (progress < 100 && progressIndicator.visibility == LinearProgressIndicator.GONE) {
+                    progressIndicator.visibility = LinearProgressIndicator.VISIBLE
                 }
                 progressIndicator.progress = progress
                 if (progress == 100) {
@@ -109,7 +109,7 @@ class TextSearchFragment : Fragment(){
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
             webView.restoreState(savedInstanceState)
-            progressIndicator.visibility = ProgressIndicator.GONE
+            progressIndicator.visibility = LinearProgressIndicator.GONE
         }
 
         if (!resultLoaded) {

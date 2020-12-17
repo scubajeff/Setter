@@ -15,7 +15,7 @@ import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.google.android.material.progressindicator.ProgressIndicator
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ class ReverseImageSearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
         status = view.findViewById(R.id.status)
-        val progressIndicator : ProgressIndicator = view.findViewById(R.id.progress_indicator)
+        val progressIndicator : LinearProgressIndicator = view.findViewById(R.id.progress_indicator)
 
         // Prepare webView
         webView.settings.apply {
@@ -87,7 +87,7 @@ class ReverseImageSearchFragment : Fragment() {
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
                 super.onReceivedHttpError(view, request, errorResponse)
                 status.text = errorResponse?.reasonPhrase
-                progressIndicator.visibility = ProgressIndicator.GONE
+                progressIndicator.visibility = LinearProgressIndicator.GONE
                 webView.visibility = WebView.GONE
                 status.visibility = TextView.VISIBLE
             }
@@ -96,8 +96,8 @@ class ReverseImageSearchFragment : Fragment() {
         // Display loading progress
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
-                if (progress < 100 && progressIndicator.visibility == ProgressIndicator.GONE) {
-                    progressIndicator.visibility = ProgressIndicator.VISIBLE
+                if (progress < 100 && progressIndicator.visibility == LinearProgressIndicator.GONE) {
+                    progressIndicator.visibility = LinearProgressIndicator.VISIBLE
                 }
                 progressIndicator.progress = progress
                 if (progress == 100) {
@@ -130,7 +130,7 @@ class ReverseImageSearchFragment : Fragment() {
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
             webView.restoreState(savedInstanceState)
-            progressIndicator.visibility = ProgressIndicator.GONE
+            progressIndicator.visibility = LinearProgressIndicator.GONE
         }
 
         if (!resultLoaded) {
@@ -141,7 +141,7 @@ class ReverseImageSearchFragment : Fragment() {
                         // Prepare progressIndicator
                         progressIndicator.apply {
                             isIndeterminate = true
-                            visibility = ProgressIndicator.VISIBLE
+                            visibility = LinearProgressIndicator.VISIBLE
                         }
 
                         // Launch coroutine to upload image
@@ -159,7 +159,7 @@ class ReverseImageSearchFragment : Fragment() {
                             // Load result page in webView
                             withContext(Dispatchers.Main) {
                                 if (result!!.startsWith("Error")) {
-                                    progressIndicator.visibility = ProgressIndicator.GONE
+                                    progressIndicator.visibility = LinearProgressIndicator.GONE
                                     webView.visibility = WebView.GONE
                                     status.text = result
                                     status.visibility = TextView.VISIBLE
@@ -173,7 +173,7 @@ class ReverseImageSearchFragment : Fragment() {
 
                                     status.visibility = TextView.GONE
                                     webView.visibility = WebView.VISIBLE
-                                    webView.loadUrl(result)
+                                    webView.loadUrl(result!!)
                                 }
                             }
                         }
@@ -192,7 +192,7 @@ class ReverseImageSearchFragment : Fragment() {
                     }
                     status.visibility = TextView.GONE
                     webView.visibility = WebView.VISIBLE
-                    webView.loadUrl(result)
+                    webView.loadUrl(result!!)
                 }
             }
         }
