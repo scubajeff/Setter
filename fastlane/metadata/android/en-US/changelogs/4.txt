@@ -1,0 +1,2 @@
+ * tolerate minor http error so that webview can load;
+ * lower viewpager swipe sensitivity so that horizontal scroll within pages is feasible;
