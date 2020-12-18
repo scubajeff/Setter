@@ -3,7 +3,7 @@
     <string name="weixin">Wechat</string>
     <string name="local">Local</string>
 
-    <string name="url_duck" translatable="false">https://duckduckgo.com./?q=</string>
+    <string name="url_duck" translatable="false">https://duckduckgo.com/?q=</string>
     <string name="url_sp" translatable="false">https://www.startpage.com./do/dsearch?query=</string>
     <string name="url_magi" translatable="false">https://magi.com/search?q=</string>
     <string name="url_qwant" translatable="false">https://www.qwant.com/?q=</string>
