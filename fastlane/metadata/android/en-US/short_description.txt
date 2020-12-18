@@ -1,1 +1,1 @@
-A meta-search tool, reverse image search tool and translator tool all packed in the same package. 
+A meta-search, reverse image search and translator tool packed in one package.
