@@ -1,5 +1,7 @@
 package site.leos.setter
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -72,6 +74,23 @@ class TextSearchFragment : Fragment(){
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
         }
+
+        webView.setOnLongClickListener { v ->
+            val hitTestResult = (v as WebView).hitTestResult
+            when (hitTestResult.type) {
+                WebView.HitTestResult.SRC_ANCHOR_TYPE -> {
+                    startActivity(Intent().apply {
+                        action = Intent.ACTION_VIEW
+                        data = Uri.parse(hitTestResult.extra)
+                    })
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
 
         // Display loading progress
         webView.webChromeClient = object : WebChromeClient() {
