@@ -84,6 +84,7 @@ class ReverseImageSearchFragment : Fragment() {
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
 
+            /*
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
                 super.onReceivedHttpError(view, request, errorResponse)
                 status.text = errorResponse?.reasonPhrase
@@ -91,6 +92,7 @@ class ReverseImageSearchFragment : Fragment() {
                 webView.visibility = WebView.GONE
                 status.visibility = TextView.VISIBLE
             }
+             */
         }
 
         // Display loading progress
