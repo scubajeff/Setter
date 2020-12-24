@@ -95,6 +95,22 @@ class ReverseImageSearchFragment : Fragment() {
              */
         }
 
+        webView.setOnLongClickListener { v ->
+            val hitTestResult = (v as WebView).hitTestResult
+            when (hitTestResult.type) {
+                WebView.HitTestResult.SRC_ANCHOR_TYPE -> {
+                    startActivity(Intent().apply {
+                        action = Intent.ACTION_VIEW
+                        data = Uri.parse(hitTestResult.extra)
+                    })
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
         // Display loading progress
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
