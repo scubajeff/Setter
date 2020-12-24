@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_webview.*
 
 class TextSearchFragment : Fragment(){
     lateinit var webView :WebView
-    var resultLoaded :Boolean = false
+    var resultLoaded = false
     lateinit var urlString :String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +102,7 @@ class TextSearchFragment : Fragment(){
                 if (progress == 100) {
                     progressIndicator.visibility = ProgressBar.GONE
                     resultLoaded = true
-                }
+                } else resultLoaded = false
             }
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
                 result.cancel()
@@ -146,11 +146,17 @@ class TextSearchFragment : Fragment(){
         webView.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (event.action != KeyEvent.ACTION_UP) return@OnKeyListener true
-                if (webView.canGoBack()) {
-                    webView.goBack()
+                if (resultLoaded) {
+                    if (webView.canGoBack()) {
+                        webView.goBack()
+
+                        return@OnKeyListener true
+                    }
+                    else activity?.onBackPressed()
+                } else {
+                    webView.stopLoading()
                     return@OnKeyListener true
                 }
-                else activity?.onBackPressed()
             }
             false
         })
