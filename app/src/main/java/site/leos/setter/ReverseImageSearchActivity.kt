@@ -18,16 +18,22 @@ class ReverseImageSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (intent.action == Intent.ACTION_SEND) {
+        if (intent.action == Intent.ACTION_SEND || intent.action == "site.leos.setter.REVERSE_SEARCH_LINK") {
             // If text/* is shared to us and the text is not a image link then call WebSearchActivity
-            if (intent.type?.startsWith("text/")!!) {
+            if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("text/")!!) {
                 intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                    val imgPattern = Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$")
+                    val imgPattern =
+                        Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$")
                     if (!imgPattern.matcher(it).matches()) {
                         // If text sent is not a image link, then call WebSearchActivity
-                        startActivity(Intent(this, WebSearchActivity::class.java)
-                            .putExtra(Intent.EXTRA_PROCESS_TEXT, it)
-                            .putExtra(WebSearchActivity.META, PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.meta_search_key), true)))
+                        startActivity(
+                            Intent(this, WebSearchActivity::class.java)
+                                .putExtra(Intent.EXTRA_PROCESS_TEXT, it)
+                                .putExtra(WebSearchActivity.META,
+                                    PreferenceManager.getDefaultSharedPreferences(this)
+                                        .getBoolean(getString(R.string.meta_search_key), true)
+                                )
+                        )
                         finish()
                         return
                     }

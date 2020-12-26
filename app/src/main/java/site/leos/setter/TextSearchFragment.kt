@@ -1,12 +1,12 @@
 package site.leos.setter
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -51,6 +51,8 @@ class TextSearchFragment : Fragment(){
         webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
         webView.isScrollbarFadingEnabled = true
 
+        registerForContextMenu(webView)
+
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
@@ -74,23 +76,6 @@ class TextSearchFragment : Fragment(){
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
         }
-
-        webView.setOnLongClickListener { v ->
-            val hitTestResult = (v as WebView).hitTestResult
-            when (hitTestResult.type) {
-                WebView.HitTestResult.SRC_ANCHOR_TYPE -> {
-                    startActivity(Intent().apply {
-                        action = Intent.ACTION_VIEW
-                        data = Uri.parse(hitTestResult.extra)
-                    })
-                    true
-                }
-                else -> {
-                    false
-                }
-            }
-        }
-
 
         // Display loading progress
         webView.webChromeClient = object : WebChromeClient() {
@@ -168,6 +153,57 @@ class TextSearchFragment : Fragment(){
         webView.saveState(outState)
     }
 
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        when (webView.hitTestResult.type) {
+            WebView.HitTestResult.SRC_ANCHOR_TYPE-> {
+                menu.add(0, MENU_ITEM_VIEW_HYPERLINK, 0, R.string.menuitem_view_hyperlink)
+                menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
+            }
+            WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
+                menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 0, R.string.menuitem_dowload_image)
+                menu.add(0, MENU_ITEM_SEARCH_IMAGE, 1, R.string.menuitem_search_image)
+            }
+            else-> super.onCreateContextMenu(menu, v, menuInfo)
+        }
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean =
+        when(item.itemId) {
+            MENU_ITEM_VIEW_HYPERLINK->{
+                startActivity(Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = Uri.parse(webView.hitTestResult.extra)
+                })
+                true
+            }
+            MENU_ITEM_SHARE_HYPERLINK->{
+                startActivity(Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, webView.hitTestResult.extra)
+                    type = "text/plain"
+                })
+                true
+            }
+            MENU_ITEM_COPY_HYPERLINK->{
+                (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("", webView.hitTestResult.extra))
+                true
+            }
+            MENU_ITEM_DOWNLOAD_IMAGE->{
+                true
+            }
+            MENU_ITEM_SEARCH_IMAGE->{
+                startActivity(Intent().apply {
+                    action = "site.leos.setter.REVERSE_SEARCH_LINK"
+                    putExtra(Intent.EXTRA_TEXT, webView.hitTestResult.extra)
+                    putExtra(SHARE_FROM_ME, true)
+                    type = "text/plain"
+                })
+                true
+            }
+            else-> false
+        }
+
     fun reload(newUrl: String) {
         urlString = newUrl
         webView.loadUrl(urlString)
@@ -176,6 +212,12 @@ class TextSearchFragment : Fragment(){
     companion object {
         const val RESULT_LOADED = "RESULT_LOADED"
         const val PARAM_KEY = "URL"
+        const val SHARE_FROM_ME = "SHARE_FROM_ME"
+        const val MENU_ITEM_VIEW_HYPERLINK = 0
+        const val MENU_ITEM_SHARE_HYPERLINK = 1
+        const val MENU_ITEM_COPY_HYPERLINK = 2
+        const val MENU_ITEM_DOWNLOAD_IMAGE = 3
+        const val MENU_ITEM_SEARCH_IMAGE = 4
 
         fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(PARAM_KEY, arg)}}
     }

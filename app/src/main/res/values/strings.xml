@@ -35,4 +35,11 @@
     <string name="edit_query_hint">Search phrase or URL</string>
     <string name="meta_search_choice">Meta Search</string>
     <string name="browser_search_choice">Default Browser</string>
+
+    <!-- Context Menu -->
+    <string name="menuitem_view_hyperlink">View in App</string>
+    <string name="menuitem_share_hyperlink">Share link to</string>
+    <string name="menuitem_copy_hyperlink">Copy link</string>
+    <string name="menuitem_dowload_image">Download image</string>
+    <string name="menuitem_search_image">Reverse search image</string>
 </resources>
