@@ -1,0 +1,38 @@
+<resources>
+    <!-- General -->
+    <string name="app_name">Сеттер</string>
+    <string name="dict_name">Поиск</string>
+    <string name="websearch_name">Поиск</string>
+    <string name="reverseimagesearch_name">Поиск изображений</string>
+
+    <!-- Translator -->
+    <string name="translator_header">Настройка переводчика</string>
+    <string name="colordict_fullscreen_key" translatable="false">fullscreen</string>
+    <string name="colordict_fullscreen_title">ColorDict работает в полноэкранном режиме</string>
+    <string name="install_colordict_key" translatable="false">install_colordict</string>
+    <string name="colordict_not_installed">Установить приложение ColorDict</string>
+    <string name="colordict_intro">Приложение: автономный словарь, уважает конфиденциальность. Поддерживает словари формата stardict.</string>
+    <string name="url_deepl" translatable="false">https://www.deepl.com/translator#en/</string>
+    <string name="url_google_tranlation" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
+    <string name="url_urban_dictionary" translatable="false">https://www.urbandictionary.com/define.php?term=</string>
+    <string name="url_jikipedia" translatable="false">https://jikipedia.com/search?phrase=</string>
+    <string name="jikiName">jikipedia</string>
+
+    <!-- Search Engine -->
+    <string name="meta_search_key" translatable="false">META_SEARCH</string>
+    <string name="search_engine_key" translatable="false">WEB_SEARCH_ENGINE</string>
+    <string name="second_search_engine_key" translatable="false">SECOND_WEB_SEARCH_ENGINE</string>
+    <string name="search_engine_header">Настройка сетевого поиска</string>
+    <string name="meta_search_title">Метапоиск</string>
+    <string name="meta_search_web_engine_title">Выбор сетевого поискового движка</string>
+    <string name="second_meta_search_web_engine_title">Выбор вторичного поискового движка</string>
+
+    <!-- Reverse Image Search -->
+    <string name="sogou">Sogou</string>
+    <string name="pailitao">Pailitao</string>
+
+    <!-- Direct Search -->
+    <string name="edit_query_hint">Искать фразу или URL-ссылку</string>
+    <string name="meta_search_choice">Метапоиск</string>
+    <string name="browser_search_choice">Стандартный обозреватель</string>
+</resources>

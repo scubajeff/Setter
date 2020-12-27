@@ -23,11 +23,13 @@
         <SwitchPreferenceCompat
             app:key="@string/colordict_fullscreen_key"
             app:title="@string/colordict_fullscreen_title"
+            app:singleLineTitle="false"
             app:isPreferenceVisible="false" />
 
         <Preference
             app:key="@string/install_colordict_key"
             app:title="@string/colordict_not_installed"
+            app:singleLineTitle="false"
             app:summary="@string/colordict_intro"
             app:isPreferenceVisible="true" >
             <intent
@@ -44,11 +46,13 @@
         <SwitchPreferenceCompat
             app:key="@string/meta_search_key"
             app:title="@string/meta_search_title"
+            app:singleLineTitle="false"
             app:defaultValue="true" />
 
         <DropDownPreference
             android:key="@string/search_engine_key"
             android:title="@string/meta_search_web_engine_title"
+            app:singleLineTitle="false"
             android:entries="@array/web_search_engine_entries"
             android:entryValues="@array/web_search_engine_values"
             android:defaultValue="@string/url_duck"
@@ -58,6 +62,7 @@
         <DropDownPreference
             android:key="@string/second_search_engine_key"
             android:title="@string/second_meta_search_web_engine_title"
+            app:singleLineTitle="false"
             android:entries="@array/second_search_engine_entries"
             android:entryValues="@array/second_search_engine_values"
             android:defaultValue="@string/url_magi"

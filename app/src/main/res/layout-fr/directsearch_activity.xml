@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/edit_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:ems="10"
+        android:hint="@string/edit_query_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="textAutoComplete"
+        android:padding="8dp" />
+
+    <RadioGroup
+        android:id="@+id/query_type_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="24dp">
+
+        <RadioButton
+            android:id="@+id/meta_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.55"
+            android:text="@string/meta_search_choice"/>
+
+        <RadioButton
+            android:id="@+id/browser_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:text="@string/browser_search_choice"/>
+    </RadioGroup>
+
+</LinearLayout>
