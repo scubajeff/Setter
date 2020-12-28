@@ -1,0 +1,2 @@
+* add Russian and French translation, thanks to github user @rikishi0071 and @gugus2000
+* add context menu when long press on hyperlink
