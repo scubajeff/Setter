@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
-
 class TextSearchFragment : Fragment(){
     lateinit var webView :WebView
     var resultLoaded = false
@@ -161,7 +160,7 @@ class TextSearchFragment : Fragment(){
                 menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
             }
             WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
-                menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 0, R.string.menuitem_dowload_image)
+                //menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 0, R.string.menuitem_dowload_image)
                 menu.add(0, MENU_ITEM_SEARCH_IMAGE, 1, R.string.menuitem_search_image)
             }
             else-> super.onCreateContextMenu(menu, v, menuInfo)
@@ -222,3 +221,4 @@ class TextSearchFragment : Fragment(){
         fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(PARAM_KEY, arg)}}
     }
 }
+
