@@ -1,9 +1,7 @@
 package site.leos.setter
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -13,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
+
 class TextSearchFragment : Fragment(){
     lateinit var webView :WebView
     var resultLoaded = false
@@ -54,7 +53,39 @@ class TextSearchFragment : Fragment(){
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = false
+            private val defaultBrowserName = requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: ""
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =
+                request?.let {
+                    when(it.url.scheme) {
+                        in setOf("http", "https")-> {
+                            if (defaultBrowserName != (requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NOMATCH")) {
+                                try {
+                                    startActivity(Intent(Intent.ACTION_VIEW, it.url).apply {
+                                        addCategory(Intent.CATEGORY_BROWSABLE)
+                                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) flags = flags or Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
+                                    })
+                                } catch (e: ActivityNotFoundException) {
+                                    e.printStackTrace()
+                                    return false
+                                }
+                                webView.stopLoading()
+                                true
+                            } else false
+                        }
+                        else-> {
+                            try {
+                                startActivity(Intent().setAction(Intent.ACTION_VIEW).setData(it.url))
+                            } catch (e: ActivityNotFoundException) {
+                                e.printStackTrace()
+                            }
+                            webView.stopLoading()
+                            true
+                        }
+                    }
+                } ?: true
+
 
             /*
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
@@ -209,14 +240,14 @@ class TextSearchFragment : Fragment(){
     }
 
     companion object {
-        const val RESULT_LOADED = "RESULT_LOADED"
-        const val PARAM_KEY = "URL"
-        const val SHARE_FROM_ME = "SHARE_FROM_ME"
-        const val MENU_ITEM_VIEW_HYPERLINK = 0
-        const val MENU_ITEM_SHARE_HYPERLINK = 1
-        const val MENU_ITEM_COPY_HYPERLINK = 2
-        const val MENU_ITEM_DOWNLOAD_IMAGE = 3
-        const val MENU_ITEM_SEARCH_IMAGE = 4
+        private const val RESULT_LOADED = "RESULT_LOADED"
+        private const val PARAM_KEY = "URL"
+        private const val SHARE_FROM_ME = "SHARE_FROM_ME"
+        private const val MENU_ITEM_VIEW_HYPERLINK = 0
+        private const val MENU_ITEM_SHARE_HYPERLINK = 1
+        private const val MENU_ITEM_COPY_HYPERLINK = 2
+        private const val MENU_ITEM_DOWNLOAD_IMAGE = 3
+        private const val MENU_ITEM_SEARCH_IMAGE = 4
 
         fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(PARAM_KEY, arg)}}
     }
