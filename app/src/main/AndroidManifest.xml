@@ -12,7 +12,7 @@
         android:appCategory="productivity"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
 
@@ -21,8 +21,7 @@
         <activity
             android:name=".ReverseImageSearchActivity"
             android:label="@string/reverseimagesearch_name"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:launchMode="singleTask">
             <intent-filter android:label="@string/reverseimagesearch_name">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -54,15 +53,13 @@
         <activity
             android:name=".TranslationActivity"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:launchMode="singleTask" />
 
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/websearch_name"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -84,7 +81,6 @@
 
         <activity
             android:name=".DirectSearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
