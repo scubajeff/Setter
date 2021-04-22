@@ -61,8 +61,7 @@ class WebSearchActivity : AppCompatActivity() {
                 val tabStrip: LinearLayout = tabs.getChildAt(0) as LinearLayout
                 tabStrip.getChildAt(0).setOnClickListener {
                     // Show popup when the tab is displayed
-                    if (viewPager.currentItem != 0) false
-                    else {
+                    if (viewPager.currentItem == 0) {
                         val menuEntries = resources.getStringArray(R.array.web_search_engine_entries)
                         val menuValues = resources.getStringArray(R.array.web_search_engine_values)
                         //val f = (viewPager.adapter as ViewStateAdapter).getFragmentAt(0)
@@ -74,14 +73,11 @@ class WebSearchActivity : AppCompatActivity() {
                                 true
                             }
                         }
-
-                        true
                     }
                 }
                 tabStrip.getChildAt(1).setOnClickListener {
                     // Show popup when the tab is displayed
-                    if (viewPager.currentItem != 1) false
-                    else {
+                    if (viewPager.currentItem == 1) {
                         val menuEntries = resources.getStringArray(R.array.second_search_engine_entries)
                         val menuValues = resources.getStringArray(R.array.second_search_engine_values)
                         PopupMenu(baseContext, it).run {
@@ -92,8 +88,6 @@ class WebSearchActivity : AppCompatActivity() {
                                 true
                             }
                         }
-
-                        true
                     }
                 }
                 tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
