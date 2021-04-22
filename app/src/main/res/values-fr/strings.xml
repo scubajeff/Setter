@@ -2,7 +2,7 @@
     <!-- General -->
     <string name="app_name">Setter</string>
     <string name="dict_name">Traduire</string>
-    <string name="websearch_name">Rechercher</string>
+    <string name="websearch_name">Rechercher dans Setter</string>
     <string name="reverseimagesearch_name">Rechercher l\'image</string>
 
     <!-- Translator -->

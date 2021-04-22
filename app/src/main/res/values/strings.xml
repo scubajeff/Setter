@@ -2,7 +2,7 @@
     <!-- General -->
     <string name="app_name">Setter</string>
     <string name="dict_name">Look up</string>
-    <string name="websearch_name">Search</string>
+    <string name="websearch_name">Search in Setter</string>
     <string name="reverseimagesearch_name">Image Search</string>
 
     <!-- Translator -->

@@ -2,7 +2,7 @@
     <!-- General -->
     <string name="app_name">Сеттер</string>
     <string name="dict_name">Поиск</string>
-    <string name="websearch_name">Поиск</string>
+    <string name="websearch_name">Поиск в Сеттер</string>
     <string name="reverseimagesearch_name">Поиск изображений</string>
 
     <!-- Translator -->
