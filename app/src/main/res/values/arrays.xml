@@ -30,10 +30,10 @@
     <string-array name="web_search_url">
         <item>@string/url_duck</item>
         <item>@string/url_magi</item>
-        <item>https://twitter.com/search?q=</item>
+        <item>https://mobile.twitter.com/search?q=</item>
         <item>https://www.reddit.com/search/?q=</item>
         <item>https://weixin.sogou.com/weixin?type=2&amp;query=</item>
-        <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
+        <item>https://m.weibo.cn/search?containerid=100103&amp;q=</item>
     </string-array>
     
     <string-array name="web_search_engine_entries">
@@ -76,3 +76,6 @@
         <item>@string/url_swisscows</item>
     </string-array>
 </resources>
+<!--
+        <item>https://s.weibo.com/weibo?Refer=weibo_weibo&amp;q=</item>
+-->

@@ -68,8 +68,9 @@ class WebSearchActivity : AppCompatActivity() {
                         PopupMenu(baseContext, it).run {
                             for (i in menuEntries.indices) menu.add(Menu.NONE, i, i, menuEntries[i])
                             show()
-                            setOnMenuItemClickListener {
-                                (supportFragmentManager.findFragmentByTag("f0") as TextSearchFragment).reload(menuValues[it.itemId] + query)
+                            setOnMenuItemClickListener { menuItem->
+                                urls[0] = menuValues[menuItem.itemId]
+                                (supportFragmentManager.findFragmentByTag("f0") as TextSearchFragment).reload(menuValues[menuItem.itemId] + query)
                                 true
                             }
                         }
@@ -83,8 +84,9 @@ class WebSearchActivity : AppCompatActivity() {
                         PopupMenu(baseContext, it).run {
                             for (i in menuEntries.indices) menu.add(Menu.NONE, i, i, menuEntries[i])
                             show()
-                            setOnMenuItemClickListener {
-                                (supportFragmentManager.findFragmentByTag("f1") as TextSearchFragment).reload(menuValues[it.itemId] + query)
+                            setOnMenuItemClickListener { menuItem->
+                                urls[1] = menuValues[menuItem.itemId]
+                                (supportFragmentManager.findFragmentByTag("f1") as TextSearchFragment).reload(menuValues[menuItem.itemId] + query)
                                 true
                             }
                         }

@@ -18,7 +18,7 @@ class TextSearchFragment : Fragment(){
     lateinit var urlString :String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        urlString = arguments?.getString(PARAM_KEY)!!
+        urlString = arguments?.getString(KEY_URL)!!
 
         super.onCreate(savedInstanceState)
     }
@@ -59,12 +59,14 @@ class TextSearchFragment : Fragment(){
                 request?.let {
                     when(it.url.scheme) {
                         in setOf("http", "https")-> {
-                            if (defaultBrowserName != (requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NOMATCH")) {
+                            if (defaultBrowserName != (requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NOMATCH")
+                                && !(it.url.toString().startsWith(urlString.substringBefore('?')))) {
                                 try {
                                     startActivity(Intent(Intent.ACTION_VIEW, it.url).apply {
                                         addCategory(Intent.CATEGORY_BROWSABLE)
                                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) flags = flags or Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) flags =
+                                            flags or Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
                                     })
                                 } catch (e: ActivityNotFoundException) {
                                     e.printStackTrace()
@@ -85,7 +87,6 @@ class TextSearchFragment : Fragment(){
                         }
                     }
                 } ?: true
-
 
             /*
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
@@ -199,40 +200,42 @@ class TextSearchFragment : Fragment(){
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean =
-        when(item.itemId) {
-            MENU_ITEM_VIEW_HYPERLINK->{
-                startActivity(Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse(webView.hitTestResult.extra)
-                })
-                true
+        webView.hitTestResult.extra?.let {
+            when(item.itemId) {
+                MENU_ITEM_VIEW_HYPERLINK->{
+                    startActivity(Intent().apply {
+                        action = Intent.ACTION_VIEW
+                        data = Uri.parse(it)
+                    })
+                    true
+                }
+                MENU_ITEM_SHARE_HYPERLINK->{
+                    startActivity(Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        type = "text/plain"
+                    })
+                    true
+                }
+                MENU_ITEM_COPY_HYPERLINK->{
+                    (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("", it))
+                    true
+                }
+                MENU_ITEM_DOWNLOAD_IMAGE->{
+                    true
+                }
+                MENU_ITEM_SEARCH_IMAGE->{
+                    startActivity(Intent().apply {
+                        action = "site.leos.setter.REVERSE_SEARCH_LINK"
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        putExtra(SHARE_FROM_ME, true)
+                        type = "text/plain"
+                    })
+                    true
+                }
+                else-> false
             }
-            MENU_ITEM_SHARE_HYPERLINK->{
-                startActivity(Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, webView.hitTestResult.extra)
-                    type = "text/plain"
-                })
-                true
-            }
-            MENU_ITEM_COPY_HYPERLINK->{
-                (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("", webView.hitTestResult.extra))
-                true
-            }
-            MENU_ITEM_DOWNLOAD_IMAGE->{
-                true
-            }
-            MENU_ITEM_SEARCH_IMAGE->{
-                startActivity(Intent().apply {
-                    action = "site.leos.setter.REVERSE_SEARCH_LINK"
-                    putExtra(Intent.EXTRA_TEXT, webView.hitTestResult.extra)
-                    putExtra(SHARE_FROM_ME, true)
-                    type = "text/plain"
-                })
-                true
-            }
-            else-> false
-        }
+        } ?: false
 
     fun reload(newUrl: String) {
         urlString = newUrl
@@ -241,7 +244,7 @@ class TextSearchFragment : Fragment(){
 
     companion object {
         private const val RESULT_LOADED = "RESULT_LOADED"
-        private const val PARAM_KEY = "URL"
+        private const val KEY_URL = "KEY_URL"
         private const val SHARE_FROM_ME = "SHARE_FROM_ME"
         private const val MENU_ITEM_VIEW_HYPERLINK = 0
         private const val MENU_ITEM_SHARE_HYPERLINK = 1
@@ -249,7 +252,7 @@ class TextSearchFragment : Fragment(){
         private const val MENU_ITEM_DOWNLOAD_IMAGE = 3
         private const val MENU_ITEM_SEARCH_IMAGE = 4
 
-        fun newInstance(arg: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(PARAM_KEY, arg)}}
+        fun newInstance(url: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(KEY_URL, url)}}
     }
 }
 
