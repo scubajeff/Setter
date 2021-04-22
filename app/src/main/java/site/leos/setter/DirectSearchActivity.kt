@@ -11,22 +11,26 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.directsearch_activity.*
 
 class DirectSearchActivity : AppCompatActivity() {
+    private lateinit var query: TextInputEditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.directsearch_activity)
 
+        query = findViewById(R.id.edit_query)
         query_type_rg.apply { check(if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(getString(R.string.meta_search_key), true)) R.id.meta_query else R.id.browser_query) }
-        meta_query.setOnClickListener { if (edit_query.text.isNotEmpty()) searchIt(edit_query.text.toString(), true) }
-        browser_query.setOnClickListener { if (edit_query.text.isNotEmpty()) searchIt(edit_query.text.toString(), false) }
+        meta_query.setOnClickListener { if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), true) }
+        browser_query.setOnClickListener { if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), false) }
 
-        edit_query.run {
+        query.run {
             requestFocus()
             setOnEditorActionListener { _, id, _ ->
                 if (id == EditorInfo.IME_ACTION_SEARCH || id == EditorInfo.IME_NULL)
-                    searchIt(edit_query.text.toString(), query_type_rg.checkedRadioButtonId==R.id.meta_query)
+                    searchIt(query.text.toString(), query_type_rg.checkedRadioButtonId==R.id.meta_query)
                 else false
             }
         }
