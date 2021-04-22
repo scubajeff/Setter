@@ -54,12 +54,12 @@ class WebSearchActivity : AppCompatActivity() {
                 val recyclerView = (ViewPager2::class.java.getDeclaredField("mRecyclerView").apply{ isAccessible = true }).get(viewPager) as RecyclerView
                 (RecyclerView::class.java.getDeclaredField("mTouchSlop")).apply {
                     isAccessible = true
-                    set(recyclerView, (get(recyclerView) as Int) * 7)
+                    set(recyclerView, (get(recyclerView) as Int) * 6)
                 }
 
                 // Long click on tab 0 or 1 to temporarily change it's search engine
                 val tabStrip: LinearLayout = tabs.getChildAt(0) as LinearLayout
-                tabStrip.getChildAt(0).setOnLongClickListener {
+                tabStrip.getChildAt(0).setOnClickListener {
                     // Show popup when the tab is displayed
                     if (viewPager.currentItem != 0) false
                     else {
@@ -78,7 +78,7 @@ class WebSearchActivity : AppCompatActivity() {
                         true
                     }
                 }
-                tabStrip.getChildAt(1).setOnLongClickListener {
+                tabStrip.getChildAt(1).setOnClickListener {
                     // Show popup when the tab is displayed
                     if (viewPager.currentItem != 1) false
                     else {
