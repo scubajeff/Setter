@@ -23,7 +23,6 @@
     <string name="search_engine_key" translatable="false">WEB_SEARCH_ENGINE</string>
     <string name="second_search_engine_key" translatable="false">SECOND_WEB_SEARCH_ENGINE</string>
     <string name="search_engine_header">Web Search Setting</string>
-    <string name="meta_search_title">Meta search</string>
     <string name="meta_search_web_engine_title">Web search engine choice</string>
     <string name="second_meta_search_web_engine_title">Second search engine choice</string>
 
@@ -33,8 +32,8 @@
 
     <!-- Direct Search -->
     <string name="edit_query_hint">Search phrase or URL</string>
-    <string name="meta_search_choice">Meta Search</string>
-    <string name="browser_search_choice">Default Browser</string>
+    <string name="meta_search_choice">Search</string>
+    <string name="translation_choice">Translate</string>
 
     <!-- Context Menu -->
     <string name="menuitem_view_hyperlink">View in App</string>

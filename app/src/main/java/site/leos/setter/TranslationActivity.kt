@@ -20,7 +20,7 @@ class TranslationActivity : AppCompatActivity() {
 
         // Prepare query url string
         val defaultLocale = Locale.getDefault()
-        val query = intent.getStringExtra("QUERY")
+        val query = intent.getStringExtra(KEY_QUERY)
         var deepLURL = getString(R.string.url_deepl)
         var googleURL = getString(R.string.url_google_tranlation)
         val udURL = getString(R.string.url_urban_dictionary) + query
@@ -62,6 +62,10 @@ class TranslationActivity : AppCompatActivity() {
                 else -> return TextSearchFragment.newInstance(url3)
             }
         }
+    }
+
+    companion object {
+        const val KEY_QUERY = "KEY_QUERY"
     }
 }
 

@@ -33,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun isColorDictAvailable(): Boolean {
-            return requireActivity().packageManager?.queryIntentActivities(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY)?.size!! > 0
+            return requireContext().packageManager.resolveActivity(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY) != null
         }
     }
 }

@@ -23,7 +23,6 @@
     <string name="search_engine_key" translatable="false">WEB_SEARCH_ENGINE</string>
     <string name="second_search_engine_key" translatable="false">SECOND_WEB_SEARCH_ENGINE</string>
     <string name="search_engine_header">Paramètre de la recherche web</string>
-    <string name="meta_search_title">Méta-recherche</string>
     <string name="meta_search_web_engine_title">Choix du moteur de recherche</string>
     <string name="second_meta_search_web_engine_title">Second choix de moteur de recherche</string>
 
@@ -33,6 +32,6 @@
 
     <!-- Direct Search -->
     <string name="edit_query_hint">Rechercher la phrase ou l\'URL</string>
-    <string name="meta_search_choice">Méta-recherche</string>
-    <string name="browser_search_choice">Navigateur par défaut</string>
+    <string name="meta_search_choice">Recherche</string>
+    <string name="translation_choice">Traduire</string>
 </resources>

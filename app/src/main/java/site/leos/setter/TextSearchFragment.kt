@@ -1,5 +1,6 @@
 package site.leos.setter
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -27,6 +28,7 @@ class TextSearchFragment : Fragment(){
         return inflater.inflate(R.layout.fragment_webview, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         webView = view.findViewById(R.id.webview)
@@ -101,7 +103,7 @@ class TextSearchFragment : Fragment(){
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
                 // Reload the page when ERROR_TIMEOUT or ERROR_HOST_LOOKUP happens on base url
-                if (error?.errorCode == WebViewClient.ERROR_TIMEOUT || error?.errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
+                if (error?.errorCode == ERROR_TIMEOUT || error?.errorCode == ERROR_HOST_LOOKUP) {
                     if (urlString.contains(request?.url?.host.toString())) view?.reload()
                 }
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
@@ -140,6 +142,16 @@ class TextSearchFragment : Fragment(){
                 return true
             }
         }
+
+        /*
+        // catch link clicked event
+        webView.setOnTouchListener { v, event ->
+            webView.hitTestResult.apply {
+                Log.e(">>>>", "${this.type} ${this.extra}")
+            }
+            false
+        }
+         */
 
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)

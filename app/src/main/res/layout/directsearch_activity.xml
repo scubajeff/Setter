@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -18,26 +19,28 @@
             android:inputType="textAutoComplete"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <RadioGroup
-        android:id="@+id/query_type_rg"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/query_tg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="24dp">
-
-        <RadioButton
-            android:id="@+id/meta_query"
-            android:layout_width="match_parent"
+        android:layout_marginHorizontal="32dp"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:checkedButton="@+id/meta_search">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/meta_search"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/meta_search_choice"/>
-
-        <RadioButton
-            android:id="@+id/browser_query"
-            android:layout_width="match_parent"
+            style="?attr/materialButtonOutlinedStyle"
+            android:text="@string/meta_search_choice" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/translate"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/browser_search_choice"/>
-    </RadioGroup>
+            style="?attr/materialButtonOutlinedStyle"
+            android:text="@string/translation_choice" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 </LinearLayout>

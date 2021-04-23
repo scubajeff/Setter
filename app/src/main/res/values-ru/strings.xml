@@ -23,7 +23,6 @@
     <string name="search_engine_key" translatable="false">WEB_SEARCH_ENGINE</string>
     <string name="second_search_engine_key" translatable="false">SECOND_WEB_SEARCH_ENGINE</string>
     <string name="search_engine_header">Настройка сетевого поиска</string>
-    <string name="meta_search_title">Метапоиск</string>
     <string name="meta_search_web_engine_title">Выбор сетевого поискового движка</string>
     <string name="second_meta_search_web_engine_title">Выбор вторичного поискового движка</string>
 
@@ -34,5 +33,5 @@
     <!-- Direct Search -->
     <string name="edit_query_hint">Искать фразу или URL-ссылку</string>
     <string name="meta_search_choice">Метапоиск</string>
-    <string name="browser_search_choice">Стандартный обозреватель</string>
+    <string name="translation_choice">Поиск</string>
 </resources>
