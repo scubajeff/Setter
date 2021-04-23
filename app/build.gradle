@@ -12,7 +12,7 @@ android {
         applicationId "site.leos.setter"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 7
+        versionCode 8
         versionName "0.1.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "Setter-v$versionName"
