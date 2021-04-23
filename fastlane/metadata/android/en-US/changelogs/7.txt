@@ -1,0 +1,5 @@
+* handle app link and special url scheme
+* single click instead of long click to switch search engine on the fly
+* update direct search screen layout
+* comply with android R's new package visibility policy
+* other bug fixed and improvments
