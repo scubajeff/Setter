@@ -27,8 +27,7 @@ class TranslationActivity : AppCompatActivity() {
         val jikiURL = getString(R.string.url_jikipedia) + query
 
         deepLURL = "$deepLURL${defaultLocale.language}/$query"
-        if (defaultLocale.language.equals("zh")) googleURL = googleURL + defaultLocale.language + "-" + defaultLocale.country + "&text="
-        else googleURL = googleURL + defaultLocale.language + "&text="
+        googleURL = if (defaultLocale.language.equals("zh")) googleURL + defaultLocale.language + "-" + defaultLocale.country + "&text=" else googleURL + defaultLocale.language + "&text="
         googleURL += query
 
         viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, deepLURL, googleURL, udURL, jikiURL)
@@ -55,11 +54,11 @@ class TranslationActivity : AppCompatActivity() {
         override fun getItemCount(): Int = 4
 
         override fun createFragment(position: Int): Fragment {
-            when (position) {
-                0 -> return TextSearchFragment.newInstance(url0)
-                1 -> return TextSearchFragment.newInstance(url1)
-                2 -> return TextSearchFragment.newInstance(url2)
-                else -> return TextSearchFragment.newInstance(url3)
+            return when (position) {
+                0 -> TextSearchFragment.newInstance(url0)
+                1 -> TextSearchFragment.newInstance(url1)
+                2 -> TextSearchFragment.newInstance(url2)
+                else -> TextSearchFragment.newInstance(url3)
             }
         }
     }
@@ -68,4 +67,3 @@ class TranslationActivity : AppCompatActivity() {
         const val KEY_QUERY = "KEY_QUERY"
     }
 }
-

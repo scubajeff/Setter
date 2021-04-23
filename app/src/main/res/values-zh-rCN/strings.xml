@@ -31,7 +31,7 @@
     <string name="menuitem_view_hyperlink">跳转指定应用</string>
     <string name="menuitem_share_hyperlink">分享链接</string>
     <string name="menuitem_copy_hyperlink">拷贝链接</string>
-    <string name="menuitem_dowload_image">下载图片</string>
+    <string name="menuitem_download_image">下载图片</string>
     <string name="menuitem_search_image">搜索图片</string>
     <string name="translation_choice">翻译</string>
 </resources>

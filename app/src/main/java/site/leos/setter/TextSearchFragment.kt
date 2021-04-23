@@ -61,7 +61,7 @@ class TextSearchFragment : Fragment(){
                 request?.let {
                     when(it.url.scheme) {
                         in setOf("http", "https")-> {
-                            if (defaultBrowserName != (requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NOMATCH")
+                            if (defaultBrowserName != (requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NO_MATCH")
                                 && !(it.url.toString().startsWith(urlString.substringBefore('?')))) {
                                 try {
                                     startActivity(Intent(Intent.ACTION_VIEW, it.url).apply {
@@ -204,7 +204,7 @@ class TextSearchFragment : Fragment(){
                 menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
             }
             WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
-                //menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 0, R.string.menuitem_dowload_image)
+                //menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 0, R.string.menuitem_download_image)
                 menu.add(0, MENU_ITEM_SEARCH_IMAGE, 1, R.string.menuitem_search_image)
             }
             else-> super.onCreateContextMenu(menu, v, menuInfo)

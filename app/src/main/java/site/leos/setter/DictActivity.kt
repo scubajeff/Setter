@@ -45,7 +45,9 @@ class DictActivity : AppCompatActivity() {
                         colorDictIntent.putExtra("EXTRA_FULLSCREEN", true)
                     } else {
                         val size = Point()
-                        windowManager.defaultDisplay.getSize(size)
+                        @Suppress("DEPRECATION")
+                        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) windowManager.defaultDisplay.getSize(size)
+                        else display?.getRealSize(size)
                         colorDictIntent.putExtra("EXTRA_FULLSCREEN", false)
                                         .putExtra("EXTRA_HEIGHT", size.y / 2)
                                         .putExtra("EXTRA_MARGIN_LEFT", size.x / 20)
