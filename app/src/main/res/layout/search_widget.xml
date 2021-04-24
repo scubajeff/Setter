@@ -26,9 +26,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_toRightOf="@id/searchwidget_logo"
-        android:contentDescription="@string/edit_query_hint"
+        android:contentDescription="@string/edit_search_hint"
         android:gravity="center_vertical"
-        android:hint="@string/edit_query_hint"
+        android:hint="@string/edit_search_hint"
         android:textColor="@android:color/secondary_text_light" />
 
 </RelativeLayout>

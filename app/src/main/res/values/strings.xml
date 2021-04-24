@@ -31,7 +31,8 @@
     <string name="pailitao">Pailitao</string>
 
     <!-- Direct Search -->
-    <string name="edit_query_hint">Search phrase or URL</string>
+    <string name="edit_search_hint">Search phrase or URL</string>
+    <string name="edit_translate_hint">Translate word or sentence</string>
     <string name="meta_search_choice">Search</string>
     <string name="translation_choice">Translate</string>
 

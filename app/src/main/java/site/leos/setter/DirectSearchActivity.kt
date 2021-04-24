@@ -9,15 +9,18 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.directsearch_activity.*
 
 class DirectSearchActivity : AppCompatActivity() {
     private lateinit var query: TextInputEditText
+    private lateinit var queryLayout: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.directsearch_activity)
 
+        queryLayout = findViewById(R.id.edit_layout)
         query = findViewById<TextInputEditText>(R.id.edit_query).apply {
             requestFocus()
             setOnEditorActionListener { _, id, _ ->
@@ -26,8 +29,14 @@ class DirectSearchActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<MaterialButton>(R.id.meta_search).setOnClickListener { if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), true) }
-        findViewById<MaterialButton>(R.id.translate).setOnClickListener { if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), false) }
+        findViewById<MaterialButton>(R.id.meta_search).setOnClickListener {
+            if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), true)
+            else queryLayout.hint = getString(R.string.edit_search_hint)
+        }
+        findViewById<MaterialButton>(R.id.translate).setOnClickListener {
+            if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), false)
+            else queryLayout.hint = getString(R.string.edit_translate_hint)
+        }
     }
 
     private fun searchIt(query: String, meta: Boolean) : Boolean {

@@ -6,15 +6,16 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:hint="@string/edit_search_hint"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_query"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_query_hint"
             android:imeOptions="actionSearch"
             android:inputType="textAutoComplete"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="?attr/materialButtonOutlinedStyle"
+            android:textAllCaps="false"
             android:text="@string/meta_search_choice" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/translate"
@@ -40,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="?attr/materialButtonOutlinedStyle"
+            android:textAllCaps="false"
             android:text="@string/translation_choice" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 

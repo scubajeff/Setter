@@ -26,7 +26,7 @@
     <string name="pailitao">拍立淘</string>
 
     <!-- Direct Search -->
-    <string name="edit_query_hint">网址或搜索词条</string>
+    <string name="edit_search_hint">网址或搜索词条</string>
     <string name="meta_search_choice">二传搜</string>
     <string name="menuitem_view_hyperlink">跳转指定应用</string>
     <string name="menuitem_share_hyperlink">分享链接</string>
@@ -34,4 +34,5 @@
     <string name="menuitem_download_image">下载图片</string>
     <string name="menuitem_search_image">搜索图片</string>
     <string name="translation_choice">翻译</string>
+    <string name="edit_translate_hint">翻译文本</string>
 </resources>
