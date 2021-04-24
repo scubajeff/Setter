@@ -35,4 +35,10 @@
     <string name="meta_search_choice">Метапоиск</string>
     <string name="translation_choice">Поиск</string>
     <string name="edit_translate_hint">Перевести слово или предложение</string>
+    <string name="menuitem_view_hyperlink">Вид в App</string>
+    <string name="menuitem_share_hyperlink">Ссылка на акции</string>
+    <string name="menuitem_copy_hyperlink">Ссылка на копирование</string>
+    <string name="menuitem_download_image">Скачать изображение</string>
+    <string name="menuitem_search_image">Поиск изображений</string>
+    <string name="menuitem_browser">Просмотр в браузере</string>
 </resources>
