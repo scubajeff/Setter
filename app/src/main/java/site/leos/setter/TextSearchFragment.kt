@@ -200,6 +200,8 @@ class TextSearchFragment : Fragment(){
         when (webView.hitTestResult.type) {
             WebView.HitTestResult.UNKNOWN_TYPE-> {
                 menu.add(0, MENU_ITEM_UNKNOWN, 0, R.string.menuitem_browser)
+                menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
                 menu.setHeaderTitle(webView.url)
             }
             WebView.HitTestResult.SRC_ANCHOR_TYPE-> {
@@ -251,8 +253,27 @@ class TextSearchFragment : Fragment(){
             }
         } ?: run {
             if (webView.hitTestResult.type == WebView.HitTestResult.UNKNOWN_TYPE) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
-                true
+                when(item.itemId) {
+                    MENU_ITEM_UNKNOWN -> {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
+                        true
+                    }
+                    MENU_ITEM_SHARE_HYPERLINK -> {
+                        startActivity(Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, webView.url)
+                            type = "text/plain"
+                        })
+                        true
+                    }
+                    MENU_ITEM_COPY_HYPERLINK -> {
+                        (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
+                            ClipData.newPlainText("", webView.url)
+                        )
+                        true
+                    }
+                    else -> false
+                }
             }
             else false
         }
