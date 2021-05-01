@@ -23,7 +23,7 @@ class ReverseImageSearchActivity : AppCompatActivity() {
             if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("text/")!!) {
                 intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
                     val imgPattern =
-                        Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$")
+                        Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;\\[\\]]*[-a-zA-Z0-9+&\\]@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$")
                     if (!imgPattern.matcher(it).matches()) {
                         // If text sent is not a image link, then call WebSearchActivity
                         startActivity(
