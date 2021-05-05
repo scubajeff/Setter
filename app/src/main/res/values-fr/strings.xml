@@ -35,10 +35,10 @@
     <string name="meta_search_choice">Recherche</string>
     <string name="translation_choice">Traduire</string>
     <string name="edit_translate_hint">Traduire un mot ou une phrase</string>
-    <string name="menuitem_view_hyperlink">Afficher dans l\'application</string>
+    <string name="menuitem_view_hyperlink">Ouvrir avec l\'application</string>
     <string name="menuitem_share_hyperlink">Partager le lien vers</string>
     <string name="menuitem_copy_hyperlink">Copier le lien</string>
     <string name="menuitem_download_image">Télécharger l\'image</string>
     <string name="menuitem_search_image">Rechercher l\'image</string>
-    <string name="menuitem_browser">Afficher dans le navigateur</string>
+    <string name="menuitem_browser">Ouvrir avec le navigateur</string>
 </resources>

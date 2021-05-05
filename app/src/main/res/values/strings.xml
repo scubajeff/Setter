@@ -37,10 +37,10 @@
     <string name="translation_choice">Translate</string>
 
     <!-- Context Menu -->
-    <string name="menuitem_view_hyperlink">View in App</string>
+    <string name="menuitem_view_hyperlink">Open in App</string>
     <string name="menuitem_share_hyperlink">Share link to</string>
     <string name="menuitem_copy_hyperlink">Copy link</string>
     <string name="menuitem_download_image">Download image</string>
     <string name="menuitem_search_image">Reverse search image</string>
-    <string name="menuitem_browser">View in Browser</string>
+    <string name="menuitem_browser">Open in Browser</string>
 </resources>
