@@ -198,6 +198,7 @@ class TextSearchFragment : Fragment(){
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         when (webView.hitTestResult.type) {
+/*
             WebView.HitTestResult.UNKNOWN_TYPE-> {
                 menu.add(0, MENU_ITEM_UNKNOWN, 0, R.string.menuitem_browser)
                 menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
@@ -251,7 +252,9 @@ class TextSearchFragment : Fragment(){
                 }
                 else-> false
             }
-        } ?: run {
+        } ?: false
+/*
+        run {
             if (webView.hitTestResult.type == WebView.HitTestResult.UNKNOWN_TYPE) {
                 when(item.itemId) {
                     MENU_ITEM_UNKNOWN -> {
@@ -277,6 +280,7 @@ class TextSearchFragment : Fragment(){
             }
             else false
         }
+*/
 
     fun reload(newUrl: String) {
         urlString = newUrl
