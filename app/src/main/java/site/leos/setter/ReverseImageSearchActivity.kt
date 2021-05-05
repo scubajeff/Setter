@@ -18,7 +18,7 @@ class ReverseImageSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (intent.action == Intent.ACTION_SEND || intent.action == "site.leos.setter.REVERSE_SEARCH_LINK") {
+        if (intent.action == Intent.ACTION_SEND || intent.action == REVERSE_SEARCH_LINK) {
             // If text/* is shared to us and the text is not a image link then call WebSearchActivity
             if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("text/")!!) {
                 intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
@@ -74,5 +74,9 @@ class ReverseImageSearchActivity : AppCompatActivity() {
         override fun createFragment(position: Int): Fragment {
             return ReverseImageSearchFragment.newInstance(position)
         }
+    }
+
+    companion object {
+        const val REVERSE_SEARCH_LINK = "site.leos.setter.REVERSE_SEARCH_LINK"
     }
 }

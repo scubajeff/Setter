@@ -243,7 +243,7 @@ class TextSearchFragment : Fragment(){
                 }
                 MENU_ITEM_SEARCH_IMAGE->{
                     startActivity(Intent().apply {
-                        action = "site.leos.setter.REVERSE_SEARCH_LINK"
+                        action = ReverseImageSearchActivity.REVERSE_SEARCH_LINK
                         putExtra(Intent.EXTRA_TEXT, it)
                         putExtra(SHARE_FROM_ME, true)
                         type = "text/plain"
