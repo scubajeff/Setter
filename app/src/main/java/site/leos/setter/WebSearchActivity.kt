@@ -110,7 +110,7 @@ class WebSearchActivity : AppCompatActivity() {
                                         .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
                                         .setTopLeftCorner(CutCornerTreatment())
                                         .build()
-                                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.ic_launcher_background)) }
+                                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.color_primary)) }
                             }
                         }
                     }
@@ -148,7 +148,7 @@ class WebSearchActivity : AppCompatActivity() {
                         .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
                         .setTopLeftCorner(CutCornerTreatment())
                         .build()
-                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.ic_launcher_background)) }
+                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.color_primary)) }
             }
         }
     }

@@ -29,6 +29,6 @@
         android:contentDescription="@string/edit_search_hint"
         android:gravity="center_vertical"
         android:hint="@string/edit_search_hint"
-        android:textColor="@android:color/secondary_text_light" />
+        android:textColorHint="#808080" />
 
 </RelativeLayout>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:indeterminate="true"
-        app:indicatorColor="#198964"/>
+        app:indicatorColor="@color/color_primary"/>
 
     <FrameLayout
         android:layout_width="match_parent"
