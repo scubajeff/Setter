@@ -1,8 +1,7 @@
 package site.leos.setter
 
 import android.app.SearchManager
-import android.content.ComponentName
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.net.Uri
@@ -11,6 +10,7 @@ import android.view.Menu
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -45,6 +45,57 @@ class WebSearchActivity : AppCompatActivity() {
                 urls[0] = sp.getString(getString(R.string.search_engine_key), getString(R.string.url_duck))
                 urls[1] = sp.getString(getString(R.string.second_search_engine_key), getString(R.string.url_magi))
 
+                tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab) {
+                        // Restore default background
+                        if (tab.position == 0 || tab.position == 1) tab.view.background = tabs.background
+                        tab.view.setOnLongClickListener(null)
+                    }
+
+                    override fun onTabSelected(tab: TabLayout.Tab) {
+                        // Draw a popup menu indicator for tab 0 and 1
+                        if (tab.position == 0 || tab.position == 1) {
+                            tab.view.apply {
+                                doOnLayout {
+                                    background = MaterialShapeDrawable(
+                                        ShapeAppearanceModel.builder()
+                                            .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
+                                            .setTopLeftCorner(CutCornerTreatment())
+                                            .build()
+                                    ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.color_primary)) }
+                                }
+                            }
+                        }
+
+                        tab.view.setOnLongClickListener { v->
+                            PopupMenu(baseContext, v).run {
+                                menu.add(Menu.NONE, 0, 0, R.string.menuitem_browser)
+                                menu.add(Menu.NONE, 1, 1, R.string.menuitem_share_hyperlink)
+                                menu.add(Menu.NONE, 2, 2, R.string.menuitem_copy_hyperlink)
+                                show()
+                                setOnMenuItemClickListener { menuItem->
+                                    (supportFragmentManager.findFragmentByTag("f${tabs.selectedTabPosition}") as TextSearchFragment).getCurrentUrl()?.let { url->
+                                        when(menuItem.itemId) {
+                                            0-> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                            1-> startActivity(Intent().apply {
+                                                action = Intent.ACTION_SEND
+                                                putExtra(Intent.EXTRA_TEXT, url)
+                                                type = "text/plain"
+                                            })
+                                            2-> (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("", url))
+                                        }
+                                    }
+                                    true
+                                }
+                            }
+                            true
+                        }
+                    }
+                })
+
                 viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, query, urls)
                 TabLayoutMediator(tabs, viewPager) {tab, position -> tab.text = tabTitle[position] }.attach()
 
@@ -57,7 +108,7 @@ class WebSearchActivity : AppCompatActivity() {
                     set(recyclerView, (get(recyclerView) as Int) * 6)
                 }
 
-                // Long click on tab 0 or 1 to temporarily change it's search engine
+                // Click on tab 0 or 1 to temporarily change it's search engine
                 val tabStrip: LinearLayout = tabs.getChildAt(0) as LinearLayout
                 tabStrip.getChildAt(0).setOnClickListener {
                     // Show popup when the tab is displayed
@@ -92,29 +143,7 @@ class WebSearchActivity : AppCompatActivity() {
                         }
                     }
                 }
-                tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-                    }
 
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-                        // Restore default background
-                        tab?.view?.background = tabs.background
-                    }
-
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        // Draw a popup menu indicator for tab 0 and 1
-                        if (tab?.position == 0 || tab?.position == 1) {
-                            tab.view.apply {
-                                background = MaterialShapeDrawable(
-                                    ShapeAppearanceModel.builder()
-                                        .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
-                                        .setTopLeftCorner(CutCornerTreatment())
-                                        .build()
-                                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.color_primary)) }
-                            }
-                        }
-                    }
-                })
             }
             else {
                 // Default search enabled
@@ -133,23 +162,6 @@ class WebSearchActivity : AppCompatActivity() {
         else {
             finish()
             return
-        }
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-
-        // The first time the tab layout is shown, the tab selected event is not sent to OnTabSelectedListener, so we need to set the popup menu indicator here.
-        // This is a really annoying behavior
-        if (tabs.selectedTabPosition == 0 || tabs.selectedTabPosition == 1) {
-            tabs.getTabAt(tabs.selectedTabPosition)?.view?.apply {
-                background = MaterialShapeDrawable(
-                    ShapeAppearanceModel.builder()
-                        .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
-                        .setTopLeftCorner(CutCornerTreatment())
-                        .build()
-                ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.color_primary)) }
-            }
         }
     }
 

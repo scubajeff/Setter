@@ -436,6 +436,10 @@ class ReverseImageSearchFragment : Fragment() {
         }
     }
 
+    fun getCurrentUrl(): String? {
+        return webView.url
+    }
+
     // Calculate inSampleSize for image decoding, the longest side length is around MAX_SIDE_LENGTH, so that the decoded size is relative small, but
     // enough for image recognition
     private fun getSampleSize(currentWidth: Int, requiredWidth: Int): Int {

@@ -299,6 +299,10 @@ class TextSearchFragment : Fragment(){
         webView.loadUrl(urlString)
     }
 
+    fun getCurrentUrl(): String? {
+        return webView.url
+    }
+
     companion object {
         private const val RESULT_LOADED = "RESULT_LOADED"
         private const val KEY_URL = "KEY_URL"
