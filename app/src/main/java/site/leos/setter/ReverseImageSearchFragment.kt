@@ -224,7 +224,7 @@ class ReverseImageSearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
+        webView.onResume()
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
         webView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
@@ -246,12 +246,18 @@ class ReverseImageSearchFragment : Fragment() {
         })
     }
 
+    override fun onPause() {
+        webView.onPause()
+        super.onPause()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(RESULT_LOADED, resultLoaded)
         webView.saveState(outState)
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun uploadImage(imageUri: Uri, sampleSize: Int, serviceType: Int): String {
 
         return withContext(Dispatchers.IO) {

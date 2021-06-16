@@ -174,7 +174,7 @@ class TextSearchFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-
+        webView.onResume()
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
         webView.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
@@ -194,6 +194,11 @@ class TextSearchFragment : Fragment(){
             }
             false
         })
+    }
+
+    override fun onPause() {
+        webView.onPause()
+        super.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
