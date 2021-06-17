@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <queries>
+        <package android:name="com.socialnmobile.colordict" />
+        <intent>
+            <action android:name="colordict.intent.action.SEARCH" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
