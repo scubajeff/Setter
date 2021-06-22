@@ -1,4 +1,4 @@
 * dark theme
 * long click on tab title for actions on current page
 * remove all cookies when Setter is closed
-* other bug fixed and improvements
+* other bug fixed and improvement
