@@ -10,6 +10,12 @@
             <action android:name="colordict.intent.action.SEARCH" />
         </intent>
     </queries>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
