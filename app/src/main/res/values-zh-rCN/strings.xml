@@ -36,4 +36,6 @@
     <string name="translation_choice">翻译</string>
     <string name="edit_translate_hint">翻译文本</string>
     <string name="menuitem_browser">用浏览器打开本页</string>
+    <string name="remove_cookie_title">删除所有cookie</string>
+    <string name="remove_cookie_summary">退出二传搜时删除所有cookie</string>
 </resources>

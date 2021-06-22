@@ -16,6 +16,7 @@ import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import androidx.webkit.WebSettingsCompat
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.CoroutineScope
@@ -255,6 +256,13 @@ class ReverseImageSearchFragment : Fragment() {
         super.onSaveInstanceState(outState)
         outState.putBoolean(RESULT_LOADED, resultLoaded)
         webView.saveState(outState)
+    }
+
+    override fun onDestroy() {
+        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean(getString(R.string.remove_cookie_key), true)) {
+            CookieManager.getInstance().removeAllCookies(null)
+        }
+        super.onDestroy()
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")

@@ -43,4 +43,9 @@
     <string name="menuitem_download_image">Download image</string>
     <string name="menuitem_search_image">Reverse search image</string>
     <string name="menuitem_browser">Open in Browser</string>
+
+    <!-- Setting -->
+    <string name="remove_cookie_key" translatable="false">REMOVE_COOKIES</string>
+    <string name="remove_cookie_title">Remove All Cookies</string>
+    <string name="remove_cookie_summary">Remove all cookies when Setter is closed</string>
 </resources>

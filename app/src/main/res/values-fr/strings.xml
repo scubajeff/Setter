@@ -41,4 +41,6 @@
     <string name="menuitem_download_image">Télécharger l\'image</string>
     <string name="menuitem_search_image">Rechercher l\'image</string>
     <string name="menuitem_browser">Ouvrir avec le navigateur</string>
+    <string name="remove_cookie_title">Supprimer tous les cookies</string>
+    <string name="remove_cookie_summary">Suppression de tous les cookies lorsque le Setter est fermé</string>
 </resources>

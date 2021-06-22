@@ -41,4 +41,6 @@
     <string name="menuitem_download_image">Скачать изображение</string>
     <string name="menuitem_search_image">Поиск изображений</string>
     <string name="menuitem_browser">Просмотр в браузере</string>
+    <string name="remove_cookie_title">Удалить все файлы cookie</string>
+    <string name="remove_cookie_summary">Удаление всех файлов cookie при закрытии программы Setter</string>
 </resources>

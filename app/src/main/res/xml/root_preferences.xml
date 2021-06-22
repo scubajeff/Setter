@@ -18,7 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:title="@string/translator_header">
+        app:title="@string/translator_header"
+        app:icon="@drawable/ic_baseline_translate_24">
 
         <SwitchPreferenceCompat
             app:key="@string/colordict_fullscreen_key"
@@ -41,7 +42,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="@string/search_engine_header">
+        app:title="@string/search_engine_header"
+        app:icon="@drawable/ic_baseline_search_24">
 
         <DropDownPreference
             android:key="@string/search_engine_key"
@@ -60,6 +62,13 @@
             android:entryValues="@array/second_search_engine_values"
             android:defaultValue="@string/url_magi"
             app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            android:key="@string/remove_cookie_key"
+            android:title="@string/remove_cookie_title"
+            android:summary="@string/remove_cookie_summary"
+            app:defaultValue="true"
+            android:singleLineTitle="true" />
 
     </PreferenceCategory>
 
