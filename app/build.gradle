@@ -6,16 +6,16 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "site.leos.setter"
+        applicationId 'site.leos.setter'
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 9
-        versionName "0.1.8"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        archivesBaseName = "Setter-v$versionName"
+        versionName '0.1.8'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        archivesBaseName = 'Setter-v$versionName'
     }
 
     buildTypes {
@@ -27,17 +27,17 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.20"
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
-    implementation 'androidx.fragment:fragment-ktx:1.3.5'
-    implementation 'com.google.android.material:material:1.4.0-rc01'
-    implementation("androidx.webkit:webkit:1.4.0")
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.fragment:fragment-ktx:1.3.6'
+    implementation 'com.google.android.material:material:1.5.0-alpha01'
+    implementation('androidx.webkit:webkit:1.4.0')
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
