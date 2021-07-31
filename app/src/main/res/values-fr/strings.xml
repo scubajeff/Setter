@@ -7,21 +7,12 @@
 
     <!-- Translator -->
     <string name="translator_header">Paramètre du traducteur</string>
-    <string name="colordict_fullscreen_key" translatable="false">fullscreen</string>
     <string name="colordict_fullscreen_title">Lancer ColorDict en plein écran</string>
-    <string name="install_colordict_key" translatable="false">install_colordict</string>
     <string name="colordict_not_installed">Installer l\'application ColorDict</string>
     <string name="colordict_intro">Une application de dictionnaire hors ligne, respectant la vie privée. Supporte les dictionnaires au format stardict.</string>
-    <string name="url_deepl" translatable="false">https://www.deepl.com/translator#en/</string>
-    <string name="url_google_tranlation" translatable="false">https://translate.google.com/#view=home&amp;op=translate&amp;sl=auto&amp;tl=</string>
-    <string name="url_urban_dictionary" translatable="false">https://www.urbandictionary.com/define.php?term=</string>
-    <string name="url_jikipedia" translatable="false">https://jikipedia.com/search?phrase=</string>
     <string name="jikiName">jikipedia</string>
 
     <!-- Search Engine -->
-    <string name="meta_search_key" translatable="false">META_SEARCH</string>
-    <string name="search_engine_key" translatable="false">WEB_SEARCH_ENGINE</string>
-    <string name="second_search_engine_key" translatable="false">SECOND_WEB_SEARCH_ENGINE</string>
     <string name="search_engine_header">Paramètre de la recherche web</string>
     <string name="meta_search_web_engine_title">Choix du moteur de recherche</string>
     <string name="second_meta_search_web_engine_title">Second choix de moteur de recherche</string>
