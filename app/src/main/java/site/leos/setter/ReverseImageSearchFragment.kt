@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +66,7 @@ class ReverseImageSearchFragment : Fragment() {
             setSupportZoom(true)
             setGeolocationEnabled(false)
 
-            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES) {
+            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
                 WebSettingsCompat.setForceDark(this, WebSettingsCompat.FORCE_DARK_AUTO)
             }
         }
