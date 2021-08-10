@@ -117,6 +117,15 @@ class TextSearchFragment : Fragment(){
                 }
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                view?.loadUrl("javascript:" +
+                    """
+                        $('#dl_cookieBanner').hide();
+                        $('footer').hide();
+                    """
+                )
+            }
         }
 
         // Display loading progress
