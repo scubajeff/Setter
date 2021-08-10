@@ -42,6 +42,7 @@ class TextSearchFragment : Fragment(){
             //userAgentString = GoogleReverseImageSearchFragment.USER_AGENT_CHROME
             //cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
+            domStorageEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
             loadsImagesAutomatically = true
             loadWithOverviewMode = true

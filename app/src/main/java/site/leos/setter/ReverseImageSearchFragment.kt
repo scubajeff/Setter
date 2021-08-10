@@ -54,6 +54,7 @@ class ReverseImageSearchFragment : Fragment() {
             userAgentString = USER_AGENT_CHROME
             //cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
+            domStorageEnabled = true
             javaScriptCanOpenWindowsAutomatically = false
             loadsImagesAutomatically = true
             layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
