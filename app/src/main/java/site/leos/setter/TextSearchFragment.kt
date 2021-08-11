@@ -6,8 +6,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import android.webkit.*
 import android.widget.ProgressBar
@@ -20,19 +18,10 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 class TextSearchFragment : Fragment(){
-    private lateinit var webView :WebView
+    private lateinit var webView: WebView
     private var resultLoaded = false
-    private lateinit var urlString :String
-    private val hideHandler = Handler(Looper.getMainLooper())
-    private val hidePopup = Runnable {
-        webView.loadUrl("javascript:" +
-                """
-                    $('#dl_cookieBanner').hide();
-                    $('footer').hide();
-                    $('#layers').hide();
-                """
-        )
-    }
+    private lateinit var urlString: String
+    private var popupRemoved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         urlString = arguments?.getString(KEY_URL)!!
@@ -131,8 +120,27 @@ class TextSearchFragment : Fragment(){
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                hideHandler.removeCallbacks(hidePopup)
-                hideHandler.postDelayed(hidePopup, 2000)
+                url?.let {
+                    when {
+                        it.contains("deepl.com")-> {
+                            view?.evaluateJavascript("(function() { document.getElementById('dl_cookieBanner').style.display = 'none'; document.getElementById('footer').style.display = 'none'; })();") {}
+                        }
+                        it.contains("twitter.com")-> {
+                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 2000)
+                        }
+                        it.contains("reddit.com")-> {
+                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('XPromoPill__container')[0].style.display = 'none'; })();") {} }, 2000)
+                        }
+                        it.contains("weibo.cn")-> {
+                            view?.postDelayed(Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('card card11')[0].style.display = 'none'; document.getElementsByClassName('m-tab-bar m-bar-panel m-container-max')[0].style.display = 'none'; })();") {} }, 2000)
+                        }
+                        (it.contains("stackoverflow.com") || it.contains("stackexchange.com"))-> {
+                            //view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('js-consent-banner')[0].style.display = 'none'; })();") {} }, 1000)
+                            view?.evaluateJavascript("(function() { document.getElementsByClassName('js-consent-banner')[0].style.display = 'none'; })();") {}
+                        }
+                        else-> {}
+                    }
+                }
             }
         }
 
@@ -194,6 +202,9 @@ class TextSearchFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
+
+        popupRemoved = false
+
         webView.onResume()
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
