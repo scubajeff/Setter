@@ -15,7 +15,7 @@ android {
         versionCode 10
         versionName '0.1.9'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        archivesBaseName = 'Setter-v$versionName'
+        archivesBaseName = "Setter-v$versionName"
     }
 
     buildTypes {
