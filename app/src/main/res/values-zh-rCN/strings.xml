@@ -38,4 +38,9 @@
     <string name="menuitem_browser">用浏览器打开本页</string>
     <string name="remove_cookie_title">删除所有cookie</string>
     <string name="remove_cookie_summary">退出二传搜时删除所有cookie</string>
+    <string name="set_as_assistant_title">将二传搜设置为系统辅助应用</string>
+    <string name="set_as_assistant_summary">可以随时调用二传搜</string>
+    <string name="add_widget_title">添加微件</string>
+    <string name="add_widget_summary">从桌面微件调用二传搜</string>
+    <string name="search_now_title">搜索</string>
 </resources>

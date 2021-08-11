@@ -72,4 +72,26 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="Launcher"
+        android:icon="@drawable/ic_baseline_launch_24">
+
+        <Preference
+            app:title="@string/set_as_assistant_title"
+            app:summary="@string/set_as_assistant_summary">
+            <intent android:action="android.settings.MANAGE_DEFAULT_APPS_SETTINGS"/>
+        </Preference>
+
+        <Preference
+            android:key="@string/add_widget_key"
+            app:title="@string/add_widget_title"
+            app:summary="@string/add_widget_summary" />
+
+        <Preference
+            app:title="@string/search_now_title">
+            <intent android:targetPackage="site.leos.setter" android:targetClass="site.leos.setter.DirectSearchActivity" />
+        </Preference>
+    </PreferenceCategory>
+
+
 </PreferenceScreen>
