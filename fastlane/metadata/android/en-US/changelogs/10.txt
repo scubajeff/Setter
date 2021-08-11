@@ -1,0 +1,5 @@
+* fixed DeepL translator
+* fixed dark mode
+* hide annoying website popup
+* add launcher setting
+* other bug fixed and improvement
