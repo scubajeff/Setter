@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.webkit.*
 import android.widget.ProgressBar
@@ -18,9 +20,19 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 class TextSearchFragment : Fragment(){
-    lateinit var webView :WebView
-    var resultLoaded = false
-    lateinit var urlString :String
+    private lateinit var webView :WebView
+    private var resultLoaded = false
+    private lateinit var urlString :String
+    private val hideHandler = Handler(Looper.getMainLooper())
+    private val hidePopup = Runnable {
+        webView.loadUrl("javascript:" +
+                """
+                    $('#dl_cookieBanner').hide();
+                    $('footer').hide();
+                    $('#layers').hide();
+                """
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         urlString = arguments?.getString(KEY_URL)!!
@@ -119,12 +131,8 @@ class TextSearchFragment : Fragment(){
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                view?.loadUrl("javascript:" +
-                    """
-                        $('#dl_cookieBanner').hide();
-                        $('footer').hide();
-                    """
-                )
+                hideHandler.removeCallbacks(hidePopup)
+                hideHandler.postDelayed(hidePopup, 2000)
             }
         }
 
