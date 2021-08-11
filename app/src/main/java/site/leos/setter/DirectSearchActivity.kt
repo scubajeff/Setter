@@ -15,16 +15,18 @@ import kotlinx.android.synthetic.main.directsearch_activity.*
 class DirectSearchActivity : AppCompatActivity() {
     private lateinit var query: TextInputEditText
     private lateinit var queryLayout: TextInputLayout
+    private lateinit var metaButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.directsearch_activity)
 
+        metaButton = findViewById(R.id.meta_search)
         queryLayout = findViewById(R.id.edit_layout)
         query = findViewById<TextInputEditText>(R.id.edit_query).apply {
             requestFocus()
             setOnEditorActionListener { _, id, _ ->
-                if (id == EditorInfo.IME_ACTION_SEARCH || id == EditorInfo.IME_NULL) searchIt(query.text.toString(), true)
+                if (id == EditorInfo.IME_ACTION_SEARCH || id == EditorInfo.IME_NULL) searchIt(query.text.toString(), metaButton.isChecked)
                 else false
             }
         }
