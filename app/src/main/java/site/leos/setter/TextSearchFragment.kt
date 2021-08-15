@@ -22,11 +22,12 @@ class TextSearchFragment : Fragment(){
     private var resultLoaded = false
     private lateinit var urlString: String
     private var popupRemoved = false
+    private lateinit var packageManager: PackageManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        urlString = arguments?.getString(KEY_URL)!!
-
         super.onCreate(savedInstanceState)
+        urlString = arguments?.getString(KEY_URL)!!
+        packageManager = requireActivity().packageManager
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,14 +66,15 @@ class TextSearchFragment : Fragment(){
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
-            private val defaultBrowserName = requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: ""
+            private val defaultBrowserName = packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: ""
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =
                 request?.let {
                     when(it.url.scheme) {
                         in setOf("http", "https")-> {
-                            if (defaultBrowserName != (requireContext().packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NO_MATCH")
-                                && !(it.url.toString().startsWith(urlString.substringBefore('?')))) {
+                            if (defaultBrowserName != (packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NO_MATCH")
+                                && !(it.url.toString().startsWith(urlString.substringBefore('?')))
+                            ) {
                                 try {
                                     startActivity(Intent(Intent.ACTION_VIEW, it.url).apply {
                                         addCategory(Intent.CATEGORY_BROWSABLE)
