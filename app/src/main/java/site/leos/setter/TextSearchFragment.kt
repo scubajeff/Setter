@@ -133,6 +133,9 @@ class TextSearchFragment : Fragment(){
                         it.contains("reddit.com")-> {
                             view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('XPromoPill__container')[0].style.display = 'none'; })();") {} }, 2000)
                         }
+                        it.contains("weixin.sogou.com")-> {
+                            view?.evaluateJavascript("(function() { document.getElementById('right').style.display = 'none'; document.getElementById('s_footer').style.display = 'none'; document.getElementsByClassName('header-box')[0].style.display = 'none'; document.getElementsByClassName('back-top')[0].style.display = 'none'; document.getElementsByClassName('bottom-form')[0].style.display = 'none'; document.getElementById('main').setAttribute(\"style\",\"width:100vw\"); document.getElementById('wrapper').setAttribute(\"style\",\"width:100vw\"); document.getElementById('pagebar_container').setAttribute(\"style\",\"width:100vw\"); })();") {}
+                        }
                         it.contains("weibo.cn")-> {
                             view?.postDelayed(Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('card card11')[0].style.display = 'none'; document.getElementsByClassName('m-tab-bar m-bar-panel m-container-max')[0].style.display = 'none'; })();") {} }, 2000)
                         }
