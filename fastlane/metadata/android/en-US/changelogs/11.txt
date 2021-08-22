@@ -1,0 +1,3 @@
+* fixed when select translate but Setter still goes to search
+* hide annoying website popup
+* other bug fixed and improvement
