@@ -1,0 +1,3 @@
+* add share to translate option
+* use single instance launch mode
+* other bug fixed and improvement
