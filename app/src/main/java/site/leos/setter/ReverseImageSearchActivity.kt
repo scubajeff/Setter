@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -29,18 +28,9 @@ class ReverseImageSearchActivity : AppCompatActivity() {
             // If text/* is shared to us and the text is not a image link then call WebSearchActivity
             if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("text/")!!) {
                 intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                    val imgPattern =
-                        Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;\\[\\]]*[-a-zA-Z0-9+&\\]@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$")
-                    if (!imgPattern.matcher(it).matches()) {
+                    if (!Pattern.compile("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;\\[\\]]*[-a-zA-Z0-9+&\\]@#/%=~_|](\\.(?i)(jpe?g|png|gif|bmp))\$").matcher(it).matches()) {
                         // If text sent is not a image link, then call WebSearchActivity
-                        startActivity(
-                            Intent(this, WebSearchActivity::class.java)
-                                .putExtra(Intent.EXTRA_PROCESS_TEXT, it)
-                                .putExtra(WebSearchActivity.META,
-                                    PreferenceManager.getDefaultSharedPreferences(this)
-                                        .getBoolean(getString(R.string.meta_search_key), true)
-                                )
-                        )
+                        startActivity(Intent(this, WebSearchActivity::class.java).putExtra(Intent.EXTRA_PROCESS_TEXT, it))
                         finish()
                         return
                     }
@@ -104,7 +94,10 @@ class ReverseImageSearchActivity : AppCompatActivity() {
             }
 
         }
-        else finish()
+        else {
+            finish()
+            return
+        }
     }
 
     private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {

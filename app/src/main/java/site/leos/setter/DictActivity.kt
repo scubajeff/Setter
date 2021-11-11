@@ -13,9 +13,12 @@ class DictActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val query = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: ""
+        val query = intent.getStringExtra(if (intent.action == Intent.ACTION_SEND) Intent.EXTRA_TEXT else Intent.EXTRA_PROCESS_TEXT) ?: ""
 
-        if (query.isEmpty()) finish()
+        if (query.isEmpty()) {
+            finish()
+            return
+        }
 
         if (isColorDictAvailable()) {
             // We can do dictionary lookup only if ColorDict is installed
