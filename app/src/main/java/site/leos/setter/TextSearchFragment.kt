@@ -54,6 +54,7 @@ class TextSearchFragment : Fragment(){
             displayZoomControls = false
             setSupportZoom(true)
             setGeolocationEnabled(false)
+            userAgentString = "Mozilla/5.0 (Android 11; Mobile; rv:86.0) Gecko/86.0 Firefox/86.0"
 
             if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
                 WebSettingsCompat.setForceDark(this, WebSettingsCompat.FORCE_DARK_ON)
