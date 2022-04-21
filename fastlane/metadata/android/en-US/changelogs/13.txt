@@ -1,0 +1,3 @@
+* use Firefox user agent in text search
+* re-order setting menu
+* other bug fixed and improvement
