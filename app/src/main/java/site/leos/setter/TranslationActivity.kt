@@ -30,7 +30,8 @@ class TranslationActivity : AppCompatActivity() {
         val defaultLocale = Locale.getDefault()
         val query = intent.getStringExtra(KEY_QUERY)
         var deepLURL = getString(R.string.url_deepl)
-        var googleURL = getString(R.string.url_google_tranlation)
+        var googleURL = getString(R.string.url_google_translation)
+        val papagoURL = getString(R.string.url_papago_translation) + query
         val udURL = getString(R.string.url_urban_dictionary) + query
         val jikiURL = getString(R.string.url_jikipedia) + query
 
@@ -38,13 +39,14 @@ class TranslationActivity : AppCompatActivity() {
         googleURL = if (defaultLocale.language.equals("zh")) googleURL + defaultLocale.language + "-" + defaultLocale.country + "&text=" else googleURL + defaultLocale.language + "&text="
         googleURL += query
 
-        viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, deepLURL, googleURL, udURL, jikiURL)
+        viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, deepLURL, googleURL, papagoURL, udURL, jikiURL)
         TabLayoutMediator(tabs, viewPager) {tab, position ->
             when (position) {
                 0 -> {tab.text = "DeepL"}
                 1 -> {tab.text = "Google"}
-                2 -> {tab.text = "Urban Dictionary"}
-                3 -> {tab.text = getString(R.string.jikiName)}
+                2 -> {tab.text = "Papago"}
+                3 -> {tab.text = "Urban Dictionary"}
+                4 -> {tab.text = getString(R.string.jikiName)}
             }
         }.attach()
         viewPager.recyclerView.enforceSingleScrollDirection()
@@ -89,16 +91,17 @@ class TranslationActivity : AppCompatActivity() {
         }
     }
 
-    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val url0:String, val url1:String, val url2:String, val url3:String)
+    private class ViewStateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val url0:String, val url1:String, val url2:String, val url3:String, val url4:String)
         : FragmentStateAdapter(fragmentManager, lifecycle) {
-        override fun getItemCount(): Int = 4
+        override fun getItemCount(): Int = 5
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> TextSearchFragment.newInstance(url0)
                 1 -> TextSearchFragment.newInstance(url1)
                 2 -> TextSearchFragment.newInstance(url2)
-                else -> TextSearchFragment.newInstance(url3)
+                3 -> TextSearchFragment.newInstance(url3)
+                else -> TextSearchFragment.newInstance(url4)
             }
         }
     }
