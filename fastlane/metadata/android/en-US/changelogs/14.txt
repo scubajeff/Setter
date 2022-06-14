@@ -1,0 +1,3 @@
+* added papago.com translation engine for Korean friends
+* moved UI elements to bottom of the screen for easy single hand operation
+* other bug fixed and improvement
