@@ -126,10 +126,11 @@ class TextSearchFragment : Fragment(){
                 url?.let {
                     when {
                         it.contains("deepl.com")-> {
-                            view?.evaluateJavascript("(function() { document.getElementById('dl_cookieBanner').style.display = 'none'; document.getElementById('footer').style.display = 'none'; })();") {}
+                            view?.postDelayed( { view.evaluateJavascript("(function() { document.getElementsByClassName('cookieBanner-module--outer--NAOuo')[0].style.display = 'none'; document.getElementsByClassName('lmt__bottom_text--mobile')[0].style.display = 'none'; document.getElementById('lmt_pro_ad_container').style.display = 'none'; document.getElementById('footer').style.display = 'none'; })();") {} }, 2000)
                         }
                         it.contains("twitter.com")-> {
                             view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 2000)
+                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 3000)
                         }
                         it.contains("reddit.com")-> {
                             view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('XPromoPill__container')[0].style.display = 'none'; })();") {} }, 2000)
