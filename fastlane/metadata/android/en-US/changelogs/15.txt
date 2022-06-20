@@ -1,0 +1,2 @@
+* auto close cookie consent popup on DeepL
+* other bug fixed and improvement
