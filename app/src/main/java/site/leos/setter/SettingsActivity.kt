@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
@@ -18,6 +19,10 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.settings_activity)
         supportFragmentManager.beginTransaction().replace(R.id.settings, SettingsFragment()).commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        // Disable 'Look up' context action menu when 'Translation' button is enabled in API 29+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            packageManager.setComponentEnabledSetting(ComponentName(BuildConfig.APPLICATION_ID, "${BuildConfig.APPLICATION_ID}.DictActivity28"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
     }
 
     class SettingsFragment: PreferenceFragmentCompat() {

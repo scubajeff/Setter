@@ -13,7 +13,13 @@ class DictActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val query = intent.getStringExtra(if (intent.action == Intent.ACTION_SEND) Intent.EXTRA_TEXT else Intent.EXTRA_PROCESS_TEXT) ?: ""
+        val query = intent.getStringExtra(
+            when(intent.action) {
+                Intent.ACTION_SEND -> Intent.EXTRA_TEXT
+                Intent.ACTION_TRANSLATE -> Intent.EXTRA_TEXT
+                else -> Intent.EXTRA_PROCESS_TEXT
+            }
+        ) ?: ""
 
         if (query.isEmpty()) {
             finish()
