@@ -1,0 +1,2 @@
+* installed as Translator app on Android Q and up
+* other bug fixed and improvement
