@@ -59,12 +59,14 @@ class DictActivity : AppCompatActivity() {
                         else display?.getRealSize(size)
                         colorDictIntent.putExtra("EXTRA_FULLSCREEN", false)
                                         .putExtra("EXTRA_HEIGHT", size.y / 2)
+/*
                                         .putExtra("EXTRA_MARGIN_LEFT", size.x / 20)
                                         .putExtra("EXTRA_MARGIN_RIGHT", size.x / 20)
+*/
                                         .putExtra("EXTRA_GRAVITY", Gravity.BOTTOM)
                     }
 
-                    colorDictIntent.putExtra("EXTRA_QUERY", query)
+                    colorDictIntent.putExtra("EXTRA_QUERY", query).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(colorDictIntent)
 
                     finish()
