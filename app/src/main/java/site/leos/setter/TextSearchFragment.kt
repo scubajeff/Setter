@@ -102,6 +102,9 @@ class TextSearchFragment : Fragment(){
                                 } catch (e: ActivityNotFoundException) {
                                     e.printStackTrace()
                                     return false
+                                } catch (e: IllegalStateException) {
+                                    e.printStackTrace()
+                                    return false
                                 }
                                 webView.stopLoading()
                                 true

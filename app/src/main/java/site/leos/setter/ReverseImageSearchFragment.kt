@@ -104,7 +104,7 @@ class ReverseImageSearchFragment : Fragment() {
                 super.onReceivedError(view, request, error)
                 // Reload the page when ERROR_TIMEOUT or ERROR_HOST_LOOKUP happens on result's base url
                 if (error?.errorCode == WebViewClient.ERROR_TIMEOUT || error?.errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
-                    if (result!!.contains(request?.url?.host.toString())) view?.reload()
+                    result?.let { if (result!!.contains(request?.url?.host.toString())) view?.reload() }
                 }
                 //Log.e("===================================", "${error?.errorCode} ${error?.description} ${request?.url}")
             }
