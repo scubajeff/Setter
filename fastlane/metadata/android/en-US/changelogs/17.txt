@@ -1,0 +1,2 @@
+* bring back 'Look up' menu though it's duplicate when 'Translate' menu shown, since 'Translate' appearance depends on selected text's locale and might not be shown under some circumstances
+* other bug fixed and improvement
