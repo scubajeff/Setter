@@ -66,6 +66,7 @@
 
         <activity
             android:name=".DictActivity"
+            android:label="@string/dict_name"
             android:theme="@style/AppTheme.NoDisplay"
             android:launchMode="singleInstance"
             android:exported="true">
@@ -73,25 +74,17 @@
                 <action android:name="android.intent.action.TRANSLATE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
             <intent-filter android:label="@string/translation_choice">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
-
-        <activity-alias
-            android:name=".DictActivity28"
-            android:targetActivity=".DictActivity"
-            android:label="@string/dict_name"
-            android:exported="true"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PROCESS_TEXT" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity-alias>
 
         <activity
             android:name=".TranslationActivity"
