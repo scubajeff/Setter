@@ -43,15 +43,19 @@
 
     <!-- Direct Search -->
     <string name="edit_search_hint">网址或搜索词条</string>
+    <string name="edit_translate_hint">翻译文本</string>
     <string name="meta_search_choice">二传搜</string>
+    <string name="translation_choice">翻译</string>
+
+    <!-- 上下文菜单 -->
     <string name="menuitem_view_hyperlink">跳转指定应用</string>
     <string name="menuitem_share_hyperlink">分享链接</string>
     <string name="menuitem_copy_hyperlink">拷贝链接</string>
     <string name="menuitem_download_image">下载图片</string>
     <string name="menuitem_search_image">搜索图片</string>
-    <string name="translation_choice">翻译</string>
-    <string name="edit_translate_hint">翻译文本</string>
     <string name="menuitem_browser">用浏览器打开本页</string>
+
+    <!-- 设置 -->
     <string name="remove_cookie_title">删除所有cookie</string>
     <string name="remove_cookie_summary">退出二传搜时删除所有cookie</string>
     <string name="set_as_assistant_title">将二传搜设置为系统辅助应用</string>
@@ -59,4 +63,7 @@
     <string name="add_widget_title">添加微件</string>
     <string name="add_widget_summary">从桌面微件调用二传搜</string>
     <string name="search_now_title">搜索</string>
+
+    <!-- 小部件 -->
+    <string name="widget_hints">启动二传搜</string>
 </resources>

@@ -33,6 +33,10 @@
         <item name="android:windowNoDisplay">true</item>
     </style>
 
+    <style name="AppTheme.WidgetTheme" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="android:colorPrimary">@color/color_primary</item>
+    </style>
+
     <!-- Custom text style to allow lower case in Tab Layout title -->
     <style name="CustomTextAppearanceTab" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>

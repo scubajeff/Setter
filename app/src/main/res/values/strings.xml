@@ -71,4 +71,6 @@
     <string name="add_widget_title">Add widget on home screen</string>
     <string name="add_widget_summary">Launch Setter from home screen</string>
     <string name="search_now_title">Search now!</string>
+
+    <string name="widget_hints">Search by Setter</string>
 </resources>

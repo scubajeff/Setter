@@ -28,11 +28,11 @@ class SearchWidget : AppWidgetProvider() {
         // There may be multiple widgets active, so update all of them
         appWidgetIds.forEach {
             val intent: PendingIntent = Intent(context, DirectSearchActivity::class.java).let { i ->
-                PendingIntent.getActivity(context, 0, i, 0)
+                PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_IMMUTABLE)
             }
             val views = RemoteViews(context.packageName, R.layout.search_widget).apply {
                 setOnClickPendingIntent(R.id.searchwidget_text, intent)
-                setOnClickPendingIntent(R.id.searchwidget_logo, intent)
+                setOnClickPendingIntent(R.id.logo, intent)
             }
 
             // Tell the AppWidgetManager to perform an update on the current app widget
