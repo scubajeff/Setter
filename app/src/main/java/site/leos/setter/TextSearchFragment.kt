@@ -31,10 +31,10 @@ import androidx.preference.PreferenceManager
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import kotlinx.android.synthetic.main.fragment_webview.*
 
 class TextSearchFragment : Fragment(){
     private lateinit var webView: WebView
+    private lateinit var status: TextView
     private var resultLoaded = false
     private lateinit var urlString: String
     private var popupRemoved = false
@@ -53,6 +53,8 @@ class TextSearchFragment : Fragment(){
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        status = view.findViewById(R.id.status)
         webView = view.findViewById(R.id.webview)
         val progressIndicator : LinearProgressIndicator = view.findViewById(R.id.progress_indicator)
 

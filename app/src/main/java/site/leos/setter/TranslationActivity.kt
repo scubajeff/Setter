@@ -33,7 +33,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_tabs.*
 import java.util.*
 
 
@@ -54,6 +53,9 @@ class TranslationActivity : AppCompatActivity() {
         deepLURL = "$deepLURL${defaultLocale.language}/$query"
         googleURL = if (defaultLocale.language.equals("zh")) googleURL + defaultLocale.language + "-" + defaultLocale.country + "&text=" else googleURL + defaultLocale.language + "&text="
         googleURL += query
+
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        val tabs = findViewById<TabLayout>(R.id.tabs)
 
         viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle, deepLURL, googleURL, papagoURL, udURL, jikiURL)
         TabLayoutMediator(tabs, viewPager) {tab, position ->

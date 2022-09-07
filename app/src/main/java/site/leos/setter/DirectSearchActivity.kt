@@ -26,10 +26,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.directsearch_activity.*
 
 class DirectSearchActivity : AppCompatActivity() {
-    private lateinit var query: TextInputEditText
+    private lateinit var queryEdit: TextInputEditText
     private lateinit var queryLayout: TextInputLayout
     private lateinit var metaButton: MaterialButton
 
@@ -39,20 +38,20 @@ class DirectSearchActivity : AppCompatActivity() {
 
         metaButton = findViewById(R.id.meta_search)
         queryLayout = findViewById(R.id.edit_layout)
-        query = findViewById<TextInputEditText>(R.id.edit_query).apply {
+        queryEdit = findViewById<TextInputEditText>(R.id.edit_query).apply {
             requestFocus()
             setOnEditorActionListener { _, id, _ ->
-                if (id == EditorInfo.IME_ACTION_SEARCH || id == EditorInfo.IME_NULL) searchIt(query.text.toString(), metaButton.isChecked)
+                if (id == EditorInfo.IME_ACTION_SEARCH || id == EditorInfo.IME_NULL) searchIt(queryEdit.text.toString(), metaButton.isChecked)
                 else false
             }
         }
 
         findViewById<MaterialButton>(R.id.meta_search).setOnClickListener {
-            if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), true)
+            if (queryEdit.text!!.isNotEmpty()) searchIt(queryEdit.text.toString(), true)
             else queryLayout.hint = getString(R.string.edit_search_hint)
         }
         findViewById<MaterialButton>(R.id.translate).setOnClickListener {
-            if (query.text!!.isNotEmpty()) searchIt(query.text.toString(), false)
+            if (queryEdit.text!!.isNotEmpty()) searchIt(queryEdit.text.toString(), false)
             else queryLayout.hint = getString(R.string.edit_translate_hint)
         }
     }
@@ -60,7 +59,7 @@ class DirectSearchActivity : AppCompatActivity() {
     private fun searchIt(query: String, meta: Boolean) : Boolean {
         if (query.isNotBlank()) {
             // Hide soft keyboard
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(edit_query.windowToken, 0)
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(queryEdit.windowToken, 0)
 
             if (meta) {
                 if (android.util.Patterns.WEB_URL.matcher(query).matches()) {

@@ -33,7 +33,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_tabs.*
 import java.util.regex.Pattern
 
 class ReverseImageSearchActivity : AppCompatActivity() {
@@ -55,6 +54,9 @@ class ReverseImageSearchActivity : AppCompatActivity() {
 
             // Otherwise do image reverse search
             setContentView(R.layout.activity_tabs)
+
+            val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+            val tabs = findViewById<TabLayout>(R.id.tabs)
 
             viewPager.adapter = ViewStateAdapter(supportFragmentManager, lifecycle)
             TabLayoutMediator(tabs, viewPager) {tab, position ->

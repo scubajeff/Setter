@@ -40,8 +40,6 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_tabs.*
-
 
 class WebSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +62,9 @@ class WebSearchActivity : AppCompatActivity() {
             urls[0] = getString(getString(R.string.search_engine_key), getString(R.string.url_duck))
             urls[1] = getString(getString(R.string.second_search_engine_key), getString(R.string.url_magi))
         }
+
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        val tabs = findViewById<TabLayout>(R.id.tabs)
 
         tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?) {
