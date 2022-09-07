@@ -23,10 +23,12 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -86,7 +88,12 @@ class WebSearchActivity : AppCompatActivity() {
                                     .setTopLeftCornerSize((width + height - (8 * resources.displayMetrics.densityDpi / 160)).toFloat())
                                     .setTopLeftCorner(CutCornerTreatment())
                                     .build()
-                            ).apply { fillColor = ColorStateList.valueOf(getColor(R.color.color_primary)) }
+                            ).apply { fillColor = ColorStateList.valueOf(
+                                TypedValue().let {
+                                    theme.resolveAttribute(android.R.attr.colorPrimary, it, true)
+                                    ContextCompat.getColor(context, it.resourceId)
+                                }
+                            ) }
                         }
                     }
                 }

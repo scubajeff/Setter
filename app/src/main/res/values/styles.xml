@@ -17,11 +17,9 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorSecondary">@color/color_primary</item>
-        <item name="android:statusBarColor">@color/color_primary</item>
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">#40404040</item>
     </style>
 
     <style name="AppTheme.NoDisplay" parent="AppTheme">
@@ -33,9 +31,7 @@
         <item name="android:windowNoDisplay">true</item>
     </style>
 
-    <style name="AppTheme.WidgetTheme" parent="Theme.Material3.DynamicColors.DayNight">
-        <item name="android:colorPrimary">@color/color_primary</item>
-    </style>
+    <style name="AppTheme.WidgetTheme" parent="Theme.Material3.DynamicColors.DayNight" />
 
     <!-- Custom text style to allow lower case in Tab Layout title -->
     <style name="CustomTextAppearanceTab" parent="TextAppearance.Design.Tab">

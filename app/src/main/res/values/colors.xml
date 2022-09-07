@@ -16,7 +16,5 @@
   -->
 
 <resources>
-    <color name="color_primary">#198964</color>
-    <color name="widget_background">#EDEDED</color>
     <color name="ic_launcher_background">#198964</color>
 </resources>
