@@ -17,15 +17,21 @@
 package site.leos.setter
 
 import android.annotation.SuppressLint
+import android.app.DownloadManager
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.*
 import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.webkit.WebSettingsCompat
@@ -39,11 +45,16 @@ class TextSearchFragment : Fragment(){
     private lateinit var urlString: String
     private var popupRemoved = false
     private lateinit var packageManager: PackageManager
+    private lateinit var storagePermissionRequest:  ActivityResultLauncher<String>
+    private var savedUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         urlString = arguments?.getString(KEY_URL)!!
         packageManager = requireActivity().packageManager
+        storagePermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) downloadFile(savedUrl)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -291,7 +302,7 @@ class TextSearchFragment : Fragment(){
             }
             WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
                 menu.add(0, MENU_ITEM_SEARCH_IMAGE, 0, R.string.menuitem_search_image)
-                //menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 1, R.string.menuitem_download_image)
+                menu.add(0, MENU_ITEM_DOWNLOAD_IMAGE, 1, R.string.menuitem_download_image)
             }
             else-> super.onCreateContextMenu(menu, v, menuInfo)
         }
@@ -317,6 +328,13 @@ class TextSearchFragment : Fragment(){
                     true
                 }
                 MENU_ITEM_DOWNLOAD_IMAGE->{
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) downloadFile(it)
+                    else {
+                        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            savedUrl = it
+                            storagePermissionRequest.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        }
+                    }
                     true
                 }
                 MENU_ITEM_SEARCH_IMAGE->{
@@ -331,34 +349,6 @@ class TextSearchFragment : Fragment(){
                 else-> false
             }
         } ?: false
-/*
-        run {
-            if (webView.hitTestResult.type == WebView.HitTestResult.UNKNOWN_TYPE) {
-                when(item.itemId) {
-                    MENU_ITEM_UNKNOWN -> {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(webView.url)))
-                        true
-                    }
-                    MENU_ITEM_SHARE_HYPERLINK -> {
-                        startActivity(Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, webView.url)
-                            type = "text/plain"
-                        })
-                        true
-                    }
-                    MENU_ITEM_COPY_HYPERLINK -> {
-                        (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
-                            ClipData.newPlainText("", webView.url)
-                        )
-                        true
-                    }
-                    else -> false
-                }
-            }
-            else false
-        }
-*/
 
     fun reload(newUrl: String) {
         urlString = newUrl
@@ -367,6 +357,18 @@ class TextSearchFragment : Fragment(){
 
     fun getCurrentUrl(): String? {
         return webView.url
+    }
+
+    private fun downloadFile(url: String) {
+        val name = URLUtil.guessFileName(url, null, "image/*")
+        (requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
+            DownloadManager.Request(Uri.parse((url)))
+                .setMimeType("image/*")
+                .setTitle(name)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI and DownloadManager.Request.NETWORK_MOBILE)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "/setter/$name")
+        )
     }
 
     companion object {

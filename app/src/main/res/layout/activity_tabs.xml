@@ -26,8 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabGravity="start"
-        app:tabPaddingStart="4dp"
-        app:tabPaddingEnd="4dp"
+        app:tabIndicatorFullWidth="true"
         app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabMode="scrollable" />
 
