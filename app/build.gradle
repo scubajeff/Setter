@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId 'site.leos.setter'
         minSdk 26
-        targetSdk 30
+        targetSdk 33
         versionCode 17
         versionName '0.1.16'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -17,6 +16,7 @@ android {
 
     buildTypes {
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
