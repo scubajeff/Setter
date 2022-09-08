@@ -17,20 +17,27 @@
 package site.leos.setter
 
 import android.annotation.SuppressLint
+import android.app.DownloadManager
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Parcelable
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.webkit.WebSettingsCompat
@@ -51,6 +58,15 @@ class ReverseImageSearchFragment : Fragment() {
     lateinit var webView:WebView
     lateinit var status:TextView
     var resultLoaded:Boolean = false
+    private lateinit var storagePermissionRequest: ActivityResultLauncher<String>
+    private var savedUrl = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        storagePermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) downloadFile(savedUrl)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_webview, container, false)
@@ -82,12 +98,15 @@ class ReverseImageSearchFragment : Fragment() {
             setSupportZoom(true)
             setGeolocationEnabled(false)
 
-            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                @Suppress("DEPRECATION")
                 WebSettingsCompat.setForceDark(this, WebSettingsCompat.FORCE_DARK_AUTO)
             }
         }
         webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
         webView.isScrollbarFadingEnabled = true
+
+        registerForContextMenu(webView)
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
@@ -283,6 +302,74 @@ class ReverseImageSearchFragment : Fragment() {
         super.onDestroy()
     }
 
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        when (webView.hitTestResult.type) {
+/*
+            WebView.HitTestResult.UNKNOWN_TYPE-> {
+                menu.add(0, MENU_ITEM_UNKNOWN, 0, R.string.menuitem_browser)
+                menu.add(0, MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
+                menu.setHeaderTitle(webView.url)
+            }
+*/
+            WebView.HitTestResult.SRC_ANCHOR_TYPE, WebView.HitTestResult.EMAIL_TYPE, WebView.HitTestResult.GEO_TYPE, WebView.HitTestResult.PHONE_TYPE-> {
+                menu.add(0, TextSearchFragment.MENU_ITEM_VIEW_HYPERLINK, 0, R.string.menuitem_view_hyperlink)
+                menu.add(0, TextSearchFragment.MENU_ITEM_SHARE_HYPERLINK, 1, R.string.menuitem_share_hyperlink)
+                menu.add(0, TextSearchFragment.MENU_ITEM_COPY_HYPERLINK, 2, R.string.menuitem_copy_hyperlink)
+                menu.setHeaderTitle(webView.hitTestResult.extra.toString())
+            }
+            WebView.HitTestResult.IMAGE_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE-> {
+                //menu.add(0, TextSearchFragment.MENU_ITEM_SEARCH_IMAGE, 0, R.string.menuitem_search_image)
+                menu.add(0, TextSearchFragment.MENU_ITEM_DOWNLOAD_IMAGE, 1, R.string.menuitem_download_image)
+            }
+            else-> super.onCreateContextMenu(menu, v, menuInfo)
+        }
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean =
+        webView.hitTestResult.extra?.let {
+            when(item.itemId) {
+                TextSearchFragment.MENU_ITEM_VIEW_HYPERLINK ->{
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+                    true
+                }
+                TextSearchFragment.MENU_ITEM_SHARE_HYPERLINK ->{
+                    startActivity(Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        type = "text/plain"
+                    })
+                    true
+                }
+                TextSearchFragment.MENU_ITEM_COPY_HYPERLINK ->{
+                    (requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("", it))
+                    true
+                }
+                TextSearchFragment.MENU_ITEM_DOWNLOAD_IMAGE ->{
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) downloadFile(it)
+                    else {
+                        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            savedUrl = it
+                            storagePermissionRequest.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        }
+                    }
+                    true
+                }
+/*
+                TextSearchFragment.MENU_ITEM_SEARCH_IMAGE ->{
+                    startActivity(Intent().apply {
+                        action = ReverseImageSearchActivity.REVERSE_SEARCH_LINK
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        putExtra(TextSearchFragment.SHARE_FROM_ME, true)
+                        type = "text/plain"
+                    })
+                    true
+                }
+*/
+                else-> false
+            }
+        } ?: false
+
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun uploadImage(imageUri: Uri, sampleSize: Int, serviceType: Int): String {
 
@@ -476,6 +563,20 @@ class ReverseImageSearchFragment : Fragment() {
             while (halfWidth / inSampleSize >= requiredWidth) inSampleSize *= 2
         }
         return inSampleSize
+    }
+
+    private fun downloadFile(url: String) {
+        val name = URLUtil.guessFileName(url, null, "image/*")
+        try {
+            (requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
+                DownloadManager.Request(Uri.parse((url)))
+                    .setMimeType("image/*")
+                    .setTitle(name)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI and DownloadManager.Request.NETWORK_MOBILE)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "/setter/$name")
+            )
+        } catch (_: Exception) {}
     }
 
     companion object {

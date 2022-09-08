@@ -85,7 +85,8 @@ class TextSearchFragment : Fragment(){
             setGeolocationEnabled(false)
             userAgentString = "Mozilla/5.0 (Android 11; Mobile; rv:86.0) Gecko/86.0 Firefox/86.0"
 
-            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                @Suppress("DEPRECATION")
                 WebSettingsCompat.setForceDark(this, WebSettingsCompat.FORCE_DARK_ON)
             }
         }
@@ -361,26 +362,28 @@ class TextSearchFragment : Fragment(){
 
     private fun downloadFile(url: String) {
         val name = URLUtil.guessFileName(url, null, "image/*")
-        (requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
-            DownloadManager.Request(Uri.parse((url)))
-                .setMimeType("image/*")
-                .setTitle(name)
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI and DownloadManager.Request.NETWORK_MOBILE)
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "/setter/$name")
-        )
+        try {
+            (requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
+                DownloadManager.Request(Uri.parse((url)))
+                    .setMimeType("image/*")
+                    .setTitle(name)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI and DownloadManager.Request.NETWORK_MOBILE)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "/setter/$name")
+            )
+        } catch (_: Exception) {}
     }
 
     companion object {
         private const val RESULT_LOADED = "RESULT_LOADED"
         private const val KEY_URL = "KEY_URL"
         private const val SHARE_FROM_ME = "SHARE_FROM_ME"
-        private const val MENU_ITEM_VIEW_HYPERLINK = 0
-        private const val MENU_ITEM_SHARE_HYPERLINK = 1
-        private const val MENU_ITEM_COPY_HYPERLINK = 2
-        private const val MENU_ITEM_DOWNLOAD_IMAGE = 3
-        private const val MENU_ITEM_SEARCH_IMAGE = 4
-        private const val MENU_ITEM_UNKNOWN = 5
+        const val MENU_ITEM_VIEW_HYPERLINK = 0
+        const val MENU_ITEM_SHARE_HYPERLINK = 1
+        const val MENU_ITEM_COPY_HYPERLINK = 2
+        const val MENU_ITEM_DOWNLOAD_IMAGE = 3
+        const val MENU_ITEM_SEARCH_IMAGE = 4
+        const val MENU_ITEM_UNKNOWN = 5
 
         fun newInstance(url: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(KEY_URL, url)}}
     }
