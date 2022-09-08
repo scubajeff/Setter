@@ -189,6 +189,8 @@ class ReverseImageSearchFragment : Fragment() {
             }
         }
 
+        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength -> downloadFile(url, mimetype) }
+
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
             webView.restoreState(savedInstanceState)
@@ -565,16 +567,25 @@ class ReverseImageSearchFragment : Fragment() {
         return inSampleSize
     }
 
-    private fun downloadFile(url: String) {
-        val name = URLUtil.guessFileName(url, null, "image/*")
+    private fun downloadFile(url: String, mime: String? = null) {
+        val mimeType = mime ?: "image/*"
+        val name = URLUtil.guessFileName(url, null, mimeType)
         try {
             (requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(
                 DownloadManager.Request(Uri.parse((url)))
-                    .setMimeType("image/*")
+                    .setMimeType(mimeType)
                     .setTitle(name)
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI and DownloadManager.Request.NETWORK_MOBILE)
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "/setter/$name")
+                    .setDestinationInExternalPublicDir(
+                        when {
+                            mimeType.startsWith("image") -> Environment.DIRECTORY_PICTURES
+                            mimeType.startsWith("video") -> Environment.DIRECTORY_MOVIES
+                            mimeType.startsWith("audio") -> Environment.DIRECTORY_MUSIC
+                            else -> Environment.DIRECTORY_DOWNLOADS
+                        },
+                        "/setter/$name"
+                    )
             )
         } catch (_: Exception) {}
     }
