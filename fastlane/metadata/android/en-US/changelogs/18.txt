@@ -1,0 +1,2 @@
+* added Download context menu to image link
+* use dynamic system theme color
