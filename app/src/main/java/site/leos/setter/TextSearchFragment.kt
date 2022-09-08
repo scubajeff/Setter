@@ -97,20 +97,26 @@ class TextSearchFragment : Fragment(){
 
         // Load links in webview
         webView.webViewClient = object : WebViewClient() {
-            private val defaultBrowserName = packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: ""
+            @Suppress("DEPRECATION")
+            private val defaultBrowserName =
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: ""
+                else packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")), PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()))?.activityInfo?.packageName ?: ""
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =
                 request?.let {
                     when(it.url.scheme) {
                         in setOf("http", "https")-> {
-                            if (defaultBrowserName != (packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NO_MATCH")
+                            @Suppress("DEPRECATION")
+                            if (defaultBrowserName !=
+                                (if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName ?: "NO_MATCH"
+                                else packageManager.resolveActivity(Intent(Intent.ACTION_VIEW, it.url), PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()))?.activityInfo?.packageName ?: "NO_MATCH")
                                 && !(it.url.toString().startsWith(urlString.substringBefore('?')))
                             ) {
                                 try {
                                     startActivity(Intent(Intent.ACTION_VIEW, it.url).apply {
                                         addCategory(Intent.CATEGORY_BROWSABLE)
                                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) flags =
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) flags =
                                             flags or Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
                                     })
                                 } catch (e: ActivityNotFoundException) {
@@ -162,17 +168,17 @@ class TextSearchFragment : Fragment(){
                             view?.postDelayed( { view.evaluateJavascript("(function() { document.getElementsByClassName('cookieBanner-module--outer--NAOuo')[0].style.display = 'none'; document.getElementsByClassName('lmt__bottom_text--mobile')[0].style.display = 'none'; document.getElementById('lmt_pro_ad_container').style.display = 'none'; document.getElementById('footer').style.display = 'none'; })();") {} }, 2000)
                         }
                         it.contains("twitter.com")-> {
-                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 2000)
-                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 3000)
+                            view?.postDelayed({ view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 2000)
+                            view?.postDelayed({ view.evaluateJavascript("(function() { document.getElementById('layers').style.display = 'none'; })();") {} }, 3000)
                         }
                         it.contains("reddit.com")-> {
-                            view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('XPromoPill__container')[0].style.display = 'none'; })();") {} }, 2000)
+                            view?.postDelayed({ view.evaluateJavascript("(function() { document.getElementsByClassName('XPromoPill__container')[0].style.display = 'none'; })();") {} }, 2000)
                         }
                         it.contains("weixin.sogou.com")-> {
                             view?.evaluateJavascript("(function() { document.getElementById('right').style.display = 'none'; document.getElementById('s_footer').style.display = 'none'; document.getElementsByClassName('header-box')[0].style.display = 'none'; document.getElementsByClassName('back-top')[0].style.display = 'none'; document.getElementsByClassName('bottom-form')[0].style.display = 'none'; document.getElementById('main').setAttribute(\"style\",\"width:100vw\"); document.getElementById('wrapper').setAttribute(\"style\",\"width:100vw\"); document.getElementById('pagebar_container').setAttribute(\"style\",\"width:100vw\"); })();") {}
                         }
                         it.contains("weibo.cn")-> {
-                            view?.postDelayed(Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('card card11')[0].style.display = 'none'; document.getElementsByClassName('m-tab-bar m-bar-panel m-container-max')[0].style.display = 'none'; })();") {} }, 2000)
+                            view?.postDelayed({ view.evaluateJavascript("(function() { document.getElementsByClassName('card card11')[0].style.display = 'none'; document.getElementsByClassName('m-tab-bar m-bar-panel m-container-max')[0].style.display = 'none'; })();") {} }, 2000)
                         }
                         (it.contains("stackoverflow.com") || it.contains("stackexchange.com"))-> {
                             //view?.postDelayed( Runnable { view.evaluateJavascript("(function() { document.getElementsByClassName('js-consent-banner')[0].style.display = 'none'; })();") {} }, 1000)
