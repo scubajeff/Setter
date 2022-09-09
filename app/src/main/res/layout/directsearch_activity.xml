@@ -15,53 +15,74 @@
   ~   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_gravity="bottom"
-    android:layout_marginBottom="32dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_layout"
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="@string/edit_search_hint"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_query"
+        android:background="@drawable/search_popup_background"
+        android:gravity="bottom"
+        android:paddingBottom="32dp"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="64dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/search_popup_handler_background" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            android:inputType="textAutoComplete"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_margin="16dp"
+            android:hint="@string/edit_search_hint">
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/query_tg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        app:singleSelection="true"
-        app:selectionRequired="true"
-        app:checkedButton="@+id/meta_search">
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/meta_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="?attr/materialButtonOutlinedStyle"
-            android:textAllCaps="false"
-            android:text="@string/meta_search_choice" />
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/translate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="?attr/materialButtonOutlinedStyle"
-            android:textAllCaps="false"
-            android:text="@string/translation_choice" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_query"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="textAutoComplete" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/query_tg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            app:checkedButton="@+id/meta_search"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/meta_search"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_baseline_search_24"
+                android:text="@string/meta_search_choice"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/translate"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_baseline_translate_24"
+                android:text="@string/translation_choice"
+                android:textAllCaps="false" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -77,8 +77,8 @@
         android:icon="@drawable/ic_baseline_launch_24">
 
         <Preference
+            android:key="@string/launch_search_key"
             app:title="@string/search_now_title">
-            <intent android:targetPackage="site.leos.setter" android:targetClass="site.leos.setter.DirectSearchActivity" />
         </Preference>
 
         <Preference

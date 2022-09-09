@@ -20,9 +20,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -53,6 +56,22 @@ class DirectSearchActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.translate).setOnClickListener {
             if (queryEdit.text!!.isNotEmpty()) searchIt(queryEdit.text.toString(), false)
             else queryLayout.hint = getString(R.string.edit_translate_hint)
+        }
+
+        BottomSheetBehavior.from(findViewById<LinearLayout>(R.id.container)).run {
+            state = BottomSheetBehavior.STATE_EXPANDED
+            skipCollapsed = true
+            addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        finish()
+                        overridePendingTransition(0, 0)
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+
+            })
         }
     }
 

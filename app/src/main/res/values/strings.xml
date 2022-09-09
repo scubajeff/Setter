@@ -67,6 +67,7 @@
     <string name="remove_cookie_summary">Remove all cookies when Setter is closed</string>
     <string name="set_as_assistant_title">Set as default assistant app</string>
     <string name="set_as_assistant_summary">Allow Setter launched on any screen</string>
+    <string name="launch_search_key" translatable="false">LAUNCH_SEARCH</string>
     <string name="add_widget_key" translatable="false">ADD_WIDGET</string>
     <string name="add_widget_title">Add widget on home screen</string>
     <string name="add_widget_summary">Launch Setter from home screen</string>

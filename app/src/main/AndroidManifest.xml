@@ -125,6 +125,7 @@
 
         <activity
             android:name=".DirectSearchActivity"
+            android:theme="@style/AppTheme.Transparent"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustResize"

@@ -20,7 +20,6 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
@@ -51,11 +50,18 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         override fun onPreferenceTreeClick(preference: Preference): Boolean =
-            if (preference.key == getString(R.string.add_widget_key)) {
-                requireContext().getSystemService(AppWidgetManager::class.java).requestPinAppWidget(ComponentName(requireContext(), SearchWidget::class.java), null, null)
-                true
+            when(preference.key) {
+                getString(R.string.add_widget_key) -> {
+                    requireContext().getSystemService(AppWidgetManager::class.java).requestPinAppWidget(ComponentName(requireContext(), SearchWidget::class.java), null, null)
+                    true
+                }
+                getString(R.string.launch_search_key) -> {
+                    startActivity(Intent(requireContext(), DirectSearchActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    requireActivity().finish()
+                    true
+                }
+                else -> super.onPreferenceTreeClick(preference)
             }
-            else super.onPreferenceTreeClick(preference)
 
         private fun isColorDictAvailable(): Boolean {
             return requireContext().packageManager.resolveActivity(Intent("colordict.intent.action.SEARCH"), PackageManager.MATCH_DEFAULT_ONLY) != null
