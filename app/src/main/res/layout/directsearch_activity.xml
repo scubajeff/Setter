@@ -29,7 +29,6 @@
         android:gravity="bottom"
         android:paddingBottom="32dp"
         android:orientation="vertical"
-        app:behavior_hideable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View

@@ -37,6 +37,7 @@ class DirectSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.directsearch_activity)
 
         metaButton = findViewById(R.id.meta_search)
@@ -61,6 +62,8 @@ class DirectSearchActivity : AppCompatActivity() {
         BottomSheetBehavior.from(findViewById<LinearLayout>(R.id.container)).run {
             state = BottomSheetBehavior.STATE_EXPANDED
             skipCollapsed = true
+            isHideable = true
+            isFitToContents = true
             addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     if (newState == BottomSheetBehavior.STATE_HIDDEN) {
@@ -73,6 +76,7 @@ class DirectSearchActivity : AppCompatActivity() {
 
             })
         }
+
     }
 
     private fun searchIt(query: String, meta: Boolean) : Boolean {

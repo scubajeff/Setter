@@ -21,6 +21,7 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:statusBarColor">#40404040</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimations</item>
     </style>
 
     <style name="AppTheme.Transparent" parent="AppTheme">
@@ -29,6 +30,8 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.NoDisplay" parent="AppTheme">
@@ -46,4 +49,8 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="WindowAnimations">
+        <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>
