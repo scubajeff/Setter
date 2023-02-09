@@ -233,7 +233,7 @@ class TextSearchFragment : Fragment(){
         }
          */
 
-        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength -> downloadFile(url, mimetype) }
+        webView.setDownloadListener { url, _, _, mimetype, _ -> downloadFile(url, mimetype) }
 
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
@@ -405,4 +405,3 @@ class TextSearchFragment : Fragment(){
         fun newInstance(url: String) = TextSearchFragment().apply {arguments = Bundle().apply {putString(KEY_URL, url)}}
     }
 }
-

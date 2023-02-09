@@ -189,7 +189,7 @@ class ReverseImageSearchFragment : Fragment() {
             }
         }
 
-        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength -> downloadFile(url, mimetype) }
+        webView.setDownloadListener { url, _, _, mimetype, _ -> downloadFile(url, mimetype) }
 
         if (savedInstanceState != null) {
             resultLoaded = savedInstanceState.getBoolean(RESULT_LOADED)
@@ -267,7 +267,7 @@ class ReverseImageSearchFragment : Fragment() {
         webView.onResume()
         webView.isFocusableInTouchMode = true
         webView.requestFocus()
-        webView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        webView.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (event.action != KeyEvent.ACTION_UP) return@OnKeyListener true
                 if (resultLoaded) {
